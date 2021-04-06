@@ -71,14 +71,43 @@ class L_skin {
 		return ($this->skin->input->server('HTTP_X_REQUESTED_WITH')&&($this->skin->input->server('HTTP_X_REQUESTED_WITH')=='XMLHttpRequest'));
 	}
 
+	// function css_load($data)
+	// {
+	// 	if( ! is_array($data) OR count($data) === 0 ){
+	// 		echo '<link rel="stylesheet" href="'.base_url($data).'">';
+	// 	}else{
+	// 		foreach($data as $val) {
+	// 			echo '<link rel="stylesheet" href="'.base_url($val).'">';
+ //            	echo "\n";
+	// 		}
+	// 	}
+	// }
+
+	// function js_load($data)
+	// {
+	// 	if( ! is_array($data) OR count($data) === 0 ){
+	// 		echo '<script src="'.base_url($data).'"></script>';
+	// 	}else{
+	// 		foreach($data as $val) {
+	// 			echo '<script src="'.base_url($val).'"></script>';
+ //            	echo "\n";
+	// 		}
+	// 	}
+	// }
+
 	function css_load($data)
 	{
 		if( ! is_array($data) OR count($data) === 0 ){
 			echo '<link rel="stylesheet" href="'.base_url($data).'">';
 		}else{
 			foreach($data as $val) {
-				echo '<link rel="stylesheet" href="'.base_url($val).'">';
-            	echo "\n";
+				if(stripos($val, 'https') !== false) {
+					echo '<link rel="stylesheet" href="'.$val.'">';
+            		echo "\n";
+				}else{
+					echo '<link rel="stylesheet" href="'.base_url($val).'">';
+	            	echo "\n";
+	            }
 			}
 		}
 	}
@@ -89,8 +118,14 @@ class L_skin {
 			echo '<script src="'.base_url($data).'"></script>';
 		}else{
 			foreach($data as $val) {
-				echo '<script src="'.base_url($val).'"></script>';
-            	echo "\n";
+				if(stripos($val, 'https') !== false) {
+					echo '<script src="'.$val.'"></script>';
+            		echo "\n";
+				}else{
+					echo '<script src="'.base_url($val).'"></script>';
+            		echo "\n";
+				}
+				
 			}
 		}
 	}

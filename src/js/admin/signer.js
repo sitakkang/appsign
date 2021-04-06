@@ -48,6 +48,13 @@ $(document).ready(function(){
 			$("div#MyModalContent").html(view);
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_add_btn">Simpan</button>');
 			$("div#MyModal").modal('show');
+			$('input.tanggal').datetimepicker({
+				timepicker:false,
+				format:'Y-m-d',
+				scrollMonth:false,
+				scrollTime:false,
+				scrollInput:false,
+			});
 		})
 		.fail(function(res){
 			alert('Error Response !');
@@ -62,7 +69,18 @@ $(document).ready(function(){
 		var lastnum = table.data().count() + 1;
 		var name = $("input#name").val();
 		var email = $("input#email").val();
-
+		var id_ktp = $("input#id_ktp").val();
+		var id_npwp = $("input#id_npwp").val();
+		var jenis_kelamin = $("select#jenis_kelamin").val();
+		var telepon = $("input#telepon").val();
+		var alamat = $("textarea#alamat").val();
+		var provincy = $("select#provincy").val();
+		var kota = $("select#kota").val();
+		var kecamatan = $("select#kecamatan").val();
+		var desa = $("select#desa").val();
+		var kode_pos = $("input#kode_pos").val();
+		var tempat_lahir = $("input#tempat_lahir").val();
+		var tgl_lahir = $("input#tgl_lahir").val();
 		$.ajax({
 			method:"POST",
 			url:url_ctrl+'act_add',
@@ -70,8 +88,18 @@ $(document).ready(function(){
 			data: {
 				name:name,
 	            email:email,
-	            name:$("input#name").val(),
-	            email:$("input#email").val(),
+	            id_ktp:id_ktp,
+	            id_npwp:id_npwp,
+	            jenis_kelamin:jenis_kelamin,
+	            telepon:telepon,
+	            alamat:alamat,
+	            provincy:provincy,
+	            kota:kota,
+	            kecamatan:kecamatan,
+	            desa:desa,
+	            kode_pos:kode_pos,
+	            tempat_lahir:tempat_lahir,
+	            tgl_lahir:tgl_lahir,
 			}
 		})
 		.done(function(result) {
@@ -87,6 +115,15 @@ $(document).ready(function(){
             		"0" : lastnum,
 				    "1" : name,
 				    "2" : email,
+				    "3" : id_ktp,
+				    "4" : id_npwp,
+				    "5" : jenis_kelamin,
+				    "6" : telepon,
+				    "7" : alamat,
+				    "8" : kode_pos,
+				    "9" : tempat_lahir+", "+tgl_lahir,
+				    
+				    
 		        }).draw(false);
 			}
 		})
@@ -111,6 +148,13 @@ $(document).ready(function(){
 			$("div#MyModalContent").html(view);
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_edit_btn">Ubah</button>');
 			$("div#MyModal").modal('show');
+			$('input.tanggal').datetimepicker({
+				timepicker:false,
+				format:'Y-m-d',
+				scrollMonth:false,
+				scrollTime:false,
+				scrollInput:false,
+			});
 		})
 		.fail(function(res){
 			alert('Error Response !');
@@ -123,13 +167,37 @@ $(document).ready(function(){
 		e.preventDefault();
 		var name = $("input#name").val();
 		var email = $("input#email").val();
+		var id_ktp = $("input#id_ktp").val();
+		var id_npwp = $("input#id_npwp").val();
+		var jenis_kelamin = $("select#jenis_kelamin").val();
+		var telepon = $("input#telepon").val();
+		var alamat = $("textarea#alamat").val();
+		var provincy = $("select#provincy").val();
+		var kota = $("select#kota").val();
+		var kecamatan = $("select#kecamatan").val();
+		var desa = $("select#desa").val();
+		var kode_pos = $("input#kode_pos").val();
+		var tempat_lahir = $("input#tempat_lahir").val();
+		var tgl_lahir = $("input#tgl_lahir").val();
 		$.ajax({
 			method:"POST",
 			url:url_ctrl+'act_edit',
 			data: {
 				id:$("input#id").val(),
 				name:name,
-	            email:email
+	            email:email,
+	            id_ktp:id_ktp,
+	            id_npwp:id_npwp,
+	            jenis_kelamin:jenis_kelamin,
+	            telepon:telepon,
+	            alamat:alamat,
+	            provincy:provincy,
+	            kota:kota,
+	            kecamatan:kecamatan,
+	            desa:desa,
+	            kode_pos:kode_pos,
+	            tempat_lahir:tempat_lahir,
+	            tgl_lahir:tgl_lahir,
 			}
 		})
 		.done(function(result) {
@@ -143,6 +211,13 @@ $(document).ready(function(){
                 var temp = table.row('tr.actived').data(); 
                 temp[1] = name;
 				temp[2] = email;
+				temp[3] = id_ktp;
+			    temp[4] = id_npwp;
+			    temp[5] = jenis_kelamin;
+			    temp[6] = telepon;
+			    temp[7] = alamat;
+			    temp[8] = kode_pos;
+			    temp[9] = tempat_lahir +', '+ tgl_lahir;
 				table.row('tr.actived').data(temp).invalidate();
 			}
 		})
@@ -192,6 +267,75 @@ $(document).ready(function(){
 				});
 			}
 		})
+	});
+
+	$(document).on('change','#provincy',function(e){
+		e.preventDefault();
+		var id = $("select[id*='provincy']").val();
+	  	$.ajax({
+			method:"GET",
+			url:url_ctrl+'getKota',
+			cache:false,
+			data:{id:id}
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 2){
+                $('#kota').html(obj.html);
+                $('#kecamatan').html(obj.kecamatan_html);
+                $('#desa').html(obj.desa_html);
+			}
+			
+		})
+		.fail(function(res){
+			alert('Error Response !');
+			console.log("responseText", res.responseText);
+		});
+	});
+
+	$(document).on('change','#kota',function(e){
+		e.preventDefault();
+		var id = $("select[id*='kota']").val();
+	  	$.ajax({
+			method:"GET",
+			url:url_ctrl+'getKecamatan',
+			cache:false,
+			data:{id:id}
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 2){
+                $('#kecamatan').html(obj.html);
+                $('#desa').html(obj.desa_html);
+			}
+			
+		})
+		.fail(function(res){
+			alert('Error Response !');
+			console.log("responseText", res.responseText);
+		});
+	});
+
+	$(document).on('change','#kecamatan',function(e){
+		e.preventDefault();
+		var id = $("select[id*='kecamatan']").val();
+	  	$.ajax({
+			method:"GET",
+			url:url_ctrl+'getDesa',
+			cache:false,
+			data:{id:id}
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 2){
+                $('#desa').html(obj.html);
+			}
+			
+		})
+		.fail(function(res){
+			alert('Error Response !');
+			console.log("responseText", res.responseText);
+		});
 	});
 
 });

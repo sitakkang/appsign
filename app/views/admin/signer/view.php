@@ -14,6 +14,13 @@
                                     <th>No.</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>No.KTP</th>
+                                    <th>No.NPWP</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>No.Telp</th>
+                                    <th>Alamat</th>
+                                    <th>Kode Pos</th>
+                                    <th>Tempat & Tgl Lahir</th>
                                 </tr>
                             </thead>
                             <tbody>

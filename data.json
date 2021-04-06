@@ -1,0 +1,27 @@
+{
+    "JSONFile": { 
+        "userid": "adminimip@tandatanganku.com", 
+        "document_id" : "12AS", 
+        "payment" : "3", 
+        "redirect" : true, 
+	"sequence_option" : false,
+        "send-to" : [ {
+            "name": "patar", 
+            "email": "pathuli90@gmail.com"},
+        ], 
+        "req-sign" : [{ 
+            "name" :"test1", 
+            "email":"sitanggang.patar@yahoo.com", 
+            "aksi_ttd":"at", 
+            "kuser":"1234567890123456", 
+            "user":"ttd1", 
+            "page":"3", 
+            "llx":"12", 
+            "lly":"15", 
+            "urx":"12", 
+            "ury":"15", 
+            "visible":"1" 
+            },
+        ]
+    }
+}

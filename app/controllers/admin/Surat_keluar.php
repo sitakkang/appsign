@@ -181,6 +181,8 @@ class Surat_keluar extends CI_Controller {
         $this->db->update('app_surat_keluar', $data);
         $notif['notif'] = 'Perubahan status berhasil !';
         $notif['status'] = 2;
+
+        
         echo json_encode($notif);
     }
 

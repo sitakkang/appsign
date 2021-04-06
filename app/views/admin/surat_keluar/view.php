@@ -21,6 +21,7 @@
                                     <th>Jenis</th>
                                     <th>Disetujui</th>
                                     <th>Perihal</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>

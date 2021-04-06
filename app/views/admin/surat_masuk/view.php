@@ -22,6 +22,7 @@
                                     <th>Jenis</th>
                                     <th>Ditujukan Ke</th>
                                     <th>Perihal</th>
+                                    <th>Doc ID</th>
                                 </tr>
                             </thead>
                             <tbody>
