@@ -9,10 +9,88 @@ class Surat_masuk extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->m_auth->check_login();
+        $this->m_auth->check_superadmin();
         $this->load->model($this->dir_m.'m_surat_masuk');
         $this->load->library($this->dir_l.'l_surat_masuk');
+        $this->load->library('l_phpmailer');
     }
 
+
+    function send_mail_smtp($token, $id_surat){
+        // $approval_link="Approval Link http://localhost/appsign/approve/approvemasuk/".$token."\r\n";
+        // $cancel_link="Cancel Link http://localhost/appsign/approve/cancelmasuk/".$token."\r\n";
+        // $config = array(
+        //         'email'  => 'adminimip@tandatanganku.com', 
+        //         'subject' => 'Approve Sign Document', 
+        //         'approval_link'=>$approval_link,
+        //         'cancel_link'=>$cancel_link
+        // ); 
+        
+        // // PHPMailer object
+        // $mail = $this->l_phpmailer->load();
+        // $mail->isSMTP();
+        // $mail->Host       = 'mail.imip.co.id';
+        // $mail->SMTPAuth   = true;
+        // $mail->Username   = 'patar@imip.co.id'; //email
+        // $mail->Password   = 'Hpu89%1x'; //password
+        // $mail->SMTPSecure = 'ssl';
+        // $mail->Port       = 587;
+
+        // $mail->setFrom('patar@imip.co.id', 'Approve Sign Document');
+        // $mail->addReplyTo('patar@imip.co.id', 'Patar'); //user email
+        // $mail->addAddress('adminimip@tandatanganku.com');
+        // $mail->Subject='Approve Sign Document';
+
+        // $mail->isHTML(true); 
+
+        // $data['config'] = $config;
+        // $mailContent    = $this->load->view($this->dir_v.'/v_email', $data, TRUE);
+        // $mail->Body     = $mailContent;
+        
+
+        // $file = $path.$filename;
+        // $content = file_get_contents( $file);
+        // $content = chunk_split(base64_encode($content));
+        // $uid = md5(uniqid(time()));
+        // $name = basename($file);
+
+        $data=[];
+        $this->load->library('email');
+        $config = array(
+                'protocol'  => 'smtp', 
+                'smtp_host' => 'mail.imip.co.id', 
+                'smtp_user' => 'patar@imip.co.id', 
+                'smtp_pass' => 'Hpu89%1x', 
+                'smtp_port' => '587', 
+                'mail_type' => 'html', 
+                'charset'   => 'iso-8859-1', 
+        );
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('patar@imip.co.id','Approval Digital Sign');
+        $this->email->to('adminimip@tandatanganku.com'); 
+        $this->email->subject('Test Mail API');
+        $this->email->message('Test API');  
+        $this->email->message('Approval Link http://localhost/appsign/approve/approve/'.$token.' </b> to cancel http://localhost/appsign/approve/cancel/'. $token .' </b>');
+        $mailContent="";
+        $mailContent.="For Approval Link Please Click http://localhost/appsign/approve/approvemasuk/".$token."\r\n";
+        $mailContent.="For Cancel Link Please Click http://localhost/appsign/approve/cancelmasuk/".$token."\r\n";
+        $this->email->message($mailContent);
+        // $mail->send();
+        // if($mail->send()){
+        //     return true;
+        // }else{
+        //     echo "<pre>";
+        //     print_r($mail->ErrorInfo);
+        //     echo "</pre>";
+        //     die();
+        // }
+        if($this->email->send()){
+            return true;
+        }else{
+            return false;
+        }
+    }
     function index()
     {
         $data['css'] = array(
@@ -34,22 +112,6 @@ class Surat_masuk extends CI_Controller {
         $data['panel'] = '<i class="fa fa-inbox"></i> &nbsp;<b>Surat Masuk</b>';
         $this->l_skin->config($this->dir_v.'view', $data);
     }
-
-    // function sign_pdf()
-    // {
-    //     $data['css'] = array(
-    //         'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css',
-    //         'src/css/style.css');
-    //     $data['js'] = array(
-    //         'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
-    //         'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js',
-    //         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js',
-    //         'https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.2.9/interact.min.js',
-    //         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.worker.min.js',
-    //         'src/js/admin/surat_masuk_sign.js');
-    //     $data['panel'] = '<i class="fa fa-inbox"></i> &nbsp;<b>PDF</b>';
-    //     $this->l_skin->config($this->dir_v.'pdf_signing', $data);
-    // }
 
     function act_sign_doc(){
         $id_surat = $this->input->post("id");
@@ -311,40 +373,6 @@ class Surat_masuk extends CI_Controller {
         $lly = $rows->lly;
         $urx = $rows->urx;
         $ury = $rows->ury;
-        $options_at = [
-            'jsonfield' => json_encode(
-                [
-                    'JSONFile' => [
-                        "userid"=> "adminimip@tandatanganku.com", 
-                        "document_id" => $doc_id, 
-                        "payment" => "3", 
-                        "redirect" => true, 
-                        "sequence_option"=>false,
-                        "send-to" => array([
-                            "name"=> "patar", 
-                            "email"=> "adminimip@tandatanganku.com"
-                        ]),
-                        "req-sign" => array([
-                            "name" =>"test1", 
-                            "email"=>"adminimip@tandatanganku.com", 
-                            "aksi_ttd"=>"at", 
-                            "kuser"=>'e6aWrPrHidjmjdA1',
-                            "user"=>"ttd1", 
-                            "page"=>"1", 
-                            "llx"=>"30", 
-                            "lly"=>"30", 
-                            "urx"=>"30", 
-                            "ury"=>"30", 
-                            "visible"=>"1"])
-                    ],
-                ],
-            ),
-            'file'=>new \CurlFile(
-                        $real_t_file,
-                        'pdf',
-                        'test'
-                    ),
-        ];
         $options_mt = [
             'jsonfield' => json_encode(
                 [
@@ -448,39 +476,7 @@ class Surat_masuk extends CI_Controller {
         }
     }
 
-    function send_mail_smtp($token){
-        $data=[];
-        $this->load->library('email');
-        $config = array(
-                'protocol'  => 'smtp', 
-                'smtp_host' => 'mail.imip.co.id', 
-                'smtp_user' => 'patar@imip.co.id', 
-                'smtp_pass' => 'Q92dvh#8', 
-                'smtp_port' => '587', 
-                'mail_type' => 'html', 
-                'charset'   => 'iso-8859-1', 
-        );
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
-        $this->email->from('patar@imip.co.id','Approval Digital Sign');
-        $this->email->to('adminimip@tandatanganku.com'); 
-        $this->email->subject('Test Mail API');
-        // $this->email->message('Test API');  
-        // $this->email->message('Approval Link http://localhost/appsign/approve/approve/'.$token.' </b> to cancel http://localhost/appsign/approve/cancel/'. $token .' </b>');
-        $mailContent="";
-        $mailContent.="Approval Link http://localhost/appsign/approve/approve/".$token."\r\n";
-        $mailContent.="Cancel Link http://localhost/appsign/approve/cancel/".$token."\r\n";
-        $this->email->message($mailContent);
-        // $this->email->message('Test API');  
-        // $this->load->view($this->dir_v.'posisi', $data);
-        // $mailContent    = $this->load->view($this->dir_v.'v_email', $data, TRUE);
-        // $this->email->Body($mailContent);
-        if($this->email->send()){
-            return true;
-        }else{
-            return false;
-        }
-    }
+
 
     function act_sign_document()
     {
@@ -517,10 +513,6 @@ class Surat_masuk extends CI_Controller {
             curl_setopt($curl, CURLOPT_HTTPHEADER,$headers);
             $response = curl_exec($curl);
             $response_text = json_decode($response);
-            // echo "<pre>";
-            // print_r($response_text);
-            // echo "</pre>";
-            // die();
             if($response_text->JSONFile->result!='00'){
                 $notif['notif'] = 'Error : '. $response_text->JSONFile->notif;
                 $notif['status'] = 1;
@@ -533,9 +525,7 @@ class Surat_masuk extends CI_Controller {
                 $notif['status'] = 2;
                 $notif['id'] = $id_surat;
                 $notif['url_api']=$response_text->JSONFile->link;
-                echo json_encode($notif);
-
-                
+                echo json_encode($notif); 
             }
 
         }
@@ -585,7 +575,7 @@ class Surat_masuk extends CI_Controller {
                 $update['status'] = 5;
                 $update['approval_status'] = 1;
                 $update['token'] = $token;
-                $send_mail_smtp=$this->send_mail_smtp($token);
+                $send_mail_smtp=$this->send_mail_smtp($token,$id_surat);
 
                 if($send_mail_smtp){
                     $this->db->where('id_surat_masuk', $id_surat);

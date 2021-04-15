@@ -174,7 +174,11 @@ class L_skin {
 	                }
 	                echo '</ul></li>';
 	        	}else{
-	        		echo '<li><a href="'.site_url().$data_main_menu[$key]['link'].'"><span class="sidenav-link-icon"><i class="fa '.$data_main_menu[$key]['icon'].'"></i></span><span class="sidenav-link-title">'.$data_main_menu[$key]['name'].'</span></a></li>';
+	        		$ceking_level = strrpos($data_main_menu[$key]['level'],$LevelUser);
+	        		if(!empty($ceking_level)){
+	        			echo '<li><a href="'.site_url().$data_main_menu[$key]['link'].'"><span class="sidenav-link-icon"><i class="fa '.$data_main_menu[$key]['icon'].'"></i></span><span class="sidenav-link-title">'.$data_main_menu[$key]['name'].'</span></a></li>';
+	        		}
+	        		
 	        	}
 	        }
 	    }

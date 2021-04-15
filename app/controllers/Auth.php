@@ -11,7 +11,11 @@ class Auth extends CI_Controller {
     public function index()
     {
         if($this->session->userdata('sess_log') == TRUE){
-            redirect(base_url().'home');
+        	if(($this->session->userdata('sess_level'))==3){
+        		redirect(base_url().'tenant');
+        	}else{
+        		redirect(base_url().'home');
+        	}
         }else{
             redirect(base_url().'login');
         }

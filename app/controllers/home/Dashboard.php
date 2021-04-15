@@ -6,6 +6,7 @@ class Dashboard extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->m_auth->check_login();
+		// $this->m_auth->check_superadmin();
 	}
 
 	function index()

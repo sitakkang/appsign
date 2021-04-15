@@ -440,6 +440,7 @@ $(document).ready(function(){
 					});
 			        this.on("success", function() {
 			        	table.ajax.reload(null, false);
+			        	window.location.href = 'sign_pdf/'+id_surat;
 			        });
 			    }
             });

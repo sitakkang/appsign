@@ -1,7 +1,7 @@
 $(document).ready(() => {
   'use strict';
   var url_ctrl = site_url+"admin/surat_masuk/";
-  var url_act_sign_doc  = site_url+"admin/surat_masuk/act_sign_doc";
+  // var url_act_sign_doc  = site_url+"admin/surat_masuk/act_sign_doc";
   var documentToolbar = $('.document-toolbar')
   var contentHeader = $('.content-header')
   var distance = contentHeader.outerHeight()
@@ -30,8 +30,8 @@ $(document).ready(() => {
     var lly = $('#lly_result').val();
     var urx = $('#urx').val();
     var ury = $('#ury').val();
-    // alert(llx);alert(lly);
-
+    var type_surat = $('#type_surat').val();
+    var url_act_sign_doc  = site_url+"admin/"+type_surat+"/act_sign_doc";
     $.post(url_act_sign_doc,{
       llx:$("input[name*='llx_result_']").val(),
       lly:$("input[name*='lly_result_']").val(),

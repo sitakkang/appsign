@@ -8,6 +8,7 @@
                 </div>
                 <div class="card-body">
                     <button id="sign_btn" class="btn btn-default">Sign</button><hr>
+                    <input type="hidden" name="type_surat_" id="type_surat" value="surat_masuk">
                     <input type="hidden" name="id_" id="id" value="<?php echo $id;?>">
                     <input type="hidden" id="llx" name="llx_">
                     <input type="hidden" id="lly" name="lly_">

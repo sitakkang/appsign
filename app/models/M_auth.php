@@ -35,6 +35,11 @@ class M_auth extends CI_Model {
         if($this->session->userdata('sess_level') != 1){redirect(base_url());}
     }
 
+    function check_not_superadmin(){
+        if($this->session->userdata('sess_level') == 1){redirect(base_url());}
+    }
+
+
 	// HAK AKSES MENU
     function check_akses()
     {

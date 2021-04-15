@@ -53,6 +53,7 @@ $route['default_controller'] = 'auth';
 $route['login'] = 'auth/login';
 $route['logout'] = 'auth/logout';
 $route['home'] = 'home/dashboard';
+$route['tenant'] = 'tenant/home';
 $route['profil'] = 'admin/profil';
 
 $route['recruitment'] = 'recruitment/menu';

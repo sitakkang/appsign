@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	var url_ctrl = site_url+"admin/surat_keluar/";
+	var url_form_posisi	= site_url+"admin/surat_keluar/posisi_sign/";
 	var url_tbl 		= site_url+"admin/surat_keluar/table";
 	var url_add 		= site_url+"admin/surat_keluar/add";
 	var url_edit 		= site_url+"admin/surat_keluar/edit/";
@@ -12,6 +13,10 @@ $(document).ready(function(){
 	var url_act_send	= site_url+"admin/surat_keluar/act_send_mail/";
 	var url_status		= site_url+"admin/surat_keluar/view_status/";
 	var url_act_status	= site_url+"admin/surat_keluar/act_status";
+	var url_form_vendor	= site_url+"admin/surat_keluar/upload_vendor/";
+	var url_upload_vendor	= site_url+"admin/surat_keluar/upload_vendor_act_btn";
+	var url_act_sign	= site_url+"admin/surat_keluar/act_sign_document/";
+	var url_form_sign	= site_url+"admin/surat_keluar/sign_document/";
 
 	var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
@@ -238,7 +243,8 @@ $(document).ready(function(){
 						formData.append("id_surat", id_surat);
 					});
 			        this.on("success", function() {
-			        	table.ajax.reload(null, false);
+			        	// table.ajax.reload(null, false);
+			        	window.location.href = 'sign_pdf/'+id_surat;
 			        });
 			    }
             });
@@ -282,9 +288,39 @@ $(document).ready(function(){
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Surat</b>');
 			$('div.modal-dialog').addClass('modal-sm');
-			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_send_act_btn">Simpan</button>');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_send_act_btn">Send</button>');
 			$("div#MyModalContent").html(view);
 			$("div#MyModal").modal('show');
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
+
+	// Sending mail
+	$(document).on('click','#save_send_act_btn',function(e){
+		e.preventDefault();
+		if($('select#disetujui :selected').length > 0){
+	        var selectedsend = [];
+	        $('select#disetujui :selected').each(function(i, selected){
+	            selectedsend[i] = $(selected).val();
+	        });
+        }else{ selectedsend = ''; }
+		$.post(url_act_send,{
+			id_surat:$("input[name*='id_surat']").val(),
+			disetujui:JSON.stringify(selectedsend)
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 1){
+                notifNo(obj.notif);
+			}
+			if(obj.status == 2){
+                $("div#MyModal").modal('hide');
+            	notifYesAuto(obj.notif);
+            	table.ajax.reload(null, false);
+			}
 		})
 		.fail(function(res) {
 			alert("Error");
@@ -308,4 +344,104 @@ $(document).ready(function(){
     	$("div#MyModalFooter").empty();
 	});
 
+	$(document).on('click','a.btn.posisi_act_btn',function(e){
+		var id_surat = $(this).attr('data-id');
+		window.location.href = 'sign_pdf/'+id_surat;
+	});
+
+	$(document).on('click','a.btn.upload_vendor_btn',function(e){
+		e.preventDefault();
+		var id_surat = $(this).attr('data-id');
+		$.get(url_form_vendor+id_surat)
+		.done(function(view) {
+			$('#MyModalTitle').html('<b>Choose Vendor</b>');
+			$('div.modal-dialog').addClass('modal-sm');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="upload_vendor_act_btn">Sent</button>');
+			$("div#MyModalContent").html(view);
+			$("div#MyModal").modal('show');
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
+
+	// Upload Vendor
+	$(document).on('click','#upload_vendor_act_btn',function(e){
+		e.preventDefault();
+		if($('select#vendor :selected').length > 0){
+	        var selectedvendor = [];
+	        $('select#vendor :selected').each(function(i, selected){
+	            selectedvendor[i] = $(selected).val();
+	        });
+        }else{ selectedsend = ''; }
+		$.post(url_upload_vendor,{
+			id_surat:$("input[name*='id_surat']").val(),
+			vendor:JSON.stringify(selectedvendor)
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 1){
+                notifNo(obj.notif);
+			}
+			if(obj.status == 2){
+                $("div#MyModal").modal('hide');
+            	notifYesAuto(obj.notif);
+            	table.ajax.reload(null, false);
+			}
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
+
+	$(document).on('click','#sign_document_act_btn',function(e){
+		e.preventDefault();
+		if($('select#disetujui :selected').length > 0){
+	        var selectedsend = [];
+	        $('select#disetujui :selected').each(function(i, selected){
+	            selectedsend[i] = $(selected).val();
+	        });
+        }else{ selectedsend = ''; }
+		$.post(url_act_sign,{
+			id_surat:$("input[name*='id_surat']").val(),
+			disetujui:JSON.stringify(selectedsend)
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 1){
+                notifNo(obj.notif);
+			}
+			if(obj.status == 2){
+                $("div#MyModal").modal('hide');
+            	notifYesAuto(obj.notif);
+            	table.ajax.reload(null, false);
+            	// window.location.href = 'surat_masuk/proses/'+obj.id;
+            	window.location.href = obj.url_api;
+			}
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
+
+	// sign document
+	$(document).on('click','a.btn.sign_act_btn',function(e){
+		e.preventDefault();
+		var id_surat = $(this).attr('data-id');
+		$.get(url_form_sign+id_surat)
+		.done(function(view) {
+			$('#MyModalTitle').html('<b>Sign Document</b>');
+			$('div.modal-dialog').addClass('modal-sm');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="sign_document_act_btn">Sign</button>');
+			$("div#MyModalContent").html(view);
+			$("div#MyModal").modal('show');
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
 });

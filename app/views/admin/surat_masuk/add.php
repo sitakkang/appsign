@@ -22,7 +22,7 @@
 </div>
 <div class="form-group">
     <label class="control-label">Tanggal Terima </label>
-    <input class="form-control tanggal" type="text" name="tgl_terima">
+    <input class="form-control tanggal" type="text" name="tgl_terima" readonly>
 </div>
 <div class="form-group">
     <label class="control-label">Bentuk </label>
