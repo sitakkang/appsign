@@ -36,9 +36,29 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-document"></i></a> ';
+						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
 					}else{
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
+						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-images"></i></a> ';
+					}
+				}else{
+					$view .= '';
+				}
+			}
+			return $view;
+		}
+	}
+
+	function attachment_downloaded($data)
+	{
+		if(is_array($data)){
+			$view = '';
+			foreach ($data as $key) {
+				if(isset($key)){
+					$char = substr($key, -3);
+					if($char == 'pdf'){
+						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
+					}else{
+						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-images"></i></a> ';
 					}
 				}else{
 					$view .= '';

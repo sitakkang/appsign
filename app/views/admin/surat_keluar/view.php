@@ -22,6 +22,7 @@
                                     <th>Disetujui</th>
                                     <th>Perihal</th>
                                     <th>Doc ID</th>
+                                    <th>File Downloaded</th>
                                 </tr>
                             </thead>
                             <tbody>

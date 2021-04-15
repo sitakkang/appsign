@@ -39,7 +39,7 @@ class Surat_keluar extends CI_Controller {
 
     public function table()
     {
-        $get_all = $this->db->query('SELECT id_surat_keluar, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
+        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
 
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -60,7 +60,8 @@ class Surat_keluar extends CI_Controller {
                 '7' => $id->jenis,
                 '8' => $this->m_surat_keluar->penerima_surat($id->disetujui),
                 '9' => $id->perihal,
-                '10' => $id->document_id
+                '10' => $id->document_id,
+                '11' => $this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
             );
         }
 

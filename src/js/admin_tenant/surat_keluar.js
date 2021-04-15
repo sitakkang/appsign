@@ -249,4 +249,29 @@ $(document).ready(function(){
 			console.log("Error", res.responseText);
 		});
 	});
+
+	// Act Sending Mail
+	$(document).on('click','a.btn.btn_preview_mail',function(e){
+		e.preventDefault();
+		var id_label = $(this).attr('data-url');
+		var id_tipe = $(this).attr('data-tipe');
+		if(id_tipe == 1){
+
+			view = '<div><object data="'+site_url+'upload/keluar/'+id_label+'" width="100%" height="500px"><p>Browser anda tidak memiliki ekstensi untuk membuka file ini secara langsung. Disarankan untuk memasang browser terbaru (Google Chrome, Mozilla Firefox, Safari, dll) dan memasang aplikasi pembaca file PDF (Adobe Acrobat Reader, PDF Viewer, dll) di perangkat anda. Untuk mengunduh file ini <a href="'+site_url+'upload/keluar/'+id_label+'"> Click ditautan ini !</a></p></object></div>';
+
+			$('#MyModalTitle').html('<b>Attachment</b>');
+			$('div.modal-dialog').addClass('modal-lg');
+			$("div#MyModalContent").html(view);
+			$("div#MyModal").modal('show');
+
+		}else{
+			$.magnificPopup.open({
+				items: {
+					src: site_url+'upload/keluar/'+id_label
+				},
+				type: 'image'
+			});
+			wheelzoom(document.querySelector('img.mfp-img'));
+		}
+	});
 });

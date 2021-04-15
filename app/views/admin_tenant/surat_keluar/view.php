@@ -12,7 +12,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>File</th>
+                                    <th>Upload File</th>
                                     <th>Menu</th>
                                     <th>Status</th>
                                     <th>Nomor Surat</th>
@@ -22,6 +22,7 @@
                                     <th>Disetujui</th>
                                     <th>Perihal</th>
                                     <th>Doc ID</th>
+                                    <th>File Downloaded</th>
                                 </tr>
                             </thead>
                             <tbody>
