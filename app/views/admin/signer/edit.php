@@ -1,10 +1,22 @@
 <div class="form-group">
-    <label class="control-label">Name </label>
+    <label class="control-label">*Name </label>
     <input class="form-control" type="text" id="name" value="<?=$id->name;?>">
 </div>
 <div class="form-group">
-    <label class="control-label">Email </label>
-    <input class="form-control" type="text" id="email" value="<?=$id->email;?>">
+    <label class="control-label">*Email User</label>
+    <input class="form-control" type="text" id="email_user" value="<?=$id->email_user;?>">
+</div>
+<div class="form-group">
+    <label class="control-label">*Email Digisign</label>
+    <input class="form-control" type="text" id="email_digisign" value="<?=$id->email_digisign;?>">
+</div>
+<div class="form-group">
+    <label class="control-label">*Kuser Production </label>
+    <input class="form-control" type="text" id="kuser_production" value="<?=$id->kuser_production;?>">
+</div>
+<div class="form-group">
+    <label class="control-label">*Kuser Sandbox </label>
+    <input class="form-control" type="text" id="kuser_sandbox" value="<?=$id->kuser_sandbox;?>">
 </div>
 <div class="form-group">
     <label class="control-label">No. KTP </label>

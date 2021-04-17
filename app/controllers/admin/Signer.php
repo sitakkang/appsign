@@ -31,7 +31,7 @@ class Signer extends CI_Controller {
 
     function table()
     {
-        $get_all = $this->db->query('SELECT a.id, a.name, a.email, a.id_ktp, a.id_npwp, a.jenis_kelamin, a.telepon, a.alamat, a.kode_pos, a.tempat_lahir, a.tgl_lahir, a.provinci, a.kota, a.kecamatan, a.desa FROM t_signer a');
+        $get_all = $this->db->query('SELECT a.id, a.name, a.email_user, a.email_digisign, a.id_ktp, a.id_npwp, a.jenis_kelamin, a.telepon, a.alamat, a.kode_pos, a.tempat_lahir, a.tgl_lahir, a.provinci, a.kota, a.kecamatan, a.desa, a.kuser_production, a.kuser_sandbox FROM t_signer a');
 
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -46,14 +46,10 @@ class Signer extends CI_Controller {
                 "DT_RowId" => $id->id,
                 "0" => $i++,
                 "1" => $id->name,
-                "2" => $id->email,
-                "3" => $id->id_ktp,
-                "4" => $id->id_npwp,
-                "5" => $id->jenis_kelamin,
-                "6" => $id->telepon,
-                "7" => $id->alamat,
-                "8" => $id->kode_pos,
-                "9" => $lahir,
+                "2" => $id->email_user,
+                "3" => $id->email_digisign,
+                "4" => $id->kuser_production,
+                "5" => $id->kuser_sandbox,
             );
          }
 
@@ -76,11 +72,10 @@ class Signer extends CI_Controller {
     function act_add()
     {
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[1]|is_unique[t_signer.email]');
-        $this->form_validation->set_rules('provincy', 'Provincy', 'trim|required|min_length[1]');
-        $this->form_validation->set_rules('kota', 'Kota', 'trim|required|min_length[1]');
-        $this->form_validation->set_rules('kecamatan', 'Kecamatan', 'trim|required|min_length[1]');
-        $this->form_validation->set_rules('desa', 'Desa', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('email_user', 'Email User', 'trim|required|min_length[1]|is_unique[t_signer.email_user]');
+        $this->form_validation->set_rules('email_digisign', 'Email Digisign', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('kuser_production', 'Kuser Production', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('kuser_sandbox', 'Kuser Sandbox', 'trim|required|min_length[1]');
         if ($this->form_validation->run() == FALSE){
             $notif['notif'] = validation_errors();
             $notif['status'] = 1;
@@ -88,7 +83,7 @@ class Signer extends CI_Controller {
         }else{
             $data = array(
                     'name' => $this->input->post('name'),
-                    'email' => $this->input->post('email'),
+                    'email_user' => $this->input->post('email_user'),
                     'id_ktp' => $this->input->post('id_ktp'),
                     'id_npwp' => $this->input->post('id_npwp'),
                     'jenis_kelamin' => $this->input->post('jenis_kelamin'),
@@ -101,6 +96,9 @@ class Signer extends CI_Controller {
                     'kota' => $this->input->post('kota'),
                     'kecamatan' => $this->input->post('kecamatan'),
                     'desa' => $this->input->post('desa'),
+                    'email_digisign' => $this->input->post('email_digisign'),
+                    'kuser_sandbox' => $this->input->post('kuser_sandbox'),
+                    'kuser_production' => $this->input->post('kuser_production'),
                 );
             $this->db->insert('t_signer', $data);
             $notif['lastid'] = $this->db->insert_id();
@@ -113,7 +111,7 @@ class Signer extends CI_Controller {
     function edit()
     {
         $data_id = $this->input->get('id');
-        $result_id = $this->db->query('SELECT id, name, email, id_ktp, id_npwp, jenis_kelamin, alamat, telepon, provinci, kota, kecamatan, desa, tempat_lahir, tgl_lahir, kode_pos FROM t_signer WHERE id='.$data_id.' LIMIT 1');
+        $result_id = $this->db->query('SELECT id, name, email_user, email_digisign, kuser_production, kuser_sandbox, id_ktp, id_npwp, jenis_kelamin, alamat, telepon, provinci, kota, kecamatan, desa, tempat_lahir, tgl_lahir, kode_pos FROM t_signer WHERE id='.$data_id.' LIMIT 1');
         $data['id'] = $result_id->row();
         $this->load->view($this->dir_v.'edit', $data);
     }
@@ -123,12 +121,11 @@ class Signer extends CI_Controller {
         $id = $this->input->post('id');
         $name = $this->input->post('name');
         $email = $this->input->post('email');
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[1]');
-        $this->form_validation->set_rules('provincy', 'Provincy', 'trim|required');
-        $this->form_validation->set_rules('kota', 'Kota', 'trim|required');
-        $this->form_validation->set_rules('kecamatan', 'Kecamatan', 'trim|required');
-        $this->form_validation->set_rules('desa', 'Desa', 'trim|required');
+       $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('email_user', 'Email User', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('email_digisign', 'Email Digisign', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('kuser_production', 'Kuser Production', 'trim|required|min_length[1]');
+        $this->form_validation->set_rules('kuser_sandbox', 'Kuser Sandbox', 'trim|required|min_length[1]');
         if ($this->form_validation->run() == FALSE){
             $notif['notif'] = validation_errors();
             $notif['status'] = 1;
@@ -136,7 +133,7 @@ class Signer extends CI_Controller {
         }else{
             $data = array(
                 'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
+                'email_user' => $this->input->post('email_user'),
                 'id_ktp' => $this->input->post('id_ktp'),
                 'id_npwp' => $this->input->post('id_npwp'),
                 'jenis_kelamin' => $this->input->post('jenis_kelamin'),
@@ -148,7 +145,10 @@ class Signer extends CI_Controller {
                 'provinci' => $this->input->post('provincy'),
                 'kota' => $this->input->post('kota'),
                 'kecamatan' => $this->input->post('kecamatan'),
-                'desa' => $this->input->post('desa')
+                'desa' => $this->input->post('desa'),
+                'email_digisign' => $this->input->post('email_digisign'),
+                'kuser_sandbox' => $this->input->post('kuser_sandbox'),
+                'kuser_production' => $this->input->post('kuser_production'),
             );
             $this->db->where('id', $id);
             $this->db->update('t_signer', $data);

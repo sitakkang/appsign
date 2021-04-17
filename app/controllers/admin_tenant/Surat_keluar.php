@@ -39,7 +39,7 @@ class Surat_keluar extends CI_Controller {
     public function table()
     {
         $user_id = $this->session->userdata('sess_id');
-        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status FROM app_surat_keluar where user='. $user_id .' ORDER BY id_surat_keluar DESC');
+        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status, tujuan FROM app_surat_keluar where user='. $user_id .' ORDER BY id_surat_keluar DESC');
 
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -60,7 +60,7 @@ class Surat_keluar extends CI_Controller {
                 '7' => $id->jenis,
                 '8' => $this->m_surat_keluar->penerima_surat($id->disetujui),
                 '9' => $id->perihal,
-                '10' => $id->document_id,
+                '10' => $id->tujuan,
                 '11' => $this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
             );
         }
@@ -196,6 +196,7 @@ class Surat_keluar extends CI_Controller {
         $id_surat = $this->input->post("id");
         $query = $this->db->query('SELECT id_surat_keluar, status, no_surat, perihal, jenis, diusulkan, tujuan, melalui, tgl_kirim, catatan FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
         $rows = $query->row();
+        $no_surat=$rows->no_surat;
         $status=$rows->status;
         if($status==1 || $status==2 || $status==4){
             $llx = $this->input->post("llx");
@@ -223,7 +224,7 @@ class Surat_keluar extends CI_Controller {
                 echo json_encode($notif);
             }  
         }else{
-            $notif['notif'] = 'Sign surat '.$id_surat.' Gagal. Ijin Sign data Ditolak. !';
+            $notif['notif'] = 'Sign surat '.$no_surat.' Gagal. Ijin Sign data Ditolak. !';
             $notif['status'] = 1;
             echo json_encode($notif);
         }

@@ -20,11 +20,31 @@ class Approve extends CI_Controller {
         $rows = $get_surat->row();
         $status_all=$rows->status;
         if($status_all!=5){
-            $get_signer = $this->db->query("SELECT id, kuser, email, email_dgsign FROM t_signer WHERE id='".$rows->signer."' LIMIT 1");
+            $get_apisetup = $this->db->query("SELECT * FROM api_activation WHERE status='active' LIMIT 1");
+            $rows_apisetup = $get_apisetup->row();
+            $type=$rows_apisetup->id;
+            $url_send_document='';
+            $url_download_document='';
+            $get_apivoid = $this->db->query("SELECT * FROM tbl_api_action WHERE type='".$type."'");
+            foreach($get_apivoid->result() as $id) {
+                if($id->api_key=='send_document'){
+                    $url_send_document=$id->url;
+                }elseif($id->api_key=='download_document'){
+                    $url_download_document=$id->url;
+                }
+            }
+            $get_signer = $this->db->query("SELECT id, kuser_production, kuser_sandbox, email_user, email_digisign, name FROM t_signer WHERE id='".$rows->signer."' LIMIT 1");
             $rows_signer = $get_signer->row();
-            $email=$rows_signer->email;
-            $email_dgsign=$rows_signer->email_dgsign;
-            $kuser=$rows_signer->kuser;
+            if($type==1){
+                $kuser=$rows_signer->kuser_sandbox;
+            }else{
+                $kuser=$rows_signer->kuser_production;
+            }
+            $email_user=$rows_signer->email_user;
+            $email_dgsign=$rows_signer->email_digisign;
+            $name_signer=$rows_signer->name;
+
+
             $token_time=$rows->token_time;
             // $now_time=date_create()->format('Y-m-d H:i:s');
             // $diff  = date_diff($token_time, $now_time);
@@ -48,11 +68,11 @@ class Approve extends CI_Controller {
                             "redirect" => true, 
                             "sequence_option"=>false,
                             "send-to" => array([
-                                "name"=> "patar", 
-                                "email"=> $email
+                                "name"=> $name_signer, 
+                                "email"=> $email_user
                             ]),
                             "req-sign" => array([
-                                "name" =>"test1", 
+                                "name" =>"Approval Document Sign", 
                                 "email"=>$email_dgsign, 
                                 "aksi_ttd"=>"at", 
                                 "kuser"=>$kuser,
@@ -75,7 +95,7 @@ class Approve extends CI_Controller {
             //send Document
             $headers=array('Authorization: Bearer gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM');
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, "https://api.tandatanganku.com/SendDocMitraAT.html");
+            curl_setopt($curl, CURLOPT_URL, $url_send_document);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
@@ -99,7 +119,7 @@ class Approve extends CI_Controller {
                         )
                     ];
                     $curl = curl_init();
-                    curl_setopt($curl, CURLOPT_URL, "https://api.tandatanganku.com/DWMITRA64.html");
+                    curl_setopt($curl, CURLOPT_URL, $url_download_document);
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
                     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);

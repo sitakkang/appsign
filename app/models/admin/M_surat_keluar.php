@@ -95,25 +95,25 @@
 	{
 		switch ($data) {
 			case 0:
-				return '<span class="label popup label-danger" data-id="'.$id.'">Mail Created</span>';
+				return '<span class="label label-danger" data-id="'.$id.'">Mail Created</span>';
 				break;
 			case 1:
-				return '<span class="label popup label-primary" data-id="'.$id.'">Doc.Uploaded</span>';
+				return '<span class="label label-primary" data-id="'.$id.'">Doc.Uploaded</span>';
 				break;
 			case 2:
-				return '<span class="label popup label-warning" data-id="'.$id.'">Sign.Set</span>';
+				return '<span class="label label-warning" data-id="'.$id.'">Sign.Set</span>';
 				break;
 			case 3:
-				return '<span class="label popup label-success" data-id="'.$id.'">Waiting Approval</span>';
+				return '<span class="label label-success" data-id="'.$id.'">Waiting Approval</span>';
 				break;
 			case 4:
-				return '<span class="label popup label-primary" data-id="'.$id.'">Cancel Approval</span>';
+				return '<span class="label label-primary" data-id="'.$id.'">Cancel Approval</span>';
 				break;
 			case 5:
-				return '<span class="label popup label-warning" data-id="'.$id.'">Document Signed</span>';
+				return '<span class="label label-warning" data-id="'.$id.'">Document Signed</span>';
 				break;
 			default:
-				return '<span class="label popup label-primary" data-id="'.$id.'">Undetected</span>';
+				return '<span class="label label-primary" data-id="'.$id.'">Undetected</span>';
 				break;
 		}
 	}

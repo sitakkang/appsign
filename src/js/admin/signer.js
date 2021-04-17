@@ -68,7 +68,10 @@ $(document).ready(function(){
 
 		var lastnum = table.data().count() + 1;
 		var name = $("input#name").val();
-		var email = $("input#email").val();
+		var email_user = $("input#email_user").val();
+		var email_digisign = $("input#email_digisign").val();
+		var kuser_production = $("input#kuser_production").val();
+		var kuser_sandbox = $("input#kuser_sandbox").val();
 		var id_ktp = $("input#id_ktp").val();
 		var id_npwp = $("input#id_npwp").val();
 		var jenis_kelamin = $("select#jenis_kelamin").val();
@@ -87,7 +90,7 @@ $(document).ready(function(){
 			cache:false,
 			data: {
 				name:name,
-	            email:email,
+	            email_user:email_user,
 	            id_ktp:id_ktp,
 	            id_npwp:id_npwp,
 	            jenis_kelamin:jenis_kelamin,
@@ -100,6 +103,9 @@ $(document).ready(function(){
 	            kode_pos:kode_pos,
 	            tempat_lahir:tempat_lahir,
 	            tgl_lahir:tgl_lahir,
+	            email_digisign:email_digisign,
+	            kuser_sandbox:kuser_sandbox,
+	            kuser_production:kuser_production,
 			}
 		})
 		.done(function(result) {
@@ -114,14 +120,10 @@ $(document).ready(function(){
             		"DT_RowId" : obj.lastid,
             		"0" : lastnum,
 				    "1" : name,
-				    "2" : email,
-				    "3" : id_ktp,
-				    "4" : id_npwp,
-				    "5" : jenis_kelamin,
-				    "6" : telepon,
-				    "7" : alamat,
-				    "8" : kode_pos,
-				    "9" : tempat_lahir+", "+tgl_lahir,
+				    "2" : email_user,
+				    "3" : email_digisign,
+				    "4" : kuser_production,
+				    "5" : kuser_sandbox,
 				    
 				    
 		        }).draw(false);
@@ -166,7 +168,10 @@ $(document).ready(function(){
 	$(document).on('click','#save_edit_btn',function(e){
 		e.preventDefault();
 		var name = $("input#name").val();
-		var email = $("input#email").val();
+		var email_user = $("input#email_user").val();
+		var email_digisign = $("input#email_digisign").val();
+		var kuser_production = $("input#kuser_production").val();
+		var kuser_sandbox = $("input#kuser_sandbox").val();
 		var id_ktp = $("input#id_ktp").val();
 		var id_npwp = $("input#id_npwp").val();
 		var jenis_kelamin = $("select#jenis_kelamin").val();
@@ -185,7 +190,7 @@ $(document).ready(function(){
 			data: {
 				id:$("input#id").val(),
 				name:name,
-	            email:email,
+	            email_user:email_user,
 	            id_ktp:id_ktp,
 	            id_npwp:id_npwp,
 	            jenis_kelamin:jenis_kelamin,
@@ -198,6 +203,9 @@ $(document).ready(function(){
 	            kode_pos:kode_pos,
 	            tempat_lahir:tempat_lahir,
 	            tgl_lahir:tgl_lahir,
+	            email_digisign:email_digisign,
+	            kuser_sandbox:kuser_sandbox,
+	            kuser_production:kuser_production,
 			}
 		})
 		.done(function(result) {
@@ -210,14 +218,10 @@ $(document).ready(function(){
                 notifYesAuto(obj.notif);
                 var temp = table.row('tr.actived').data(); 
                 temp[1] = name;
-				temp[2] = email;
-				temp[3] = id_ktp;
-			    temp[4] = id_npwp;
-			    temp[5] = jenis_kelamin;
-			    temp[6] = telepon;
-			    temp[7] = alamat;
-			    temp[8] = kode_pos;
-			    temp[9] = tempat_lahir +', '+ tgl_lahir;
+				temp[2] = email_user;
+				temp[3] = email_digisign;
+			    temp[4] = kuser_production;
+			    temp[5] = kuser_sandbox;
 				table.row('tr.actived').data(temp).invalidate();
 			}
 		})

@@ -13,14 +13,10 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>No.KTP</th>
-                                    <th>No.NPWP</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>No.Telp</th>
-                                    <th>Alamat</th>
-                                    <th>Kode Pos</th>
-                                    <th>Tempat & Tgl Lahir</th>
+                                    <th>Email User</th>
+                                    <th>Email Digisign</th>
+                                    <th>Kuser Production</th>
+                                    <th>Kuser Sandbox</th>
                                 </tr>
                             </thead>
                             <tbody>
