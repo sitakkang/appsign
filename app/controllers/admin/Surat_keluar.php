@@ -314,9 +314,9 @@ class Surat_keluar extends CI_Controller {
                 if($this->cek_empty_attach($id_surat)){
                     $disetujui = $this->l_surat_keluar->FilterArray($this->input->post('disetujui'));
                     $id_disetujui = (int)str_replace('"', '', $disetujui);
-                    $query = $this->db->query('SELECT id, email FROM t_signer WHERE id='. $id_disetujui .' LIMIT 1');
+                    $query = $this->db->query('SELECT id, email_user FROM t_signer WHERE id='. $id_disetujui .' LIMIT 1');
                     $data = $query->row();
-                    $email_signer=$data->email;
+                    $email_signer=$data->email_user;
                     $token=$this->generate_token();
                     $update['signer'] = $data->id;
                     $update['disetujui'] = $disetujui;
@@ -326,19 +326,19 @@ class Surat_keluar extends CI_Controller {
                     //token_time
                     $token_time = date_create()->format('Y-m-d H:i:s');
                     $update['token_time'] = $token_time;
-                    $send_mail_smtp=$this->send_mail_smtp($token,$email_signer);
+                    // $send_mail_smtp=$this->send_mail_smtp($token,$email_signer);
 
-                    if($send_mail_smtp){
+                    // if($send_mail_smtp){
                         $this->db->where('id_surat_keluar', $id_surat);
                         $this->db->update('app_surat_keluar', $update);
                         $notif['notif'] = 'Data surat berhasil di kirim !';
                         $notif['status'] = 2;
                         echo json_encode($notif);
-                    }else{
-                        $notif['notif'] = 'Pengiriman Surat Gagal';
-                        $notif['status'] = 1;
-                        echo json_encode($notif);
-                    }
+                    // }else{
+                    //     $notif['notif'] = 'Pengiriman Surat Gagal';
+                    //     $notif['status'] = 1;
+                    //     echo json_encode($notif);
+                    // }
                     
                 }else{
                     $notif['notif'] = 'Attachment surat belum di upload !';
