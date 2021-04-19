@@ -254,7 +254,7 @@ class Surat_keluar extends CI_Controller {
                 'protocol'  => 'smtp', 
                 'smtp_host' => 'mail.imip.co.id', 
                 'smtp_user' => 'patar@imip.co.id', 
-                'smtp_pass' => 'Hpu89%1x', 
+                'smtp_pass' => 'zPk2?h51gTkBz&%', 
                 'smtp_port' => '587', 
                 'mail_type' => 'html', 
                 'charset'   => 'iso-8859-1', 
@@ -326,19 +326,19 @@ class Surat_keluar extends CI_Controller {
                     //token_time
                     $token_time = date_create()->format('Y-m-d H:i:s');
                     $update['token_time'] = $token_time;
-                    // $send_mail_smtp=$this->send_mail_smtp($token,$email_signer);
+                    $send_mail_smtp=$this->send_mail_smtp($token,$email_signer);
 
-                    // if($send_mail_smtp){
+                    if($send_mail_smtp){
                         $this->db->where('id_surat_keluar', $id_surat);
                         $this->db->update('app_surat_keluar', $update);
                         $notif['notif'] = 'Data surat berhasil di kirim !';
                         $notif['status'] = 2;
                         echo json_encode($notif);
-                    // }else{
-                    //     $notif['notif'] = 'Pengiriman Surat Gagal';
-                    //     $notif['status'] = 1;
-                    //     echo json_encode($notif);
-                    // }
+                    }else{
+                        $notif['notif'] = 'Pengiriman Surat Gagal';
+                        $notif['status'] = 1;
+                        echo json_encode($notif);
+                    }
                     
                 }else{
                     $notif['notif'] = 'Attachment surat belum di upload !';
