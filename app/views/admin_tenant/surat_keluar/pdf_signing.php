@@ -19,30 +19,44 @@
 
                     <div class="content">
                     
-                    <div class="document-toolbar-container-sticky">
-                      <div class="document-toolbar">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-block text-primary">
-                            <strong>Page</strong> <span class="page-current" id="pageCurrent">1</span>/<span class="page-of" id="pageOf"></span>
-                          </div><!-- .d-block -->
-                        </div><!-- .justify-content-between -->
-                      </div><!-- .document-toolbar -->
-                    </div><!-- .document-toolbar -->
-                    <div class="container-fluid">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="document-container">
-                            <div class="document-render" id="documentRender">
-                              <div class="digital-signature" id="digitalSignature">
-                                <input type="hidden" id="pdf_base64" name="pdf_base64_" value="<?php echo $pdf_base64;?>">
-                                <?php $user_id = $this->session->userdata('sess_id');?>
-                                <img src="../src/img/signature.png" class="img-fluid signature-item">
-                              </div><!-- .digital-signature -->
-                            </div><!-- .document-render -->
-                          </div><!-- .document-container -->
-                        </div><!-- .col-## -->
-                      </div><!-- .row -->
-                    </div><!-- .container-fluid -->
+                    
+
+
+
+
+
+                    <div class="wrapper">
+
+                      <div class="content">
+                        <div class="content-header">
+                        </div><!-- .content-header -->
+                        <div class="document-toolbar-container-sticky">
+                          <div class="document-toolbar">
+                            <div class="d-flex justify-content-between">
+                              <div class="d-block text-primary">
+                                <strong>Page</strong> <span class="page-current" id="pageCurrent">1</span>/<span class="page-of" id="pageOf"></span>
+                              </div><!-- .d-block -->
+                            </div><!-- .justify-content-between -->
+                          </div><!-- .document-toolbar -->
+                        </div><!-- .document-toolbar -->
+
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="document-container">
+                                <div class="document-render" id="documentRender">
+                                  <div class="digital-signature" id="digitalSignature">
+                                    <input type="hidden" id="pdf_base64" name="pdf_base64_" size="1000000" value="<?php echo $pdf_base64;?>"> 
+                                    <?php //echo $pdf_base64;?>
+                                    <img src="../src/img/signature.png" class="img-fluid signature-item">
+                                  </div><!-- .digital-signature -->
+                                </div><!-- .document-render -->
+                              </div><!-- .document-container -->
+                            </div><!-- .col-## -->
+                          </div><!-- .row -->
+                        </div><!-- .container-fluid -->
+                      </div><!-- .content -->
+                    </div><!-- .wrapper -->
                   </div><!-- .content -->
                 </div><!-- .wrapper -->
                 </div>

@@ -33,7 +33,7 @@ interact('.digital-signature')
       var la = event.pageX-65;
       var llx_result = la-380;
       var lb = event.pageY + 36.68;
-      var llb = lb-320;
+      var llb = lb-345;
       var lly_result = 841-llb;
       var urx = llx_result+65;
       var ury = lly_result+35;

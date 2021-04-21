@@ -325,7 +325,9 @@ class Surat_keluar extends CI_Controller {
                     $update['token'] = $token;
                     //token_time
                     $token_time = date_create()->format('Y-m-d H:i:s');
+                    $exp_token_time=date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($token_time)));
                     $update['token_time'] = $token_time;
+                    $update['token_time_exp'] = $exp_token_time;
                     $send_mail_smtp=$this->send_mail_smtp($token,$email_signer);
 
                     if($send_mail_smtp){

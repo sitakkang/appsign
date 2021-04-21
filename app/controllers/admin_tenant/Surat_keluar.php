@@ -186,6 +186,7 @@ class Surat_keluar extends CI_Controller {
             'lib/interact/interact.min.js',
             'src/js/admin_tenant/app.js',
             'src/js/admin_tenant/pdf.config.js',
+            'https://unpkg.com/ionicons@4.4.2/dist/ionicons.js',
             'src/js/admin_tenant/signature.config.js');
         $data['path_folder']=$path_folder;
         $data['panel'] = '<i class="fa fa-inbox"></i> &nbsp;<b>PDF</b>';
