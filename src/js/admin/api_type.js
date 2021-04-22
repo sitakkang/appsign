@@ -1,22 +1,13 @@
 $(document).ready(function(){
 	var url_ctrl = site_url+"admin/api_type/";
+    
     var url_setup         = site_url+"admin/api_type/api_setup";
     var url_act_setup     = site_url+"admin/api_type/act_api_setup";
 
     var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
-        "order": [["0", "desc"]],
-        "scrollX" : true,
-		"scrollCollapse" : true,
-		"fixedColumns" :   true,
-        "fixedColumns" :   {
-            "rightColumns" : 1
-        },
-        "columnDefs": [
-			{ "orderable": false, "targets": [1,2] },
-			{ "className": "text-nowrap", "targets": [ 1,2 ] }
-    	]
+        "order": [["0", "desc"]]
     });
 
     $(document).on('click','button#add_btn',function(e){
@@ -25,7 +16,7 @@ $(document).ready(function(){
         .done(function(view) {
             $('#MyModalTitle').html('<b>Api Type</b>');
             //$('div.modal-dialog').addClass('modal-sm');
-            $("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_apisetup_btn">Activate</button>');
+            $("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_apisetup_btn">Activate</button>');
             $("div#MyModalContent").html(view);
             $("div#MyModal").modal('show');
         })

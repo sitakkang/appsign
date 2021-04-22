@@ -34,7 +34,7 @@ class Surat_keluar extends CI_Controller {
             'lib/datatables/dataTables.bootstrap.min.js',
             'src/js/admin/surat_keluar.js');
         $data['panel'] = '<i class="fa fa-envelope-open-text"></i> &nbsp;<b>Surat Keluar</b>';
-        $this->l_skin->config($this->dir_v.'view', $data);
+        $this->l_skin->main($this->dir_v.'view', $data);
     }
 
 
@@ -65,24 +65,23 @@ class Surat_keluar extends CI_Controller {
         $data = array();
         $i = 1;
         foreach($get_all->result() as $id) {
+            $action = ' <a href="" class="view_act_btn" data-id="'.$id->id_surat_keluar.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a>';
             if($id->status==3){
                 $this->setTokenExpired($id->id_surat_keluar);
             }
             $data[] = array(
                 "DT_RowId" => $id->id_surat_keluar,
                 '0' => $i++,
-                '1' => $this->m_surat_keluar->attachment(array($id->attach1)),
-                '2' => $this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat),
-                '3' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '4' => $id->no_surat,
-                '5' => $id->tgl_kirim,
-                '6' => $id->diusulkan,
-                '7' => $id->jenis,
-                '8' => $this->m_surat_keluar->penerima_surat($id->disetujui),
-                '9' => $id->perihal,
-                '10' => $id->document_id,
-                '11' => $id->tujuan,
-                '12' => $this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
+                '1' => $id->no_surat,
+                '2' => $id->tgl_kirim,
+                '3' => $id->diusulkan,
+                '4' => $id->jenis,
+                '5' => $this->m_surat_keluar->penerima_surat($id->disetujui),
+                '6' => $id->perihal,
+                '7' => $id->document_id,
+                '8' => $id->tujuan,
+                '9' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
+                '10' =>$this->m_surat_keluar->attachment(array($id->attach1)).' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)).''.$action,
             );
         }
 

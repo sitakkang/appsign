@@ -12,9 +12,6 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Upload File</th>
-                                    <th>Menu</th>
-                                    <th>Status</th>
                                     <th>Nomor Surat</th>
                                     <th>Tanggal Terima</th>
                                     <th>Diusulkan</th>
@@ -22,7 +19,8 @@
                                     <th>Disetujui</th>
                                     <th>Perihal</th>
                                     <th>Ditujukan Ke</th>
-                                    <th>File Downloaded</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>

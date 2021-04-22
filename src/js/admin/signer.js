@@ -44,7 +44,7 @@ $(document).ready(function(){
 		})
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Tambah</b>');
-			$('div.modal-dialog').addClass('modal-sm');
+			$('div.modal-dialog').addClass('modal-md');
 			$("div#MyModalContent").html(view);
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_add_btn">Simpan</button>');
 			$("div#MyModal").modal('show');
@@ -146,7 +146,7 @@ $(document).ready(function(){
 		})
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Ubah</b>');
-			$('div.modal-dialog').addClass('modal-sm');
+			$('div.modal-dialog').addClass('modal-md');
 			$("div#MyModalContent").html(view);
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_edit_btn">Ubah</button>');
 			$("div#MyModal").modal('show');

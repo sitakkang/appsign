@@ -53,7 +53,7 @@ i.fa.fa-angle-left, i.fa.fa-bars {
 
 /*Navbar Custom*/
 .navbar-default {
-    background-color: #FCAC44;
+    background-color: #FFFFFF;
     border-bottom: 1px solid rgba(0,0,0,.125);
     margin-bottom: 15px;
 }
@@ -97,7 +97,7 @@ a.nav-link:hover {
     border-radius: 0px;
 }
 .card-header {
-    background-color: #FCAC44;
+    background-color: ##F7F7F7;
 }
 .card-title {
     margin-bottom: 0px;
@@ -126,7 +126,7 @@ button.btn-block.btn-popup {
 /*Form Control*/
 .btn-default {
     color: #333;
-    background-color: #FCAC44;
+    background-color: #FFFFFF;
     border-color: #ccc;
 }
 .form-control:focus {
@@ -253,7 +253,7 @@ div.card.login-box{
 }
 
 div.modal-header{
-    background-color: #FCAC44;
+    background-color: #FFFFFF;
 }
 
 /* Loading Bar */

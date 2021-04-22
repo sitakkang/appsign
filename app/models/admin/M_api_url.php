@@ -8,7 +8,7 @@
 
     function api_act_btn($id,$key_,$type)
 	{
-		$return_data='<a class="btn btn-warning edit_act_btn" data-id="'.$id.'" title="Edit" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fas fa-edit"></i></a> <a class="btn btn-danger delete_act_btn" data-id="'.$id.'" data-key_="'.$key_.'" data-type="'.$type.'" title="Hapus" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-times"></i></a>';
+		$return_data='<a class="btn edit_act_btn" data-id="'.$id.'" title="Edit" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5; color:#0F9647;"><i class="fas fa-edit"></i></a> | <a class="btn delete_act_btn" data-id="'.$id.'" data-key_="'.$key_.'" data-type="'.$type.'" title="Hapus" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;color:#e51220;"><i class="fa fa-trash"></i></a>';
 		
 		return $return_data;
 	}

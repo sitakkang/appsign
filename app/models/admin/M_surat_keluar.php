@@ -37,9 +37,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
+						$view .= '<a href="" class="btn_preview_mail" title="View Origin Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a> |';
 					}else{
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-images"></i></a> ';
+						$view .= '<a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
 					}
 				}else{
 					$view .= '';
@@ -57,9 +57,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
+						$view .= ' <a href="" class="btn_preview_mail" title="View Approved Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-link"></i></a> |';
 					}else{
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-images"></i></a> ';
+						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> ';
 					}
 				}else{
 					$view .= '';
@@ -82,6 +82,9 @@
         //     $return_data.=' <a class="btn btn-primary upload_vendor_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Send Digisign" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-upload"></i></a>';
         // }
         if($rows->status==2 || $rows->status==6 || $rows->status==4){
+            $return_data.=' <a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><i class="fas fa-paper-plane"></i></a> |';
+
+        if($rows->status==2 || $rows->status==6 || $rows->status==4){
             $return_data.=' <a class="btn btn-primary send_act_btn" data-id="'.$id.'" title="Kirim" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fas fa-envelope-square"></i></a>';
         }
         // if($rows->status==7){
@@ -95,28 +98,28 @@
 	{
 		switch ($data) {
 			case 0:
-				return '<span class="label label-danger" data-id="'.$id.'">Mail Created</span>';
+				return '<span class="badge badge-secondary">Mail Created</span>';
 				break;
 			case 1:
-				return '<span class="label label-primary" data-id="'.$id.'">Doc.Uploaded</span>';
+				return '<span class="badge badge-info">Doc.Uploaded</span>';
 				break;
 			case 2:
-				return '<span class="label label-warning" data-id="'.$id.'">Sign.Set</span>';
+				return '<span class="badge badge-warning">Sign.Set</span>';
 				break;
 			case 3:
-				return '<span class="label label-success" data-id="'.$id.'">Waiting Approval</span>';
+				return '<span class="badge badge-primary">Waiting Approval</span>';
 				break;
 			case 4:
-				return '<span class="label label-primary" data-id="'.$id.'">Cancel Approval</span>';
+				return '<span class="badge badge-danger">Cancel Approval</span>';
 				break;
 			case 5:
-				return '<span class="label label-warning" data-id="'.$id.'">Document Signed</span>';
+				return '<span class="badge badge-success">Document Signed</span>';
 				break;
 			case 6:
 				return '<span class="label popup label-warning" data-id="'.$id.'">Token Expired</span>';
 				break;
 			default:
-				return '<span class="label label-primary" data-id="'.$id.'">Undetected</span>';
+				return '<span class="badge badge-dark">Undetected</span>';
 				break;
 		}
 	}
