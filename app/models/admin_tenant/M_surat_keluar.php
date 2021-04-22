@@ -21,6 +21,7 @@
 	3 = Waiting Approval
 	4 = Cancel Sign
 	5 = Document Signed
+	6 = Token Expired
     */
     class M_surat_keluar extends CI_Model {
 
@@ -74,7 +75,7 @@
 		$return_data.='<a class="btn btn-warning edit_act_btn" data-id="'.$id.'" title="Edit" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fas fa-edit"></i></a> <a class="btn btn-danger delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-times"></i></a> <a class="btn btn-info upload_act_btn" data-id="'.$id.'" title="Upload" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-upload"></i></a>';
 		$query = $this->db->query('SELECT approval_status, status FROM app_surat_keluar WHERE id_surat_keluar ='.$id.' LIMIT 1');
         $rows = $query->row();
-        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5){
+        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6){
             $return_data.=' <a class="btn btn-danger posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-powerpoint"></i></a>';
         }
 		return $return_data;
@@ -100,6 +101,9 @@
 				break;
 			case 5:
 				return '<span class="label popup label-warning" data-id="'.$id.'">Document Signed</span>';
+				break;
+			case 6:
+				return '<span class="label popup label-warning" data-id="'.$id.'">Token Expired</span>';
 				break;
 			default:
 				return '<span class="label popup label-primary" data-id="'.$id.'">Undetected</span>';

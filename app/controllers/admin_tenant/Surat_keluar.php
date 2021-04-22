@@ -36,6 +36,23 @@ class Surat_keluar extends CI_Controller {
         $this->l_skin->config($this->dir_v.'view', $data);
     }
 
+     public function setTokenExpired($id){
+        $get_surat = $this->db->query("SELECT id_surat_keluar, status, path_folder, llx, lly, urx, ury, attach1, signer, token_time, token_time_exp FROM app_surat_keluar WHERE id_surat_keluar='".$id."' LIMIT 1");
+        $rows = $get_surat->row();
+        $date_ = gmdate('Y-m-d H:i:s', time()+60*60*7);
+        $now=new DateTime($date_);
+        $then = new DateTime($rows->token_time);
+        $diff = $now->diff($then);
+        $minutes = ($diff->format('%a') * 1440) + // total days converted to minutes
+                   ($diff->format('%h') * 60) +  
+                    $diff->format('%i');      
+        if($minutes>=30){
+            $update['status'] = 6;
+            $this->db->where('id_surat_keluar', $id);
+            $this->db->update('app_surat_keluar', $update);
+        }
+    }
+
     public function table()
     {
         $user_id = $this->session->userdata('sess_id');
@@ -48,6 +65,9 @@ class Surat_keluar extends CI_Controller {
         $data = array();
         $i = 1;
         foreach($get_all->result() as $id) {
+            if($id->status==3){
+                $this->setTokenExpired($id->id_surat_keluar);
+            }
             $data[] = array(
                 "DT_RowId" => $id->id_surat_keluar,
                 '0' => $i++,

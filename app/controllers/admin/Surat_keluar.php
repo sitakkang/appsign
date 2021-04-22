@@ -37,6 +37,24 @@ class Surat_keluar extends CI_Controller {
         $this->l_skin->config($this->dir_v.'view', $data);
     }
 
+
+    public function setTokenExpired($id){
+        $get_surat = $this->db->query("SELECT id_surat_keluar, status, path_folder, llx, lly, urx, ury, attach1, signer, token_time, token_time_exp FROM app_surat_keluar WHERE id_surat_keluar='".$id."' LIMIT 1");
+        $rows = $get_surat->row();
+        $date_ = gmdate('Y-m-d H:i:s', time()+60*60*7);
+        $now=new DateTime($date_);
+        $then = new DateTime($rows->token_time);
+        $diff = $now->diff($then);
+        $minutes = ($diff->format('%a') * 1440) + // total days converted to minutes
+                   ($diff->format('%h') * 60) +  
+                    $diff->format('%i');      
+        if($minutes>=3){
+            $update['status'] = 6;
+            $this->db->where('id_surat_keluar', $id);
+            $this->db->update('app_surat_keluar', $update);
+        }
+    }
+
     public function table()
     {
         $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status, tujuan FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
@@ -44,10 +62,12 @@ class Surat_keluar extends CI_Controller {
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
-
         $data = array();
         $i = 1;
         foreach($get_all->result() as $id) {
+            if($id->status==3){
+                $this->setTokenExpired($id->id_surat_keluar);
+            }
             $data[] = array(
                 "DT_RowId" => $id->id_surat_keluar,
                 '0' => $i++,
@@ -310,7 +330,8 @@ class Surat_keluar extends CI_Controller {
             $query_surat = $this->db->query('SELECT status FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
             $data_surat = $query_surat->row();
             $status_surat=$data_surat->status;
-            if($status_surat!=2 || $status_surat!=3 || $status_surat!=4){
+            // if($status_surat!=2 || $status_surat!=3 || $status_surat!=4){
+            if($status_surat!=5 || $status_surat!=0 || $status_surat!=1){
                 if($this->cek_empty_attach($id_surat)){
                     $disetujui = $this->l_surat_keluar->FilterArray($this->input->post('disetujui'));
                     $id_disetujui = (int)str_replace('"', '', $disetujui);
@@ -324,7 +345,7 @@ class Surat_keluar extends CI_Controller {
                     $update['approval_status'] = 1;
                     $update['token'] = $token;
                     //token_time
-                    $token_time = date_create()->format('Y-m-d H:i:s');
+                    $token_time = $this->l_surat_keluar->DateTimeNow();
                     $exp_token_time=date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($token_time)));
                     $update['token_time'] = $token_time;
                     $update['token_time_exp'] = $exp_token_time;

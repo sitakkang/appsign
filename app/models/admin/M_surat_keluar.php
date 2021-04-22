@@ -81,7 +81,7 @@
         // if($rows->status==2 ||$rows->status==4 || $rows->status==5 || $rows->status==7){
         //     $return_data.=' <a class="btn btn-primary upload_vendor_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Send Digisign" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-upload"></i></a>';
         // }
-        if($rows->status==2 || $rows->status==3 || $rows->status==4){
+        if($rows->status==2 || $rows->status==6 || $rows->status==4){
             $return_data.=' <a class="btn btn-primary send_act_btn" data-id="'.$id.'" title="Kirim" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fas fa-envelope-square"></i></a>';
         }
         // if($rows->status==7){
@@ -111,6 +111,9 @@
 				break;
 			case 5:
 				return '<span class="label label-warning" data-id="'.$id.'">Document Signed</span>';
+				break;
+			case 6:
+				return '<span class="label popup label-warning" data-id="'.$id.'">Token Expired</span>';
 				break;
 			default:
 				return '<span class="label label-primary" data-id="'.$id.'">Undetected</span>';

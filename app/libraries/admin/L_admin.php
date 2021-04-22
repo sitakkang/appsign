@@ -2,6 +2,13 @@
 
 class L_admin {
 
+
+	function date_time_now()
+    {
+    	date_default_timezone_set('UTC');
+    	return gmdate('Y-m-d H:i:s', time()+60*60*7);
+    }
+
 	function rand_str($length = 10, $specialCharacters = TRUE)
 	{
 		$digits = '';
