@@ -21,17 +21,7 @@ $(document).ready(function(){
 	var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
-        "order": [["0", "desc"]],
-        "scrollX" : true,
-		"scrollCollapse" : true,
-		"fixedColumns" :   true,
-        "fixedColumns" :   {
-            "rightColumns" : 1
-        },
-        "columnDefs": [
-			{ "orderable": false, "targets": [1,2] },
-			{ "className": "text-nowrap", "targets": [ 1,2,3 ] }
-    	]
+        "order": [["0", "desc"]]
     });
 
 	$(document).on('click','button#add_btn',function(e){
@@ -40,7 +30,7 @@ $(document).ready(function(){
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Rekap Surat</b>');
 			//$('div.modal-dialog').addClass('modal-sm');
-			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_add_btn">Simpan</button>');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_add_btn">Simpan</button>');
 			$("div#MyModalContent").html(view);
 			$("div#MyModal").modal('show');
 			$('input.tanggal').datetimepicker({
@@ -94,7 +84,7 @@ $(document).ready(function(){
 		$.get(url_edit+id_surat)
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Edit</b>');
-			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_edit_btn">Simpan</button>');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_edit_btn">Simpan</button>');
 			$("div#MyModalContent").html(view);
 			$("div#MyModal").modal('show');
 			$('input.tanggal').datetimepicker({
@@ -256,7 +246,7 @@ $(document).ready(function(){
 	});
 
 	// Act Sending Mail
-	$(document).on('click','a.btn.btn_preview_mail',function(e){
+	$(document).on('click','a.btn_preview_mail',function(e){
 		e.preventDefault();
 		var id_label = $(this).attr('data-url');
 		var id_tipe = $(this).attr('data-tipe');
@@ -281,7 +271,7 @@ $(document).ready(function(){
 	});
 
 	// Sending Mail
-	$(document).on('click','a.btn.send_act_btn',function(e){
+	$(document).on('click','a.send_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
 		$.get(url_form_send+id_surat)

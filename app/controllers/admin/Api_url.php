@@ -33,7 +33,7 @@ class Api_url extends CI_Controller {
             'lib/datatables/dataTables.bootstrap.min.js',
             'src/js/admin/api_url.js');
         $data['panel'] = '<i class="fa fa-link"></i> &nbsp;<b>API URL</b>';
-        $this->l_skin->config($this->dir_v.'view', $data);
+        $this->l_skin->main($this->dir_v.'view', $data);
     }
 
     public function table()

@@ -36,9 +36,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
+						$view .= ' <a href="" title="View Origin Attachment" class="btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-link"></i></a> |';
 					}else{
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-images"></i></a> ';
+						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
 					}
 				}else{
 					$view .= '';
@@ -56,9 +56,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-envelope-open-text"></i></a> ';
+						$view .= '<a href="" title="View Approved Attachment" class="btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a> |';
 					}else{
-						$view .= '<a class="btn btn-primary btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-images"></i></a> ';
+						$view .= '<a href="" title="View Approved Attachment" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
 					}
 				}else{
 					$view .= '';
@@ -71,12 +71,14 @@
 	function keluar_act_btn($id, $no_surat)
 	{
 		$return_data='';
-		$return_data.='<a class="btn btn-warning edit_act_btn" data-id="'.$id.'" title="Edit" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fas fa-edit"></i></a> <a class="btn btn-danger delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-times"></i></a> <a class="btn btn-info upload_act_btn" data-id="'.$id.'" title="Upload" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-upload"></i></a>';
 		$query = $this->db->query('SELECT approval_status, status FROM app_surat_keluar WHERE id_surat_keluar ='.$id.' LIMIT 1');
         $rows = $query->row();
         if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5){
-            $return_data.=' <a class="btn btn-danger posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-powerpoint"></i></a>';
+            $return_data.=' <a class="posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="color:#0F9647;"><i class="fa fa-file-powerpoint"></i></a> |';
         }
+
+		$return_data.=' <a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a> | <a href="" class="upload_act_btn" data-id="'.$id.'" title="Upload" style="color:#0F9647;"><i class="fa fa-upload"></i></a> | <a href="" class="edit_act_btn" data-id="'.$id.'" title="Edit" style="color:#0F9647;"><i class="fas fa-edit"></i></a> | <a href="" class="delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="color:#BD2130;"><i class="fa fa-trash"></i></a>';
+		
 		return $return_data;
 	}
 
@@ -84,25 +86,25 @@
 	{
 		switch ($data) {
 			case 0:
-				return '<span class="label popup label-danger" data-id="'.$id.'">Mail Created</span>';
+				return '<span class="badge badge-secondary">Mail Created</span>';
 				break;
 			case 1:
-				return '<span class="label popup label-primary" data-id="'.$id.'">Doc.Uploaded</span>';
+				return '<span class="badge badge-info">Doc.Uploaded</span>';
 				break;
 			case 2:
-				return '<span class="label popup label-warning" data-id="'.$id.'">Sign.Set</span>';
+				return '<span class="badge badge-warning">Sign.Set</span>';
 				break;
 			case 3:
-				return '<span class="label popup label-success" data-id="'.$id.'">Waiting Approval</span>';
+				return '<span class="badge badge-primary">Waiting Approval</span>';
 				break;
 			case 4:
-				return '<span class="label popup label-primary" data-id="'.$id.'">Cancel Approval</span>';
+				return '<span class="badge badge-danger">Cancel Approval</span>';
 				break;
 			case 5:
-				return '<span class="label popup label-warning" data-id="'.$id.'">Document Signed</span>';
+				return '<span class="badge badge-success">Document Signed</span>';
 				break;
 			default:
-				return '<span class="label popup label-primary" data-id="'.$id.'">Undetected</span>';
+				return '<span class="badge badge-dark">Undetected</span>';
 				break;
 		}
 	}

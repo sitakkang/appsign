@@ -33,7 +33,7 @@ class Surat_keluar extends CI_Controller {
             'lib/datatables/dataTables.bootstrap.min.js',
             'src/js/admin_tenant/surat_keluar.js');
         $data['panel'] = '<i class="fa fa-envelope-open-text"></i> &nbsp;<b>Surat Keluar</b>';
-        $this->l_skin->config($this->dir_v.'view', $data);
+        $this->l_skin->main($this->dir_v.'view', $data);
     }
 
     public function table()
@@ -51,17 +51,15 @@ class Surat_keluar extends CI_Controller {
             $data[] = array(
                 "DT_RowId" => $id->id_surat_keluar,
                 '0' => $i++,
-                '1' => $this->m_surat_keluar->attachment(array($id->attach1)),
-                '2' => $this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat),
-                '3' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '4' => $id->no_surat,
-                '5' => $id->tgl_kirim,
-                '6' => $id->diusulkan,
-                '7' => $id->jenis,
-                '8' => $this->m_surat_keluar->penerima_surat($id->disetujui),
-                '9' => $id->perihal,
-                '10' => $id->tujuan,
-                '11' => $this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
+                '1' => $id->no_surat,
+                '2' => $id->tgl_kirim,
+                '3' => $id->diusulkan,
+                '4' => $id->jenis,
+                '5' => $this->m_surat_keluar->penerima_surat($id->disetujui),
+                '6' => $id->perihal,
+                '7' => $id->tujuan,
+                '8' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
+                '9' => $this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)).''.$this->m_surat_keluar->attachment(array($id->attach1)) .' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat),
             );
         }
 

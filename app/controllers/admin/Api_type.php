@@ -34,7 +34,7 @@ class Api_type extends CI_Controller {
             'src/js/admin/api_type.js'
         );
         $data['panel'] = '<i class="fa fa-check-double"></i> &nbsp;<b>API Type</b>';
-        $this->l_skin->config($this->dir_v.'view', $data);
+        $this->l_skin->main($this->dir_v.'view', $data);
     }
 
     public function table()

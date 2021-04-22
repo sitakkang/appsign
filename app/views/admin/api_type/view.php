@@ -1,11 +1,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card-header">
+            <div class="card">
+                <div class="card-header">
                     <?php if(!empty($panel)){echo $panel;}?>
                 </div>
                 <div class="card-body">
-                    <button id="add_btn" class="btn btn-default"><i class="fa fa-check-double"></i> Setup Api</button><hr>
+                    <button id="add_btn" class="btn btn-default"><i class="fa fa-plus-circle"></i> Setup Api</button><hr>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tbl_arsip">
                             <thead>
@@ -20,6 +21,7 @@
                         </table>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
