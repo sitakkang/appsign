@@ -23,13 +23,20 @@ interact('.digital-signature')
     onend: function (event) {
       $("#llx").val(event.pageX);
       $("#lly").val(event.pageY);
-      var la = event.pageX-150;
-      var llx_result = la-365;
+      // var la = event.pageX-150;
+      // var llx_result = la-365;
+      // var lb = event.pageY + 36.68;
+      // var llb = lb-320;
+      // var lly_result = 841-llb;
+      // var urx = llx_result+150;
+      // var ury = lly_result+36.68;
+      var la = event.pageX-65;
+      var llx_result = la-385;
       var lb = event.pageY + 36.68;
-      var llb = lb-320;
+      var llb = lb-350;
       var lly_result = 841-llb;
-      var urx = llx_result+150;
-      var ury = lly_result+36.68;
+      var urx = llx_result+75;
+      var ury = lly_result+45;
       $("#llx_result").val(llx_result);
       $("#lly_result").val(lly_result); 
       $("#urx").val(urx);

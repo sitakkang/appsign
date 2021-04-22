@@ -26,7 +26,7 @@ interact('.digital-signature')
       var la = event.pageX-150;
       var llx_result = la-365;
       var lb = event.pageY + 36.68;
-      var llb = lb-320;
+      var llb = lb-330;
       var lly_result = 841-llb;
       var urx = llx_result+150;
       var ury = lly_result+36.68;

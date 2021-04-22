@@ -21,6 +21,7 @@
 	3 = Waiting Approval
 	4 = Cancel Sign
 	5 = Document Signed
+	6 = Token Expired
     */
     class M_surat_keluar extends CI_Model {
 
@@ -73,8 +74,10 @@
 		$return_data='';
 		$query = $this->db->query('SELECT approval_status, status FROM app_surat_keluar WHERE id_surat_keluar ='.$id.' LIMIT 1');
         $rows = $query->row();
-        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5){
+        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6){
             $return_data.=' <a class="posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="color:#0F9647;"><i class="fa fa-file-powerpoint"></i></a> |';
+        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6){
+            $return_data.=' <a class="btn btn-danger posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-powerpoint"></i></a>';
         }
 
 		$return_data.=' <a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a> | <a href="" class="upload_act_btn" data-id="'.$id.'" title="Upload" style="color:#0F9647;"><i class="fa fa-upload"></i></a> | <a href="" class="edit_act_btn" data-id="'.$id.'" title="Edit" style="color:#0F9647;"><i class="fas fa-edit"></i></a> | <a href="" class="delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="color:#BD2130;"><i class="fa fa-trash"></i></a>';
@@ -102,6 +105,9 @@
 				break;
 			case 5:
 				return '<span class="badge badge-success">Document Signed</span>';
+				break;
+			case 6:
+				return '<span class="label popup label-warning" data-id="'.$id.'">Token Expired</span>';
 				break;
 			default:
 				return '<span class="badge badge-dark">Undetected</span>';
