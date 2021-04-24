@@ -15,6 +15,8 @@
                           <div class="content-header">
                             <div class="d-flex justify-content-between">
                               <div id="pdf-buttons">
+                                  <input type="number" min="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="pdf-input" name="input_page_">
+                                  <button id="pdf-gotopage" value="1">Page</button>
                                   <button id="pdf-first">&lsaquo;&lsaquo;First</button>
                                   <button id="pdf-prev">&lsaquo;Prev</button>
                                   <button id="pdf-next">Next&rsaquo;</button>  
