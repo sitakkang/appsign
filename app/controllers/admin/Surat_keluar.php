@@ -10,6 +10,7 @@ class Surat_keluar extends CI_Controller {
         parent::__construct();
         $this->m_auth->check_login();
         $this->m_auth->check_superadmin();
+        $this->load->library(array('phpmailer_lib'));
         $this->load->model($this->dir_m.'m_surat_keluar');
         // $this->load->model($this->dir_m.'m_surat_masuk');
         $this->load->library($this->dir_l.'l_surat_keluar');
@@ -304,6 +305,51 @@ class Surat_keluar extends CI_Controller {
         }
     }
 
+    function sendEmail($token,$email_signer){
+         $mail    = $this->phpmailer_lib->load(); 
+        
+		$mail->isSMTP();
+        // $mail->SMTPDebug = 1;  
+        $mail->Host       = 'mail.imip.co.id';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'patar@imip.co.id';
+        $mail->Password   = 'zPk2?h51gTkBz&%';
+        $mail->SMTPSecure = 'tsl';
+        $mail->Port       = 587;
+
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+        
+        $mail->setFrom('patar@imip.co.id', 'Tanda Tangal Digital PT. IMIP');
+        $mail->addReplyTo('patar@imip.co.id', 'Tanda Tangal Digital PT. IMIP');
+        $mail->addAddress($email_signer);
+        $mail->Subject = 'Approval Surat';
+        
+        //kirim dokumen
+        // $mail->AddAttachment($_SERVER['DOCUMENT_ROOT'].'/markdown/upload/imip.pdf', $name = 'dokumen kantor',  $encoding = 'base64', $type = 'application/pdf');
+        
+        $mail->isHTML(true);
+
+        $data['token'] = $token;
+
+        $message = $this->load->view($this->dir_v . 'v_send', $data, TRUE);
+		$mail->Body = $message;
+        
+        if($mail->send()){
+            return true;
+        }else{
+            return false;
+        }
+
+        //cek info send phpmailer
+        // $mail->ErrorInfo;
+    }
+
     function send_mail($id)
     {
         $data['id_surat'] = $id;
@@ -352,7 +398,7 @@ class Surat_keluar extends CI_Controller {
                     $exp_token_time=date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($token_time)));
                     $update['token_time'] = $token_time;
                     $update['token_time_exp'] = $exp_token_time;
-                    $send_mail_smtp=$this->send_mail_smtp($token,$email_signer);
+                    $send_mail_smtp = $this->sendEmail($token,$email_signer);
 
                     if($send_mail_smtp){
                         $this->db->where('id_surat_keluar', $id_surat);
