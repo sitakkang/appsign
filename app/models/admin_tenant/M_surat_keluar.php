@@ -37,9 +37,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= ' <a href="" title="View Origin Attachment" class="btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-link"></i></a> |';
+						$view .= ' <a href="" title="View Origin Attachment" class="btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-paperclip"></i></a> | ';
 					}else{
-						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
+						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> | ';
 					}
 				}else{
 					$view .= '';
@@ -57,9 +57,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a href="" title="View Approved Attachment" class="btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a> |';
+						$view .= '<a href="" title="View Approved Attachment" class="btn_preview_mail" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a>';
 					}else{
-						$view .= '<a href="" title="View Approved Attachment" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
+						$view .= '<a href="" title="View Approved Attachment" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a>';
 					}
 				}else{
 					$view .= '';
@@ -74,13 +74,10 @@
 		$return_data='';
 		$query = $this->db->query('SELECT approval_status, status FROM app_surat_keluar WHERE id_surat_keluar ='.$id.' LIMIT 1');
         $rows = $query->row();
-        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6){
-            $return_data.=' <a class="posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="color:#0F9647;"><i class="fa fa-file-powerpoint"></i></a> |';
-        if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6){
-            $return_data.=' <a class="btn btn-danger posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-powerpoint"></i></a>';
+		$return_data.=' <a href="" class="upload_act_btn" data-id="'.$id.'" title="Upload" style="color:#0F9647;"><i class="fa fa-upload"></i></a> | <a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a> | <a href="" class="edit_act_btn" data-id="'.$id.'" title="Edit" style="color:#0F9647;"><i class="fas fa-edit"></i></a> | <a href="" class="delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="color:#BD2130;"><i class="fa fa-trash"></i></a> | ';
+		if($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6){
+            $return_data.=' <a class="posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="color:#0F9647;"><i class="fa fa-file-powerpoint"></i></a> | ';
         }
-
-		$return_data.=' <a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a> | <a href="" class="upload_act_btn" data-id="'.$id.'" title="Upload" style="color:#0F9647;"><i class="fa fa-upload"></i></a> | <a href="" class="edit_act_btn" data-id="'.$id.'" title="Edit" style="color:#0F9647;"><i class="fas fa-edit"></i></a> | <a href="" class="delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="color:#BD2130;"><i class="fa fa-trash"></i></a>';
 		
 		return $return_data;
 	}

@@ -16,7 +16,7 @@ class Approve extends CI_Controller {
 	public function approvekeluar($token)
 	{
         $approval='Approval Denied </br>';
-		$get_surat = $this->db->query("SELECT id_surat_keluar, status, path_folder, llx, lly, urx, ury, attach1, signer, token_time, token_time_exp, token FROM app_surat_keluar WHERE token='".$token."' LIMIT 1");
+		$get_surat = $this->db->query("SELECT id_surat_keluar, status, path_folder, llx, lly, urx, ury, attach1, signer, token_time, token_time_exp, token, page FROM app_surat_keluar WHERE token='".$token."' LIMIT 1");
         $rows = $get_surat->row();
         if(empty($rows->token)){
             $approval='Token is not Exist.';
@@ -68,6 +68,7 @@ class Approve extends CI_Controller {
                     $lly = $rows->lly;
                     $urx = $rows->urx;
                     $ury = $rows->ury;
+                    $page = $rows->page;
                     $options_at = [
                         'jsonfield' => json_encode(
                             [
@@ -87,7 +88,7 @@ class Approve extends CI_Controller {
                                         "aksi_ttd"=>"at", 
                                         "kuser"=>$kuser,
                                         "user"=>"ttd1", 
-                                        "page"=>"1", 
+                                        "page"=>$page, 
                                         "llx"=>$llx, 
                                         "lly"=>$lly, 
                                         "urx"=>$urx, 

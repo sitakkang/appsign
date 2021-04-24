@@ -16,9 +16,6 @@
                                     <th>Tanggal Terima</th>
                                     <th>Diusulkan</th>
                                     <th>Jenis</th>
-                                    <th>Disetujui</th>
-                                    <th>Perihal</th>
-                                    <th>Ditujukan Ke</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>

@@ -50,6 +50,7 @@ class Signer extends CI_Controller {
                 "3" => $id->email_digisign,
                 "4" => $id->kuser_production,
                 "5" => $id->kuser_sandbox,
+                "6" => $this->m_signer->signer_act_btn($id->id),
             );
          }
 
@@ -108,9 +109,15 @@ class Signer extends CI_Controller {
         }
     }
 
-    function edit()
+    function detail($id)
     {
-        $data_id = $this->input->get('id');
+        $query = $this->db->query('SELECT * FROM t_signer WHERE id='.$id.' LIMIT 1');
+        $data['id'] = $query->row();
+        $this->load->view($this->dir_v.'detail',$data);
+    }
+
+    function edit($data_id)
+    {
         $result_id = $this->db->query('SELECT id, name, email_user, email_digisign, kuser_production, kuser_sandbox, id_ktp, id_npwp, jenis_kelamin, alamat, telepon, provinci, kota, kecamatan, desa, tempat_lahir, tgl_lahir, kode_pos FROM t_signer WHERE id='.$data_id.' LIMIT 1');
         $data['id'] = $result_id->row();
         $this->load->view($this->dir_v.'edit', $data);

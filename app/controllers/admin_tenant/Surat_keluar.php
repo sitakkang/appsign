@@ -53,6 +53,13 @@ class Surat_keluar extends CI_Controller {
         }
     }
 
+    function detail($id)
+    {
+        $query = $this->db->query('SELECT * FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
+        $data['id'] = $query->row();
+        $this->load->view($this->dir_v.'detail',$data);
+    }
+
     public function table()
     {
         $user_id = $this->session->userdata('sess_id');
@@ -75,11 +82,8 @@ class Surat_keluar extends CI_Controller {
                 '2' => $id->tgl_kirim,
                 '3' => $id->diusulkan,
                 '4' => $id->jenis,
-                '5' => $this->m_surat_keluar->penerima_surat($id->disetujui),
-                '6' => $id->perihal,
-                '7' => $id->tujuan,
-                '8' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '9' => $this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)).''.$this->m_surat_keluar->attachment(array($id->attach1)) .' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat),
+                '5' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
+                '6' => $this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).''.$this->m_surat_keluar->attachment(array($id->attach1)).''.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
             );
         }
 
@@ -195,15 +199,24 @@ class Surat_keluar extends CI_Controller {
         $b64Doc = chunk_split(base64_encode(file_get_contents($path_folder)));
         $data['id']=$id;
         $data['pdf_base64']=$b64Doc;
+        $data['attachment']='http://localhost/appsign/upload/keluar/'.$rows->attach1;
         $data['css'] = array(
             'src/css/style.css');
+        // $data['js'] = array(
+        //     'lib/jquery/jquery-3.3.1.min.js',
+        //     'lib/bootstrap-4.1.3/dist/js/bootstrap.min.js',
+        //     'lib/pdfjs/pdf.js',
+        //     'lib/interact/interact.min.js',
+        //     'src/js/admin_tenant/app.js',
+        //     'src/js/admin_tenant/pdf.config.js',
+        //     'https://unpkg.com/ionicons@4.4.2/dist/ionicons.js',
+        //     'src/js/admin_tenant/signature.config.js');
         $data['js'] = array(
             'lib/jquery/jquery-3.3.1.min.js',
             'lib/bootstrap-4.1.3/dist/js/bootstrap.min.js',
-            'lib/pdfjs/pdf.js',
             'lib/interact/interact.min.js',
             'src/js/admin_tenant/app.js',
-            'src/js/admin_tenant/pdf.config.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.228/pdf.min.js',
             'https://unpkg.com/ionicons@4.4.2/dist/ionicons.js',
             'src/js/admin_tenant/signature.config.js');
         $data['path_folder']=$path_folder;
@@ -222,10 +235,12 @@ class Surat_keluar extends CI_Controller {
             $urx = $this->input->post("urx");
             $lly = $this->input->post("lly");
             $ury = $this->input->post("ury");
+            $page = $this->input->post("pageNow");
             $this->form_validation->set_rules('llx', 'llx Failed', 'trim|required|greater_than[0]');
             $this->form_validation->set_rules('lly', 'lly Failed', 'trim|required|greater_than[0]');
             $this->form_validation->set_rules('urx', 'urx Failed', 'trim|required|greater_than[0]');
             $this->form_validation->set_rules('ury', 'ury Failed', 'trim|required|greater_than[0]');
+            $this->form_validation->set_rules('pageNow', 'Page Failed', 'trim|required|greater_than[0]');
             if($this->form_validation->run() == FALSE){
                 $notif['notif'] = validation_errors();
                 $notif['status'] = 1;
@@ -236,6 +251,7 @@ class Surat_keluar extends CI_Controller {
                 $data['lly'] = $lly;
                 $data['urx'] = $urx;
                 $data['ury'] = $ury;
+                $data['page'] = $page;
                 $this->db->where('id_surat_keluar', $id_surat);
                 $this->db->update('app_surat_keluar', $data);
                 $notif['notif'] = 'Set Posisi Berhasil !';

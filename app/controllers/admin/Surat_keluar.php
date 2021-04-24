@@ -57,7 +57,7 @@ class Surat_keluar extends CI_Controller {
 
     public function table()
     {
-        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status, tujuan FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
+        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status, tujuan, user FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
 
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -65,7 +65,7 @@ class Surat_keluar extends CI_Controller {
         $data = array();
         $i = 1;
         foreach($get_all->result() as $id) {
-            $action = ' <a href="" class="view_act_btn" data-id="'.$id->id_surat_keluar.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a>';
+            $action = ' <a href="" class="view_act_btn" data-id="'.$id->id_surat_keluar.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a> | ';
             if($id->status==3){
                 $this->setTokenExpired($id->id_surat_keluar);
             }
@@ -73,15 +73,12 @@ class Surat_keluar extends CI_Controller {
                 "DT_RowId" => $id->id_surat_keluar,
                 '0' => $i++,
                 '1' => $id->no_surat,
-                '2' => $id->tgl_kirim,
-                '3' => $id->diusulkan,
-                '4' => $id->jenis,
-                '5' => $this->m_surat_keluar->penerima_surat($id->disetujui),
-                '6' => $id->perihal,
-                '7' => $id->document_id,
-                '8' => $id->tujuan,
-                '9' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '10' =>$this->m_surat_keluar->attachment(array($id->attach1)).' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)).''.$action,
+                '2' => $this->m_surat_keluar->user_surat_keluar($id->user),
+                '3' => $id->tgl_kirim,
+                '4' => $id->diusulkan,
+                '5' => $id->jenis,
+                '6' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
+                '7' => $action.' '.$this->m_surat_keluar->attachment(array($id->attach1)).' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
             );
         }
 
@@ -93,6 +90,13 @@ class Surat_keluar extends CI_Controller {
         );
         echo json_encode($output);
         exit();
+    }
+
+    function detail($id)
+    {
+        $query = $this->db->query('SELECT * FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
+        $data['id'] = $query->row();
+        $this->load->view($this->dir_v.'detail',$data);
     }
 
     // function add()

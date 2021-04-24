@@ -34,11 +34,11 @@ interact('.digital-signature')
       var la = event.pageX-65;
       var llx_result = la-385;//kurangi 1180 850 selisih perpage
       var lb = event.pageY + 36.68;
-      var llb = lb-355;
-      var lly_result = 841-llb;
+      var llb = lb-350;
+      var lly_result = 841*pageCurrent-llb;
       var urx = llx_result+75;
       var ury = lly_result+45;
-      // $("#pageNow").val(pageCurrent);
+      $("#pageNow").val(pageCurrent);
       $("#llx_result").val(llx_result);
       $("#lly_result").val(lly_result); 
       $("#urx").val(urx);

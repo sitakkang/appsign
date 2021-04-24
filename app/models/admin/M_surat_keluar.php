@@ -37,7 +37,7 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a href="" class="btn_preview_mail" title="View Origin Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a> |';
+						$view .= '<a href="" class="btn_preview_mail" title="View Origin Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-paperclip"></i></a> |';
 					}else{
 						$view .= '<a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
 					}
@@ -57,9 +57,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= ' <a href="" class="btn_preview_mail" title="View Approved Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-link"></i></a> |';
+						$view .= ' <a href="" class="btn_preview_mail" title="View Approved Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a>';
 					}else{
-						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> ';
+						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a>';
 					}
 				}else{
 					$view .= '';
@@ -82,10 +82,12 @@
         //     $return_data.=' <a class="btn btn-primary upload_vendor_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Send Digisign" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-file-upload"></i></a>';
         // }
         if($rows->status==2 || $rows->status==6 || $rows->status==4){
-            $return_data.=' <a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><i class="fas fa-paper-plane"></i></a> |';
-
-        if($rows->status==2 || $rows->status==6 || $rows->status==4){
-            $return_data.=' <a class="btn btn-primary send_act_btn" data-id="'.$id.'" title="Kirim" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fas fa-envelope-square"></i></a>';
+        	if($rows->status==6){
+        		$return_data.=' <a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><i class="fas fa-paper-plane"></i></a> |';
+        	}else{
+        		$return_data.=' <a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><i class="fas fa-paper-plane"></i></a>';
+        	}
+            
         }
         // if($rows->status==7){
         //     $return_data.=' <a class="btn btn-xs btn-primary sign_act_btn" data-id="'.$id.'" title="Sign" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;"><i class="fa fa-signature"></i></a>';
@@ -116,10 +118,10 @@
 				return '<span class="badge badge-success">Document Signed</span>';
 				break;
 			case 6:
-				return '<span class="label popup label-warning" data-id="'.$id.'">Token Expired</span>';
+				return '<span class="badge badge-dark">Token Expired</span>';
 				break;
 			default:
-				return '<span class="badge badge-dark">Undetected</span>';
+				return '<span class="badge badge-light">Undetected</span>';
 				break;
 		}
 	}
@@ -150,6 +152,17 @@
 		$name = $query->row();
 		if(isset($name)){
 			return $name->name;
+		}else{
+			return NULL;
+		}
+	}
+
+	function user_surat_keluar($id)
+	{
+		$query = $this->db->query('SELECT fullname FROM conf_users WHERE id_user='.$id.' LIMIT 1');
+		$name = $query->row();
+		if(isset($name)){
+			return $name->fullname;
 		}else{
 			return NULL;
 		}

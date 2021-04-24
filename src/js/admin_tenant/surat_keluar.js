@@ -17,12 +17,37 @@ $(document).ready(function(){
 	// var url_upload_vendor	= site_url+"admin/surat_keluar/upload_vendor_act_btn";
 	var url_act_sign	= site_url+"admin_tenant/surat_keluar/act_sign_document/";
 	// var url_form_sign	= site_url+"admin_tenant/surat_keluar/sign_document/";
+	var url_view 		= site_url+"admin_tenant/surat_keluar/detail/";
 
 	var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
         "order": [["0", "desc"]]
     });
+
+    // View
+	$(document).on('click','a.view_act_btn',function(e){
+		e.preventDefault();
+		var id_surat = $(this).attr('data-id');
+		$.get(url_view+id_surat)
+		.done(function(view) {
+			$('#MyModalTitle').html('<b>View Detail</b>');
+			$("div#MyModalFooter").html('');
+			$("div#MyModalContent").html(view);
+			$("div#MyModal").modal('show');
+			$('input.tanggal').datetimepicker({
+				timepicker:false,
+				format:'Y-m-d',
+				scrollMonth:false,
+				scrollTime:false,
+				scrollInput:false,
+			});
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
 
     $(document).on('click','button#add_btn',function(e){
 		e.preventDefault();

@@ -1,11 +1,39 @@
 $(document).ready(function(){
 	var url_ctrl = site_url+"admin/signer/";
+	var url_edit        = site_url+"admin/signer/edit/";
+    var url_act_edit    = site_url+"admin/signer/act_edit";
+    var url_view 		= site_url+"admin/signer/detail/";
+    var url_act_del 	= site_url+"admin/signer/act_del";
 
 	var table = $('#tabel_custom').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
         "order": [["0", "desc"]]
     });
+
+	//view
+    $(document).on('click','a.view_act_btn',function(e){
+		e.preventDefault();
+		var id = $(this).attr('data-id');
+		$.get(url_view+id)
+		.done(function(view) {
+			$('#MyModalTitle').html('<b>View Detail</b>');
+			$("div#MyModalFooter").html('');
+			$("div#MyModalContent").html(view);
+			$("div#MyModal").modal('show');
+			$('input.tanggal').datetimepicker({
+				timepicker:false,
+				format:'Y-m-d',
+				scrollMonth:false,
+				scrollTime:false,
+				scrollInput:false,
+			});
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
 
 	// Select Row Table
 	$('#tabel_custom tbody').on('click', 'tr', function(e){
@@ -33,6 +61,29 @@ $(document).ready(function(){
     		$('#popup_menu').removeAttr('style');
     	}
 	});
+
+	$(document).on('click','a.edit_act_btn',function(e){
+        e.preventDefault();
+        var id_surat = $(this).attr('data-id');
+        $.get(url_edit+id_surat)
+        .done(function(view) {
+            $('#MyModalTitle').html('<b>Edit</b>');
+            $("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_edit_btn">Simpan</button>');
+            $("div#MyModalContent").html(view);
+            $("div#MyModal").modal('show');
+            $('input.tanggal').datetimepicker({
+                timepicker:false,
+                format:'Y-m-d',
+                scrollMonth:false,
+                scrollTime:false,
+                scrollInput:false,
+            });
+        })
+        .fail(function(res) {
+            alert("Error");
+            console.log("Error", res.responseText);
+        });
+    });
 
 
     $(document).on('click','#add_btn',function(e){
@@ -116,17 +167,7 @@ $(document).ready(function(){
 			if(obj.status == 2){
                 $("div#MyModal").modal('hide');
             	notifYesAuto(obj.notif);
-				table.row.add({
-            		"DT_RowId" : obj.lastid,
-            		"0" : lastnum,
-				    "1" : name,
-				    "2" : email_user,
-				    "3" : email_digisign,
-				    "4" : kuser_production,
-				    "5" : kuser_sandbox,
-				    
-				    
-		        }).draw(false);
+				table.ajax.reload(null, false);
 			}
 		})
 		.fail(function(res){
@@ -136,7 +177,7 @@ $(document).ready(function(){
 	});
 
 	// Edit Button
-	$(document).on('click','button#edit_btn',function(e){
+	$(document).on('click','button#edit_act_btn',function(e){
 		e.preventDefault();
 	  	$.ajax({
 			method:"GET",
@@ -232,46 +273,127 @@ $(document).ready(function(){
 	});
 
 	// Delete Button
-	$(document).on('click','button#delete_btn',function(e){
+	$(document).on('click','a.delete_act_btn',function(e){
 		e.preventDefault();
 		var id = $(this).attr('data-id');
-		var rowData = table.row('tr.actived').data();
-		var name = rowData['2'];
+		var name = $(this).attr('data-name');
 		swal({
 			title: 'Anda yakin ?',
-			text: 'Signer '+name+' akan dihapus ?',
+			text: 'Data signer '+name+' akan di hapus ?',
 			type: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya, hapus !',
-			cancelButtonText: 'Tidak, batalkan !'
-		}).then((result) => {
-			if (result.value) {
-				$.ajax({
-					method:"POST",
-					url:url_ctrl+'act_del',
-					data: {
-						id:id,
-						name:name
-					}
-				})
-				.done(function(result) {
-					var obj = jQuery.parseJSON(result);
-					if(obj.status == 1){
-		                notifNo(obj.notif);
-					}
-					if(obj.status == 2){
-		                $("div#MyModal").modal('hide');
-						notifYesAuto(obj.notif);
-						table.row('tr.actived').remove().draw(false);
-					}
-				})
-				.fail(function(res){
-					alert('Error Response !');
-					console.log("responseText", res.responseText);
-				});
+			cancelButtonText: 'Tidak, batalkan !',
+			confirmButtonClass: 'btn btn-danger',
+			cancelButtonClass: 'btn btn-primary',
+			buttonsStyling: false
+		}).then(function () {
+			$.post(url_act_del,{
+				id:id,
+				name:name
+			})
+			.done(function(result) {
+				var obj = jQuery.parseJSON(result);
+				if(obj.status == 1){
+					notifNo(obj.notif);
+				}
+				if(obj.status == 2){
+					notifYesAuto(obj.notif);
+					table.ajax.reload(null, false);
+				}
+			})
+			.fail(function(res) {
+				alert("Error");
+				console.log("Error", res.responseText);
+			});
+		},function(dismiss) {
+			if (dismiss === 'cancel') {
+				$("div#MyModal").modal('hide');
+				notifCancleAuto('Proses hapus di batalkan.');
 			}
 		})
 	});
+
+	// $(document).on('click','a.delete_act_btn',function(e){
+	// 	e.preventDefault();
+	// 	var id = $(this).attr('data-id');
+	// 	var name = $(this).attr('data-name');
+	// 	// var no_surat = $(this).attr('data-surat');
+	// 	swal({
+	// 		title: 'Anda yakin ?',
+	// 		text: 'Signer '+name+' akan dihapus ?',
+	// 		type: 'question',
+	// 		showCancelButton: true,
+	// 		confirmButtonText: 'Ya, hapus !',
+	// 		cancelButtonText: 'Tidak, batalkan !'
+	// 	}).then(function () {
+	// 		$.post(url_act_del,{
+	// 			id:id,
+	// 			name:name
+	// 		})
+	// 		.done(function(result) {
+	// 			var obj = jQuery.parseJSON(result);
+	// 			if(obj.status == 1){
+	// 				notifNo(obj.notif);
+	// 			}
+	// 			if(obj.status == 2){
+	// 				notifYesAuto(obj.notif);
+	// 				table.ajax.reload(null, false);
+	// 			}
+	// 		})
+	// 		.fail(function(res) {
+	// 			alert("Error");
+	// 			console.log("Error", res.responseText);
+	// 		});
+	// 	},function(dismiss) {
+	// 		if (dismiss === 'cancel') {
+	// 			$("div#MyModal").modal('hide');
+	// 			notifCancleAuto('Proses hapus di batalkan.');
+	// 		}
+	// 	})
+	// });
+
+	// Delete Button
+	// $(document).on('click','button#delete_act_btn',function(e){
+	// 	e.preventDefault();
+	// 	var id = $(this).attr('data-id');
+	// 	var rowData = table.row('tr.actived').data();
+	// 	var name = rowData['2'];
+	// 	swal({
+	// 		title: 'Anda yakin ?',
+	// 		text: 'Signer '+name+' akan dihapus ?',
+	// 		type: 'question',
+	// 		showCancelButton: true,
+	// 		confirmButtonText: 'Ya, hapus !',
+	// 		cancelButtonText: 'Tidak, batalkan !'
+	// 	}).then((result) => {
+	// 		if (result.value) {
+	// 			$.ajax({
+	// 				method:"POST",
+	// 				url:url_ctrl+'act_del',
+	// 				data: {
+	// 					id:id,
+	// 					name:name
+	// 				}
+	// 			})
+	// 			.done(function(result) {
+	// 				var obj = jQuery.parseJSON(result);
+	// 				if(obj.status == 1){
+	// 	                notifNo(obj.notif);
+	// 				}
+	// 				if(obj.status == 2){
+	// 	                $("div#MyModal").modal('hide');
+	// 					notifYesAuto(obj.notif);
+	// 					table.row('tr.actived').remove().draw(false);
+	// 				}
+	// 			})
+	// 			.fail(function(res){
+	// 				alert('Error Response !');
+	// 				console.log("responseText", res.responseText);
+	// 			});
+	// 		}
+	// 	})
+	// });
 
 	$(document).on('change','#provincy',function(e){
 		e.preventDefault();

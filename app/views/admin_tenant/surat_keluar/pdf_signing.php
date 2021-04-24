@@ -8,57 +8,61 @@
                 </div>
                 <div class="card-body">
                     <button id="sign_btn" class="btn btn-default">Sign</button><hr>
-                    <input type="hidden" name="type_surat_" id="type_surat" value="surat_keluar">
-                    <input type="hidden" name="id_" id="id" value="<?php echo $id;?>">
-                    <input type="hidden" id="llx" name="llx_">
-                    <input type="hidden" id="lly" name="lly_">
-                    <input type="hidden" id="llx_result" name="llx_result_">
-                    <input type="hidden" id="lly_result" name="lly_result_">
-                    <input type="hidden" id="urx" name="urx_">
-                    <input type="hidden" id="ury" name="ury_">
 
                     <div class="content">
-                    
-                    
-
-
-
-
-
-                    <div class="wrapper">
-
-                      <div class="content">
-                        <div class="content-header">
-                        </div><!-- .content-header -->
-                        <div class="document-toolbar-container-sticky">
-                          <div class="document-toolbar">
+                      <div class="wrapper">
+                        <div class="content">
+                          <div class="content-header">
                             <div class="d-flex justify-content-between">
-                              <div class="d-block text-primary">
-                                <strong>Page</strong> <span class="page-current" id="pageCurrent">1</span>/<span class="page-of" id="pageOf"></span>
-                              </div><!-- .d-block -->
-                            </div><!-- .justify-content-between -->
+                              <div id="pdf-buttons">
+                                  <button id="pdf-first">&lsaquo;&lsaquo;First</button>
+                                  <button id="pdf-prev">&lsaquo;Prev</button>
+                                  <button id="pdf-next">Next&rsaquo;</button>  
+                                  <button id="pdf-last">Last&rsaquo;&rsaquo;</button> 
+                              </div>
+                              <div id="page-count-container">Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages"></div></div>        
+                            </div><!-- .document-toolbar -->
+                          </div><!-- .content-header -->
+                          <div class="document-toolbar-container-sticky">
+                            
                           </div><!-- .document-toolbar -->
-                        </div><!-- .document-toolbar -->
-
-                        <div class="container-fluid">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="document-container">
+                        </div>
+                      </div>
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="document-container">
+                              <div id="pdf-main-container">
                                 <div class="document-render" id="documentRender">
-                                  <div class="digital-signature" id="digitalSignature">
-                                    <input type="hidden" id="pdf_base64" name="pdf_base64_" size="1000000" value="<?php echo $pdf_base64;?>"> 
-                                    <?php //echo $pdf_base64;?>
-                                    <img src="../src/img/signature.png" class="img-fluid signature-item">
-                                  </div><!-- .digital-signature -->
-                                </div><!-- .document-render -->
-                              </div><!-- .document-container -->
-                            </div><!-- .col-## -->
-                          </div><!-- .row -->
-                        </div><!-- .container-fluid -->
-                      </div><!-- .content -->
-                    </div><!-- .wrapper -->
-                  </div><!-- .content -->
-                </div><!-- .wrapper -->
+                                  <div id="pdf-loader">Loading document ...</div>
+                                  <div id="pdf-contents">
+                                      <div class="digital-signature" id="digitalSignature">
+                                        <img src="../src/img/signature.png" class="img-fluid signature-item">
+                                      </div>
+                                      <div id="pdf-meta">
+                                      </div>
+                                      <canvas id="pdf-canvas" width="595">
+
+                                      </canvas>
+                                      <div id="page-loader">Loading page ...</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="pageNow_" id="pageNow">
+                      <input type="hidden" name="type_surat_" id="type_surat" value="surat_keluar">
+                      <input type="hidden" name="attachment1_" id="attachment1" value="<?php echo $attachment;?>">
+                      <input type="hidden" name="id_" id="id" value="<?php echo $id;?>">
+                      <input type="hidden" id="llx" name="llx_">
+                      <input type="hidden" id="lly" name="lly_">
+                      <input type="hidden" id="llx_result" name="llx_result_">
+                      <input type="hidden" id="lly_result" name="lly_result_">
+                      <input type="hidden" id="urx" name="urx_">
+                      <input type="hidden" id="ury" name="ury_">
+                    </div><!-- .content -->
                 </div>
             </div>
         </div>

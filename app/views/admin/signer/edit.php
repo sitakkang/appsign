@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">No. Telepon </label>
-            <input class="form-control" type="text" id="telepon" value="<?=$id->telepon;?>">
+            <input class="form-control" type="number" id="telepon" value="<?=$id->telepon;?>">
         </div>
         <div class="col-md-6">
             <label class="control-label">Jenis Kelamin </label>
@@ -70,11 +70,11 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Nomor KTP </label>
-            <input class="form-control" type="text" id="id_ktp" value="<?=$id->id_ktp;?>">
+            <input class="form-control" type="number" id="id_ktp" value="<?=$id->id_ktp;?>">
         </div>
         <div class="col-md-6">
             <label class="control-label">Nomor NPWP </label>
-            <input class="form-control" type="text" id="id_npwp" value="<?=$id->id_npwp;?>">
+            <input class="form-control" type="number" id="id_npwp" value="<?=$id->id_npwp;?>">
         </div>
     </div>
 </div>
@@ -109,6 +109,6 @@
 </div>
 <div class="form-group">
     <label class="control-label">Kode Pos </label>
-    <input class="form-control" type="text" id="kode_pos" value="<?=$id->kode_pos;?>">
+    <input class="form-control" type="number" id="kode_pos" value="<?=$id->kode_pos;?>">
 </div>
 <input type="hidden" id="id" value="<?=$id->id;?>">
