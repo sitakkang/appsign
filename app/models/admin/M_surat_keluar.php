@@ -121,7 +121,7 @@
 				return '<span class="badge badge-dark">Token Expired</span>';
 				break;
 			default:
-				return '<span class="badge badge-light">Undetected</span>';
+				return '<span class="badge badge-dark">Undetected</span>';
 				break;
 		}
 	}

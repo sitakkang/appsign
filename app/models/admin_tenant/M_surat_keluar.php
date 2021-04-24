@@ -104,7 +104,7 @@
 				return '<span class="badge badge-success">Document Signed</span>';
 				break;
 			case 6:
-				return '<span class="label popup label-warning" data-id="'.$id.'">Token Expired</span>';
+				return '<span class="badge badge-dark">Token Expired</span>';
 				break;
 			default:
 				return '<span class="badge badge-dark">Undetected</span>';
