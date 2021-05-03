@@ -11,7 +11,7 @@
 		$query = $this->db->query('SELECT * FROM t_signer where id="'.$id.'" LIMIT 1');
     	$data_ = $query->row();
     	$nama=$data_->name;
-		$return_data='<a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;color:#0F9647;"><i class="fas fa-search"></i></a> | <a class="btn edit_act_btn" data-id="'.$id.'" title="Edit" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5; color:#0F9647;"><i class="fas fa-edit"></i></a> | <a href="" class="delete_act_btn" data-id="'.$id.'" data-name="'.$nama.'" title="Hapus" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;color:#e51220;"><i class="fa fa-trash"></i></a>';
+		$return_data='<a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;color:#0F9647;"><i class="fas fa-search"></i></a> | <a class="btn edit_act_btn" data-id="'.$id.'" title="Edit" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5; color:#0F9647;"><i class="fas fa-edit"></i></a> | <a class="btn delete_act_btn" data-id="'.$id.'" data-name="'.$nama.'" title="Hapus" style="height: 22px;padding: 1px 5px;font-size: 12px;line-height: 1.5;color:#e51220;"><i class="fa fa-trash"></i></a>';
 		
 		return $return_data;
 	}
@@ -59,6 +59,36 @@
     	}
         return $nama; 
 	}
+
+    function get_userdata($data)
+    {
+        $nama="";
+        if(!empty($data)){
+            $query = $this->db->query('SELECT id_user, fullname FROM conf_users where id_user="'.$data.'" LIMIT 1');
+            $id = $query->row();
+            $nama=$id->fullname;
+        }
+        return $nama; 
+    }
+
+    function select_user($data)
+    {
+        $query = $this->db->query('SELECT id_user, fullname FROM conf_users where level=3');
+        if(empty($data)){
+            foreach($query->result() as $id) {
+                echo '<option value="'.$id->id_user.'">'.$id->fullname.'</option>';
+            }
+        }else{
+            foreach($query->result() as $id) {
+                if($data==$id->id_user){
+                    echo '<option value="'.$id->id_user.'" selected="selected">'.$id->fullname.'</option>';
+                }else{
+                    echo '<option value="'.$id->id_user.'">'.$id->fullname.'</option>';
+                }
+            }
+        }
+        
+    }
 
     function select_provincy($data)
     {

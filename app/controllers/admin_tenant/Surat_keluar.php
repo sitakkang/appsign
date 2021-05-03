@@ -63,7 +63,7 @@ class Surat_keluar extends CI_Controller {
     public function table()
     {
         $user_id = $this->session->userdata('sess_id');
-        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status, tujuan FROM app_surat_keluar where user='. $user_id .' ORDER BY id_surat_keluar DESC');
+        $get_all = $this->db->query('SELECT * FROM app_surat_keluar where user='. $user_id .' ORDER BY id_surat_keluar DESC');
 
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -83,7 +83,9 @@ class Surat_keluar extends CI_Controller {
                 '3' => $id->diusulkan,
                 '4' => $id->jenis,
                 '5' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '6' => $this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).''.$this->m_surat_keluar->attachment(array($id->attach1)).''.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
+                '6' => $id->melalui,
+                '7' => $this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).'
+                '.$this->m_surat_keluar->attachment(array($id->attach1)).''.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
             );
         }
 
@@ -95,6 +97,11 @@ class Surat_keluar extends CI_Controller {
         );
         echo json_encode($output);
         exit();
+    }
+
+    function select_page()
+    {
+        $this->load->view($this->dir_v.'page');
     }
 
     function add()
@@ -110,6 +117,9 @@ class Surat_keluar extends CI_Controller {
         $this->form_validation->set_rules('tujuan', 'Ditujukan', 'trim|required|min_length[3]');
         $this->form_validation->set_rules('diusulkan', 'Diusulkan', 'trim|required|min_length[3]');
         $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
+        $this->form_validation->set_rules('melalui', 'Bentuk', 'trim|required');
+        $this->form_validation->set_rules('asal_surat', 'Asal Surat', 'trim|required');
+        $this->form_validation->set_rules('signer', 'Signer', 'trim|required');
         if($this->form_validation->run() == FALSE){
             $notif['notif'] = validation_errors();
             $notif['status'] = 1;
@@ -125,12 +135,59 @@ class Surat_keluar extends CI_Controller {
                 'tgl_kirim' => $this->input->post('tgl_kirim'),
                 'melalui' => $this->input->post('melalui'),
                 'catatan' => $this->input->post('catatan'),
+                'asal_surat' => $this->input->post('asal_surat'),
+                'signer' => $this->input->post('signer'),
                 'flag' => 0
             );
             $this->db->insert('app_surat_keluar', $data);
             $notif['notif'] = 'Data surat '.$this->input->post('no_surat').' berhasil disimpan !';
             $notif['status'] = 2;
             echo json_encode($notif);
+        }
+    }
+    function act_edit()
+    {
+        $this->form_validation->set_rules('no_surat', 'No Surat', 'trim|required|min_length[3]');
+        $this->form_validation->set_rules('perihal', 'Perihal', 'trim|required|min_length[3]');
+        $this->form_validation->set_rules('diusulkan', 'Diusulkan oleh', 'trim|required|min_length[3]');
+        $this->form_validation->set_rules('tujuan', 'Ditujukan ke', 'trim|required|min_length[3]');
+        $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
+        $this->form_validation->set_rules('melalui', 'Bentuk', 'trim|required');
+        $this->form_validation->set_rules('asal_surat', 'Asal Surat', 'trim|required');
+        $this->form_validation->set_rules('signer', 'Signer', 'trim|required');
+        if($this->form_validation->run() == FALSE){
+            $notif['notif'] = validation_errors();
+            $notif['status'] = 1;
+            echo json_encode($notif);
+        }else{
+            $id_surat = $this->input->post("id_surat");
+            $query = $this->db->query('SELECT id_surat_keluar, status, no_surat, perihal, jenis, diusulkan, tujuan, melalui, tgl_kirim, catatan FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
+            $rows = $query->row();
+            $status=$rows->status;
+            if($status==0){
+                $data = array(
+                    'asal_surat' => $this->input->post('asal_surat'),
+                    'no_surat' => $this->input->post('no_surat'),
+                    'perihal' => $this->input->post('perihal'),
+                    'jenis' => $this->input->post('jenis'),
+                    'tujuan' => $this->input->post('tujuan'),
+                    'diusulkan' => $this->input->post('diusulkan'),
+                    'tgl_kirim' => $this->input->post('tgl_kirim'),
+                    'melalui' => $this->input->post('melalui'),
+                    'catatan' => $this->input->post('catatan'),
+                    'signer' => $this->input->post('signer'),
+                );
+                $this->db->where('id_surat_keluar', $id_surat);
+                $this->db->update('app_surat_keluar', $data);
+                $notif['notif'] = 'Perubahan surat '.$this->input->post('no_surat').' berhasil disimpan !';
+                $notif['status'] = 2;
+                echo json_encode($notif);
+            }else{
+                $notif['notif'] = 'Perubahan surat '.$this->input->post('no_surat').' Gagal. Ijin ubah data Ditolak. !';
+                $notif['status'] = 1;
+                echo json_encode($notif);
+            }
+            
         }
     }
 
@@ -147,6 +204,7 @@ class Surat_keluar extends CI_Controller {
             $tempFile = $_FILES['file']['tmp_name'];
             $tempName = $_FILES['file']['name'];
             $tempExt = pathinfo($tempName, PATHINFO_EXTENSION);
+            $document_name = pathinfo($tempName, PATHINFO_FILENAME);
             $fileName = $this->l_surat_keluar->RandStr2(10).".".$tempExt;
             $tahun = $this->l_surat_keluar->DateYear();
             $bulan = $this->l_surat_keluar->DateMonth();
@@ -154,23 +212,31 @@ class Surat_keluar extends CI_Controller {
             $targetFile = $targetPath.$fileName;
             if(!file_exists($targetPath)){mkdir($targetPath, 0777, true);}
             $linkAttach = $tahun.'/'.$bulan.'/'.$fileName;
-            if(!empty($this->cek_file_attach($id_surat))){
-                if(move_uploaded_file($tempFile, $targetFile)){
-                    $data_update = $this->cek_file_attach($id_surat);
-                    $update[$data_update] = $linkAttach;
-                    $t_file='upload/keluar/'.$tahun.'/'.$bulan.'/'.$fileName;
-                    $real_t_file=realpath(APPPATH . '../' . $t_file);
-                    $update['status'] = 1;
-                    $update['path_folder'] = $real_t_file;
-                    $this->db->where('id_surat_keluar', $id_surat);
-                    $this->db->update('app_surat_keluar', $update);
+            $get_attach = $this->db->query('SELECT id_surat_keluar FROM app_surat_keluar WHERE document_name="'.$document_name.'" LIMIT 1');
+            $rows = $get_attach->row();
+            if(empty($rows->id_surat_keluar)){
+                if(!empty($this->cek_file_attach($id_surat))){
+                    if(move_uploaded_file($tempFile, $targetFile)){
+                        $data_update = $this->cek_file_attach($id_surat);
+                        $update[$data_update] = $linkAttach;
+                        $t_file='upload/keluar/'.$tahun.'/'.$bulan.'/'.$fileName;
+                        $real_t_file=realpath(APPPATH . '../' . $t_file);
+                        $update['status'] = 1;
+                        $update['path_folder'] = $real_t_file;
+                        $update['document_name']=$document_name;
+                        $this->db->where('id_surat_keluar', $id_surat);
+                        $this->db->update('app_surat_keluar', $update);
+                    }else{
+                        header("HTTP/1.0 400 Bad Request");
+                        echo 'Terjadi kesalahan saat upload file ke server !';
+                    }
                 }else{
                     header("HTTP/1.0 400 Bad Request");
-                    echo 'Terjadi kesalahan saat upload file ke server !';
+                    echo 'Attachment file sudah penuh !';
                 }
             }else{
                 header("HTTP/1.0 400 Bad Request");
-                echo 'Attachment file sudah penuh !';
+                echo 'Attachment file sudah ada. Silahkan ganti file anda !';
             }
         }else{
             header("HTTP/1.0 400 Bad Request");
@@ -193,13 +259,13 @@ class Surat_keluar extends CI_Controller {
 
      function sign_pdf($id)
     {
-        $query = $this->db->query('SELECT * FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
+        $query = $this->db->query('SELECT * FROM app_surat_keluar WHERE id_surat_keluar='.$id.' AND melalui="Softcopy" LIMIT 1');
         $rows = $query->row();
         $path_folder=$rows->path_folder;
         $b64Doc = chunk_split(base64_encode(file_get_contents($path_folder)));
         $data['id']=$id;
         $data['pdf_base64']=$b64Doc;
-        $data['attachment']='http://localhost/appsign/upload/keluar/'.$rows->attach1;
+        $data['attachment']=site_url('upload/keluar/'.$rows->attach1);
         $data['css'] = array(
             'src/css/style.css');
         // $data['js'] = array(
@@ -230,7 +296,18 @@ class Surat_keluar extends CI_Controller {
         $rows = $query->row();
         $no_surat=$rows->no_surat;
         $status=$rows->status;
-        if($status==1 || $status==2 || $status==4){
+         // $llx = $this->input->post("llx");
+         //    $urx = $this->input->post("urx");
+         //    $lly = $this->input->post("lly");
+         //    $ury = $this->input->post("ury");
+         //    $page = $this->input->post("pageNow");
+         //    echo 'page'.$page;
+         //    echo 'llx'.$llx;
+         //    echo 'lly'.$lly;
+         //    echo 'urx'.$urx;
+         //    echo 'ury'.$ury;
+         //    die();
+        if($status==1 || $status==2 || $status==4 || $status==6){
             $llx = $this->input->post("llx");
             $urx = $this->input->post("urx");
             $lly = $this->input->post("lly");
@@ -267,78 +344,34 @@ class Surat_keluar extends CI_Controller {
 
     function edit($id)
     {
-        $query = $this->db->query('SELECT id_surat_keluar, no_surat, perihal, jenis, diusulkan, tujuan, melalui, tgl_kirim, catatan FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
+        $query = $this->db->query('SELECT id_surat_keluar, no_surat, perihal, jenis, diusulkan, tujuan, melalui, tgl_kirim, catatan, signer, asal_surat FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
         $data['id'] = $query->row();
         $this->load->view($this->dir_v.'edit',$data);
     }
 
-    function act_edit()
-    {
-        $this->form_validation->set_rules('no_surat', 'No Surat', 'trim|required|min_length[3]');
-        $this->form_validation->set_rules('perihal', 'Perihal', 'trim|required|min_length[3]');
-        $this->form_validation->set_rules('diusulkan', 'Diusulkan oleh', 'trim|required|min_length[3]');
-        $this->form_validation->set_rules('tujuan', 'Ditujukan ke', 'trim|required|min_length[3]');
-        $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
-        if($this->form_validation->run() == FALSE){
-            $notif['notif'] = validation_errors();
-            $notif['status'] = 1;
-            echo json_encode($notif);
-        }else{
-            $id_surat = $this->input->post("id_surat");
-            $query = $this->db->query('SELECT id_surat_keluar, status, no_surat, perihal, jenis, diusulkan, tujuan, melalui, tgl_kirim, catatan FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
-            $rows = $query->row();
-            $status=$rows->status;
-            if($status==0 || $status==1){
-                $data = array(
-                    'no_surat' => $this->input->post('no_surat'),
-                    'perihal' => $this->input->post('perihal'),
-                    'jenis' => $this->input->post('jenis'),
-                    'tujuan' => $this->input->post('tujuan'),
-                    'diusulkan' => $this->input->post('diusulkan'),
-                    'tgl_kirim' => $this->input->post('tgl_kirim'),
-                    'melalui' => $this->input->post('melalui'),
-                    'catatan' => $this->input->post('catatan')
-                );
-                $this->db->where('id_surat_keluar', $id_surat);
-                $this->db->update('app_surat_keluar', $data);
-                $notif['notif'] = 'Perubahan surat '.$this->input->post('no_surat').' berhasil disimpan !';
-                $notif['status'] = 2;
-                echo json_encode($notif);
-            }else{
-                $notif['notif'] = 'Perubahan surat '.$this->input->post('no_surat').' Gagal. Ijin ubah data Ditolak. !';
-                $notif['status'] = 1;
-                echo json_encode($notif);
-            }
-            
-        }
-    }
 
     function act_del()
     {
         $id = $this->input->post('id_surat');
         $query = $this->db->query('SELECT attach1, status FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
-        $row = $query->row_array();
+        // $row = $query->row_array();
         $rows = $query->row();
         $status=$rows->status;
+        $notif=[];
+        $notif=['status'=>1,'notif'=>'Something wrong'];
         if($status==0 || $status==1){
-            for ($x = 1; $x <= 10; $x++) {
-                $link = $row["attach$x"];
-                if(isset($link)){
-                    $old_pic = './upload/keluar/'.$link;
-                    unlink($old_pic);
-                }
-            }
-
+            $link = $rows->attach1;
+            $old_pic = './upload/keluar/'.$link;
             $this->db->where('id_surat_keluar', $id);
             $this->db->delete('app_surat_keluar');
             $notif['notif'] = 'Data surat berhasil di hapus !';
             $notif['status'] = 2;
-            echo json_encode($notif);
+            
         }else{
             $notif['notif'] = 'Penghapusan data surat Gagal. Ijin hapus data Ditolak. !';
             $notif['status'] = 1;
-            echo json_encode($notif);
         }
+        echo json_encode($notif);
     }
 
 

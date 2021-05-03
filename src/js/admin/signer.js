@@ -123,6 +123,9 @@ $(document).ready(function(){
 		var email_digisign = $("input#email_digisign").val();
 		var kuser_production = $("input#kuser_production").val();
 		var kuser_sandbox = $("input#kuser_sandbox").val();
+		var token_production = $("input#token_production").val();
+		var token_sandbox = $("input#token_sandbox").val();
+		var user_id = $("select#user_id").val();
 		var id_ktp = $("input#id_ktp").val();
 		var id_npwp = $("input#id_npwp").val();
 		var jenis_kelamin = $("select#jenis_kelamin").val();
@@ -141,6 +144,9 @@ $(document).ready(function(){
 			cache:false,
 			data: {
 				name:name,
+				user_id:user_id,
+				token_sandbox:token_sandbox,
+	            token_production:token_production,
 	            email_user:email_user,
 	            id_ktp:id_ktp,
 	            id_npwp:id_npwp,
@@ -209,6 +215,9 @@ $(document).ready(function(){
 	$(document).on('click','#save_edit_btn',function(e){
 		e.preventDefault();
 		var name = $("input#name").val();
+		var token_production = $("input#token_production").val();
+		var token_sandbox = $("input#token_sandbox").val();
+		var user_id = $("select#user_id").val();
 		var email_user = $("input#email_user").val();
 		var email_digisign = $("input#email_digisign").val();
 		var kuser_production = $("input#kuser_production").val();
@@ -232,6 +241,9 @@ $(document).ready(function(){
 				id:$("input#id").val(),
 				name:name,
 	            email_user:email_user,
+	            user_id:user_id,
+				token_sandbox:token_sandbox,
+	            token_production:token_production,
 	            id_ktp:id_ktp,
 	            id_npwp:id_npwp,
 	            jenis_kelamin:jenis_kelamin,
@@ -263,6 +275,7 @@ $(document).ready(function(){
 				temp[3] = email_digisign;
 			    temp[4] = kuser_production;
 			    temp[5] = kuser_sandbox;
+			    temp[6] = obj.user_name;
 				table.row('tr.actived').data(temp).invalidate();
 			}
 		})
@@ -273,128 +286,49 @@ $(document).ready(function(){
 	});
 
 	// Delete Button
-	$(document).on('click','a.delete_act_btn',function(e){
+	$(document).on('click','.delete_act_btn',function(e){
 		e.preventDefault();
 		var id = $(this).attr('data-id');
 		var name = $(this).attr('data-name');
 		swal({
 			title: 'Anda yakin ?',
-			text: 'Data signer '+name+' akan di hapus ?',
+			text: 'Data '+name+' akan di hapus ?',
 			type: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya, hapus !',
-			cancelButtonText: 'Tidak, batalkan !',
-			confirmButtonClass: 'btn btn-danger',
-			cancelButtonClass: 'btn btn-primary',
-			buttonsStyling: false
-		}).then(function () {
-			$.post(url_act_del,{
-				id:id,
-				name:name
-			})
-			.done(function(result) {
-				var obj = jQuery.parseJSON(result);
-				if(obj.status == 1){
-					notifNo(obj.notif);
-				}
-				if(obj.status == 2){
-					notifYesAuto(obj.notif);
-					table.ajax.reload(null, false);
-				}
-			})
-			.fail(function(res) {
-				alert("Error");
-				console.log("Error", res.responseText);
-			});
-		},function(dismiss) {
-			if (dismiss === 'cancel') {
-				$("div#MyModal").modal('hide');
-				notifCancleAuto('Proses hapus di batalkan.');
+			cancelButtonText: 'Tidak, batalkan !'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					method:"POST",
+					url:url_act_del,
+					cache:false,
+					data: {
+						id:id,
+						name:name
+					}
+				})
+				.done(function(result) {
+					var obj = jQuery.parseJSON(result);
+					if(obj.status == 1){
+		                notifNo(obj.notif);
+					}
+					if(obj.status == 2){
+		                $("div#MyModal").modal('hide');
+						notifYesAuto(obj.notif);
+						table.ajax.reload(null, false);
+						// table.ajax.url(url_ctrl+'table/'+$('select#cat_menu').val()).load();
+					}
+				})
+				.fail(function(res){
+					alert('Error Response !');
+					console.log("responseText", res.responseText);
+				});
 			}
-		})
+		});
 	});
 
-	// $(document).on('click','a.delete_act_btn',function(e){
-	// 	e.preventDefault();
-	// 	var id = $(this).attr('data-id');
-	// 	var name = $(this).attr('data-name');
-	// 	// var no_surat = $(this).attr('data-surat');
-	// 	swal({
-	// 		title: 'Anda yakin ?',
-	// 		text: 'Signer '+name+' akan dihapus ?',
-	// 		type: 'question',
-	// 		showCancelButton: true,
-	// 		confirmButtonText: 'Ya, hapus !',
-	// 		cancelButtonText: 'Tidak, batalkan !'
-	// 	}).then(function () {
-	// 		$.post(url_act_del,{
-	// 			id:id,
-	// 			name:name
-	// 		})
-	// 		.done(function(result) {
-	// 			var obj = jQuery.parseJSON(result);
-	// 			if(obj.status == 1){
-	// 				notifNo(obj.notif);
-	// 			}
-	// 			if(obj.status == 2){
-	// 				notifYesAuto(obj.notif);
-	// 				table.ajax.reload(null, false);
-	// 			}
-	// 		})
-	// 		.fail(function(res) {
-	// 			alert("Error");
-	// 			console.log("Error", res.responseText);
-	// 		});
-	// 	},function(dismiss) {
-	// 		if (dismiss === 'cancel') {
-	// 			$("div#MyModal").modal('hide');
-	// 			notifCancleAuto('Proses hapus di batalkan.');
-	// 		}
-	// 	})
-	// });
-
-	// Delete Button
-	// $(document).on('click','button#delete_act_btn',function(e){
-	// 	e.preventDefault();
-	// 	var id = $(this).attr('data-id');
-	// 	var rowData = table.row('tr.actived').data();
-	// 	var name = rowData['2'];
-	// 	swal({
-	// 		title: 'Anda yakin ?',
-	// 		text: 'Signer '+name+' akan dihapus ?',
-	// 		type: 'question',
-	// 		showCancelButton: true,
-	// 		confirmButtonText: 'Ya, hapus !',
-	// 		cancelButtonText: 'Tidak, batalkan !'
-	// 	}).then((result) => {
-	// 		if (result.value) {
-	// 			$.ajax({
-	// 				method:"POST",
-	// 				url:url_ctrl+'act_del',
-	// 				data: {
-	// 					id:id,
-	// 					name:name
-	// 				}
-	// 			})
-	// 			.done(function(result) {
-	// 				var obj = jQuery.parseJSON(result);
-	// 				if(obj.status == 1){
-	// 	                notifNo(obj.notif);
-	// 				}
-	// 				if(obj.status == 2){
-	// 	                $("div#MyModal").modal('hide');
-	// 					notifYesAuto(obj.notif);
-	// 					table.row('tr.actived').remove().draw(false);
-	// 				}
-	// 			})
-	// 			.fail(function(res){
-	// 				alert('Error Response !');
-	// 				console.log("responseText", res.responseText);
-	// 			});
-	// 		}
-	// 	})
-	// });
-
+	
 	$(document).on('change','#provincy',function(e){
 		e.preventDefault();
 		var id = $("select[id*='provincy']").val();

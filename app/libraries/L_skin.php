@@ -12,7 +12,7 @@ class L_skin {
 	function apps_config($key)
     {
 		$data = array(
-			'title' 		=> 'DIGITAL SIGN',
+			'title' 		=> 'REKAP SURAT',
 			'logo' 			=> 'img/logo-imip-medium.png',
 			'favicon' 		=> 'img/favicon.ico',
 			'noimage' 		=> 'img/noimage.png',

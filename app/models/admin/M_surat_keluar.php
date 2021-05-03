@@ -37,9 +37,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= '<a href="" class="btn_preview_mail" title="View Origin Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-paperclip"></i></a> |';
+						$view .= '<a href="" class="btn_preview_mail" title="View Origin Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><button><i class="fa fa-paperclip"></i></button></a>';
 					}else{
-						$view .= '<a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a> |';
+						$view .= '<a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><button><i class="fa fa-images"></i></button></a>';
 					}
 				}else{
 					$view .= '';
@@ -57,9 +57,9 @@
 				if(isset($key)){
 					$char = substr($key, -3);
 					if($char == 'pdf'){
-						$view .= ' <a href="" class="btn_preview_mail" title="View Approved Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-envelope-open-text"></i></a>';
+						$view .= '<a href="" class="btn_preview_mail" title="View Approved Attachment" data-tipe="1" data-url="'.$key.'" style="color:#0F9647;"><button><i class="fa fa-envelope-open-text"></i></button></a>';
 					}else{
-						$view .= ' <a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><i class="fa fa-images"></i></a>';
+						$view .= '<a href="" class="btn_preview_mail" data-tipe="2" data-url="'.$key.'" style="color:#0F9647;"><button><i class="fa fa-images"></i></button></a>';
 					}
 				}else{
 					$view .= '';
@@ -83,9 +83,9 @@
         // }
         if($rows->status==2 || $rows->status==6 || $rows->status==4){
         	if($rows->status==6){
-        		$return_data.=' <a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><i class="fas fa-paper-plane"></i></a> |';
+        		$return_data.='<a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><button><i class="fas fa-paper-plane"></i></button></a> |';
         	}else{
-        		$return_data.=' <a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><i class="fas fa-paper-plane"></i></a>';
+        		$return_data.='<a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><button><i class="fas fa-paper-plane"></i></button></a>';
         	}
             
         }
@@ -112,7 +112,7 @@
 				return '<span class="badge badge-primary">Waiting Approval</span>';
 				break;
 			case 4:
-				return '<span class="badge badge-danger">Cancel Approval</span>';
+				return '<span class="badge badge-danger">Rejected Signature</span>';
 				break;
 			case 5:
 				return '<span class="badge badge-success">Document Signed</span>';
@@ -175,17 +175,17 @@
 
 	function select_approval($data)
     {
-        $query = $this->db->query('SELECT id, name FROM t_signer');
+        $query = $this->db->query('SELECT id, name, email_user FROM t_signer');
 		if(empty($data)){
 			foreach($query->result() as $id) {
-				echo '<option value="'.$id->id.'">'.$id->name.'</option>';
+				echo '<option value="'.$id->id.'">'.$id->name.' ('.$id->email_user.')</option>';
 			}
 		}else{
 			foreach($query->result() as $id) {
 				if(strstr($data, $id->id) != FALSE){
-					echo '<option value="'.$id->id.'" selected="selected">'.$id->name.'</option>';
+					echo '<option value="'.$id->id.'" selected="selected">'.$id->name.' ('.$id->email_user.')</option>';
 				}else{
-					echo '<option value="'.$id->id.'">'.$id->name.'</option>';
+					echo '<option value="'.$id->id.'">'.$id->name.' ('.$id->email_user.')</option>';
 				}
 			}
 		}

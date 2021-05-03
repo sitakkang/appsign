@@ -1,3 +1,4 @@
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -6,6 +7,9 @@
                     <?php if(!empty($panel)){echo $panel;}?>
                 </div>
                 <div class="card-body">
+                    <div id="agentListDia">
+                        <span id="loading"> Loading .... </span>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tbl_arsip">
                             <thead>
@@ -16,11 +20,13 @@
                                     <th>Tanggal Terima</th>
                                     <th>Diusulkan</th>
                                     <th>Jenis</th>
+                                    <th>Bentuk</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+
                             </tbody>
                         </table>
                     </div>

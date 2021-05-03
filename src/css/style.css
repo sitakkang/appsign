@@ -8787,6 +8787,7 @@ body {
 .document-container canvas:last-child {
   margin-bottom: 0;
 }
+
 .document-container .digital-signature {
   position: absolute;
   margin-left: 20px;
@@ -8797,22 +8798,43 @@ body {
   -ms-transform: translate(0, 0);
   transform: translate(0, 0);
 }
+
+.lock {
+    position: absolute;
+    left: 100px;
+    border-radius: 50px;
+    top: -20px;
+    font-size: 12px !important;
+    padding: 6px 12px;
+}
+
+.unlock-signature{
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  user-drag: none; 
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 .document-container .digital-signature img {
   max-width: 150px;
   height: auto;
 }
 .document-container .digital-signature--remove::before {
-  content: "x";
+  /*content: "\f023";*/
+  content: url('http://localhost/appsign/admin_tenant/surat_keluar/src/img/unlock.png');
+  /*background:url();*/
   position: absolute;
-  top: -11px;
-  right: -11px;
-  width: 22px;
-  height: 22px;
+  top: -18px;
+  right: -18px;
+  width: 35px;
+  height: 35px;
   text-align: center;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 40px;
   border-radius: 50%;
-  background-color: #ee5253;
+  /*background-color: #ee5253;*/
   color: #fff;
 }
 .document-container .digital-signature--remove:hover {

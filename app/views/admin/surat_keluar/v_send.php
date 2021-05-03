@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekrutmen</title>
+    <title>Digital Signature</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -49,15 +49,15 @@
             <div class="mt-5 mr-5 ml-5">
                         <img width="300" class="center" src="https://apps.imip.co.id/imageapp/logo-imip-full.png" alt="">
                         <!-- <h2><span class="underline underline--blue">DIGITAL SIGN</span></h2> -->
-                        <h3 class="populer text-center mt-5 color" style="text-transform: capitalize;">Dear Tio,</h3> 
-                        <p>Deskripsi Pesan</p> 
+                        <h3 class="populer text-center mt-5 color" style="text-transform: capitalize;">Dear <?php echo $name_signer;?>,</h3> 
+                        <p>Ini adalah form Approval tanda tangan. Silahkan memilih Tombol yang kami sediakan dibawah.</p> 
                         <br>
                         
                         <center>
                         <a style="color:#fff;background-color:#2ECC71;border-top:10px solid #2ECC71;border-right:18px solid #2ECC71;border-bottom:10px solid #2ECC71;border-left:18px solid #2ECC71;display:inline-block;text-decoration:none;border-radius:3px;box-sizing:border-box" 
-                        href="<?=site_url('appsign/approve/approvekeluar/'.$token)?>" role="button">Setuju</a>
+                        href="<?=site_url('approve/approvekeluar/'.$token)?>" role="button">Approve</a>
                         <a style="color:#fff;background-color:#dc3545;border-top:10px solid #dc3545;border-right:18px solid #dc3545;border-bottom:10px solid #dc3545;border-left:18px solid #dc3545;display:inline-block;text-decoration:none;border-radius:3px;box-sizing:border-box" 
-                        href="<?=site_url('appsign/approve/cancelkeluar/'.$token)?>" role="button">Batal</a>
+                        href="<?=site_url('approve/cancelkeluar/'.$token)?>" role="button">Reject</a>
                         </center>
                        
                         <p>Terima kasih.</p>

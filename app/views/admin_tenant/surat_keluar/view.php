@@ -17,6 +17,7 @@
                                     <th>Diusulkan</th>
                                     <th>Jenis</th>
                                     <th>Status</th>
+                                    <th>Bentuk</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

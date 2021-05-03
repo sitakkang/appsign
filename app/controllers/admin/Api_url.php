@@ -133,6 +133,7 @@ class Api_url extends CI_Controller {
         $this->db->where('id', $id);
         $this->db->delete('tbl_api_action');
         $notif['notif'] = 'Data Api URL '.$this->input->post('api_key').' dengan type '. $this->input->post('type') .' berhasil di hapus !';
+        // $notif['notif'] = 'Data Api URL berhasil di hapus !';
         $notif['status'] = 2;
         echo json_encode($notif);
     }

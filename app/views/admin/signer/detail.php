@@ -3,6 +3,10 @@
     <div class="form-control"><?=$id->name;?></div>
 </div>
 <div class="form-group">
+    <label class="control-label">User</label>
+    <div class="form-control"><?php echo $this->m_signer->get_userdata($id->user_id);?></div>
+</div>
+<div class="form-group">
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Email User </label>
@@ -10,7 +14,7 @@
         </div>
         <div class="col-md-6">
             <label class="control-label">Email Digisign</label>
-            <div><?=$id->email_digisign;?></div>
+            <div class="form-control"><?=$id->email_digisign;?></div>
         </div>
     </div>
 </div>
@@ -23,6 +27,18 @@
         <div class="col-md-6">
             <label class="control-label">Kuser Sandbox</label>
             <div class="form-control"><?=$id->kuser_sandbox;?></div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">Token Production </label>
+            <div class="form-control"><?=$id->token_production;?></div>
+        </div>
+        <div class="col-md-6">
+            <label class="control-label">Token Sandbox</label>
+            <div class="form-control"><?=$id->token_sandbox;?></div>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <div class="form-group">
-    <label class="control-label">Disetujui oleh </label>
-    <select class="form-control" id="disetujui">
-        <?=$this->m_surat_keluar->select_approval($data_=NULL);?>
+    <label class="control-label">Kirim Ke </label>
+    <select class="form-control" id="disetujui" disabled>
+        <?=$this->m_surat_keluar->select_approval($data_=$tujuan);?>
     </select>
     <input type="hidden" name="id_surat" value="<?=$id_surat?>">
 </div>

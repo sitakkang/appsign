@@ -77,6 +77,8 @@ $(document).ready(function(){
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
 			jenis:$("select[name*='jenis']").val(),
+			signer:$("select[name*='signer']").val(),
+			asal_surat:$("select[name*='asal_surat']").val(),
 			tujuan:$("textarea[name*='tujuan']").val(),
 			diusulkan:$("input[name*='diusulkan']").val(),
 			tgl_kirim:$("input[name*='tgl_kirim']").val(),
@@ -106,6 +108,7 @@ $(document).ready(function(){
 	$(document).on('click','a.upload_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
+		var melalui = $(this).attr('data-melalui');
 		$.get(url_form_attach+id_surat)
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Upload Attachment</b>');
@@ -122,7 +125,11 @@ $(document).ready(function(){
 					});
 			        this.on("success", function() {
 			        	// table.ajax.reload(null, false);
-			        	window.location.href = 'sign_pdf/'+id_surat;
+			        	if(melalui=='Softcopy'){
+			        		window.location.href = 'sign_pdf/'+id_surat;
+			        	}else{
+			        		table.ajax.reload(null, false);
+			        	}
 			        });
 			    }
             });
@@ -166,6 +173,8 @@ $(document).ready(function(){
 		e.preventDefault();
 		$.post(url_act_edit,{
 			id_surat:$("input[name*='id_surat']").val(),
+			signer:$("select[name*='signer']").val(),
+			asal_surat:$("select[name*='asal_surat']").val(),
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
 			jenis:$("select[name*='jenis']").val(),
@@ -194,41 +203,44 @@ $(document).ready(function(){
 	});
 
 	// Delete Button
-	$(document).on('click','a.delete_act_btn',function(e){
+	$(document).on('click','.delete_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
 		var no_surat = $(this).attr('data-surat');
 		swal({
 			title: 'Anda yakin ?',
-			text: 'Data dengan nomor surat '+no_surat+' akan di hapus ?',
+			text: 'Data Surat '+no_surat+' akan di hapus ?',
 			type: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya, hapus !',
 			cancelButtonText: 'Tidak, batalkan !'
-		}).then(function () {
-			$.post(url_act_del,{
-				id_surat:id_surat
-			})
-			.done(function(result) {
-				var obj = jQuery.parseJSON(result);
-				if(obj.status == 1){
-					notifNo(obj.notif);
-				}
-				if(obj.status == 2){
-					notifYesAuto(obj.notif);
-					table.ajax.reload(null, false);
-				}
-			})
-			.fail(function(res) {
-				alert("Error");
-				console.log("Error", res.responseText);
-			});
-		},function(dismiss) {
-			if (dismiss === 'cancel') {
-				$("div#MyModal").modal('hide');
-				notifCancleAuto('Proses hapus di batalkan.');
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					method:"POST",
+					url:url_act_del,
+					cache:false,
+					data: {
+						id_surat:id_surat
+					}
+				})
+				.done(function(result) {
+					var obj = jQuery.parseJSON(result);
+					if(obj.status == 1){
+		                notifNo(obj.notif);
+					}
+					if(obj.status == 2){
+		                $("div#MyModal").modal('hide');
+						notifYesAuto(obj.notif);
+						table.ajax.reload(null, false);
+					}
+				})
+				.fail(function(res){
+					alert('Error Response !');
+					console.log("responseText", res.responseText);
+				});
 			}
-		})
+		});
 	});
 
 	$(document).on('click','#sign_document_act_btn',function(e){

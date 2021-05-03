@@ -7,28 +7,33 @@
                     <?php if(!empty($panel)){echo $panel;}?>
                 </div>
                 <div class="card-body">
-                    <button id="sign_btn" class="btn btn-default">Sign</button><hr>
+                    
 
                     <div class="content">
-                      <div class="wrapper">
-                        <div class="content">
-                          <div class="content-header">
-                            <div class="d-flex justify-content-between">
-                              <div id="pdf-buttons">
-                                  <input type="number" min="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="pdf-input" name="input_page_">
-                                  <button id="pdf-gotopage" value="1">Page</button>
-                                  <button id="pdf-first">&lsaquo;&lsaquo;First</button>
-                                  <button id="pdf-prev">&lsaquo;Prev</button>
-                                  <button id="pdf-next">Next&rsaquo;</button>  
-                                  <button id="pdf-last">Last&rsaquo;&rsaquo;</button> 
-                              </div>
-                              <div id="page-count-container">Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages"></div></div>        
-                            </div><!-- .document-toolbar -->
-                          </div><!-- .content-header -->
-                          <div class="document-toolbar-container-sticky">
-                            
-                          </div><!-- .document-toolbar -->
+                        <div align="left">
+                          <button id="sign_btn" class="btn btn-primary">
+                            <span class="fas fa-signature text-light"></span> Sign Document
+                          </button>
                         </div>
+                          <div align="center">
+                              <div class="btn-group grp" role="group" aria-label="Page">
+                                <div id="pdf-buttons">
+                                  <div class="row" align="center">
+                                    <button id="pdf-prev" class="btn btn-light mt-2 mb-2" title="Prev"><span class="fa fa-chevron-circle-left text-dark fa-lg"></span></button>
+                                    <button id="pdf-gotopage" class="btn btn-light mt-2 mb-2" title="GoTo Page">
+                                      Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages"></div>
+                                    </button>
+                                    <button id="pdf-next" class="btn btn-light mt-2 mb-2" title="Next">
+                                      <span class="fa fa-chevron-circle-right text-dark fa-lg"></span>
+                                    </button>
+
+                                    <input type="number" min="1" class="mt-2 mb-2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="pdf-input" name="input_page_" value="1">
+                                    <button id="pdf-selectpage" value="1" class="btn btn-light mt-2 mb-2" title="Goto Page"><span class="fas fa-angle-double-right text-dark fa-lg"></button>
+                                  </div>
+                                
+                                </div>
+                              </div>        
+                          </div><!-- .document-toolbar -->
                       </div>
                       <div class="container-fluid">
                         <div class="row">
@@ -39,6 +44,9 @@
                                   <div id="pdf-loader">Loading document ...</div>
                                   <div id="pdf-contents">
                                       <div class="digital-signature" id="digitalSignature">
+                                        <button id="lock1" class="btn btn-warning lock active" style="" value="lock1">
+                                          <span id="unlock" class="fa fa-unlock-alt fa-2x" aria-hidden="true" title="Lock Signature"></span>
+                                        </button>
                                         <img src="../src/img/signature.png" class="img-fluid signature-item">
                                       </div>
                                       <div id="pdf-meta">

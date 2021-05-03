@@ -12,7 +12,6 @@ class Surat_keluar extends CI_Controller {
         $this->m_auth->check_superadmin();
         $this->load->library(array('phpmailer_lib'));
         $this->load->model($this->dir_m.'m_surat_keluar');
-        // $this->load->model($this->dir_m.'m_surat_masuk');
         $this->load->library($this->dir_l.'l_surat_keluar');
     }
 
@@ -58,7 +57,7 @@ class Surat_keluar extends CI_Controller {
 
     public function table()
     {
-        $get_all = $this->db->query('SELECT id_surat_keluar, file_downloaded, jenis, no_surat, perihal, diusulkan, disetujui, tgl_kirim, status, attach1, document_id, approval_status, tujuan, user FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
+        $get_all = $this->db->query('SELECT * FROM app_surat_keluar ORDER BY id_surat_keluar DESC');
 
         $draw = intval($this->input->get("draw"));
         $start = intval($this->input->get("start"));
@@ -66,7 +65,7 @@ class Surat_keluar extends CI_Controller {
         $data = array();
         $i = 1;
         foreach($get_all->result() as $id) {
-            $action = ' <a href="" class="view_act_btn" data-id="'.$id->id_surat_keluar.'" title="View Detail" style="color:#0F9647;"><i class="fa fa-search"></i></a> | ';
+            $action = '<a href="" class="view_act_btn" data-id="'.$id->id_surat_keluar.'" title="View Detail" style="color:#0F9647;"><button><i class="fa fa-search"></i></button></a>';
             if($id->status==3){
                 $this->setTokenExpired($id->id_surat_keluar);
             }
@@ -78,8 +77,9 @@ class Surat_keluar extends CI_Controller {
                 '3' => $id->tgl_kirim,
                 '4' => $id->diusulkan,
                 '5' => $id->jenis,
-                '6' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '7' => $action.' '.$this->m_surat_keluar->attachment(array($id->attach1)).' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
+                '6' => $id->melalui,
+                '7' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
+                '8' => $action.' '.$this->m_surat_keluar->attachment(array($id->attach1)).' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
             );
         }
 
@@ -100,120 +100,7 @@ class Surat_keluar extends CI_Controller {
         $this->load->view($this->dir_v.'detail',$data);
     }
 
-    // function add()
-    // {
-    //     $this->load->view($this->dir_v.'add');
-    // }
-
-    // function act_add()
-    // {
-    //     $this->form_validation->set_rules('no_surat', 'No Surat', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('perihal', 'Perihal', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('tujuan', 'Ditujukan', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('diusulkan', 'Diusulkan', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
-    //     if($this->form_validation->run() == FALSE){
-    //         $notif['notif'] = validation_errors();
-    //         $notif['status'] = 1;
-    //         echo json_encode($notif);
-    //     }else{
-    //         $data = array(
-    //             'no_surat' => $this->input->post('no_surat'),
-    //             'perihal' => $this->input->post('perihal'),
-    //             'jenis' => $this->input->post('jenis'),
-    //             'tujuan' => $this->input->post('tujuan'),
-    //             'diusulkan' => $this->input->post('diusulkan'),
-    //             'tgl_kirim' => $this->input->post('tgl_kirim'),
-    //             'melalui' => $this->input->post('melalui'),
-    //             'catatan' => $this->input->post('catatan'),
-    //             'flag' => 0
-    //         );
-    //         $this->db->insert('app_surat_keluar', $data);
-    //         $notif['notif'] = 'Data surat '.$this->input->post('no_surat').' berhasil disimpan !';
-    //         $notif['status'] = 2;
-    //         echo json_encode($notif);
-    //     }
-    // }
-
-    // function edit($id)
-    // {
-    //     $query = $this->db->query('SELECT id_surat_keluar, no_surat, perihal, jenis, diusulkan, tujuan, melalui, tgl_kirim, catatan FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
-    //     $data['id'] = $query->row();
-    //     $this->load->view($this->dir_v.'edit',$data);
-    // }
-
-    // function act_edit()
-    // {
-    //     $this->form_validation->set_rules('no_surat', 'No Surat', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('perihal', 'Perihal', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('diusulkan', 'Diusulkan oleh', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('tujuan', 'Ditujukan ke', 'trim|required|min_length[3]');
-    //     $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
-    //     if($this->form_validation->run() == FALSE){
-    //         $notif['notif'] = validation_errors();
-    //         $notif['status'] = 1;
-    //         echo json_encode($notif);
-    //     }else{
-    //         $data = array(
-    //             'no_surat' => $this->input->post('no_surat'),
-    //             'perihal' => $this->input->post('perihal'),
-    //             'jenis' => $this->input->post('jenis'),
-    //             'tujuan' => $this->input->post('tujuan'),
-    //             'diusulkan' => $this->input->post('diusulkan'),
-    //             'tgl_kirim' => $this->input->post('tgl_kirim'),
-    //             'melalui' => $this->input->post('melalui'),
-    //             'catatan' => $this->input->post('catatan')
-    //         );
-    //         $id_surat = $this->input->post("id_surat");
-    //         $this->db->where('id_surat_keluar', $id_surat);
-    //         $this->db->update('app_surat_keluar', $data);
-    //         $notif['notif'] = 'Perubahan surat '.$this->input->post('no_surat').' berhasil disimpan !';
-    //         $notif['status'] = 2;
-    //         echo json_encode($notif);
-    //     }
-    // }
-
-    // function act_del()
-    // {
-    //     $id = $this->input->post('id_surat');
-    //     $query = $this->db->query('SELECT attach1 FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
-    //     $row = $query->row_array();
-
-    //     for ($x = 1; $x <= 10; $x++) {
-    //         $link = $row["attach$x"];
-    //         if(isset($link)){
-    //             $old_pic = './upload/keluar/'.$link;
-    //             unlink($old_pic);
-    //         }
-    //     }
-
-    //     $this->db->where('id_surat_keluar', $id);
-    //     $this->db->delete('app_surat_keluar');
-    //     $notif['notif'] = 'Data surat berhasil di hapus !';
-    //     $notif['status'] = 2;
-    //     echo json_encode($notif);
-    // }
-
-    // function view_status($id)
-    // {
-    //     $query = $this->db->query('SELECT id_surat_keluar, status FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
-    //     $data['id'] = $query->row();
-    //     $this->load->view($this->dir_v.'status', $data);
-    // }
-
-    // function act_status()
-    // {
-    //     $data['status'] = $this->input->post("status");
-    //     $id_surat = $this->input->post("id_surat");
-    //     $this->db->where('id_surat_keluar', $id_surat);
-    //     $this->db->update('app_surat_keluar', $data);
-    //     $notif['notif'] = 'Perubahan status berhasil !';
-    //     $notif['status'] = 2;
-
-        
-    //     echo json_encode($notif);
-    // }
-
+   
     function upload_attach($id)
     {
         $data['id_surat'] = $id;
@@ -271,45 +158,49 @@ class Surat_keluar extends CI_Controller {
         }
     }
 
-    function send_mail_smtp($token,$email_signer){
-        $data=[];
-        $this->load->library('email');
-        $config = array(
-                'protocol'  => 'smtp', 
-                'smtp_host' => 'mail.imip.co.id', 
-                'smtp_user' => 'patar@imip.co.id', 
-                'smtp_pass' => 'zPk2?h51gTkBz&%', 
-                'smtp_port' => '587', 
-                'mail_type' => 'html', 
-                'charset'   => 'iso-8859-1', 
+    function sendEmail($token,$params_user,$path_folder){
+        
+        $mail    = $this->phpmailer_lib->load(); 
+        // $mail = new PHPMailer();
+        $mail->IsSMTP();
+        // $mail->SMTPDebug = 3;
+        $mail->SMTPAuth = TRUE;
+        $mail->SMTPSecure = "tls";
+        $mail->Port     = 587;  
+        $mail->Username = "patar.sitakkang@gmail.com";
+        $mail->Password = "Pathuli90CR7ABCD";
+        $mail->Host     = "tls://smtp.gmail.com";
+        $mail->Mailer   = "smtp";
+
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
         );
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
-        $this->email->from('patar@imip.co.id','Approval Digital Sign');
-        $this->email->to($email_signer); 
-        $this->email->subject('Test Mail API');
-        // $this->email->message('Test API');  
-        // $this->email->message('Approval Link http://localhost/appsign/approve/approve/'.$token.' </b> to cancel http://localhost/appsign/approve/cancel/'. $token .' </b>');
-        $mailContent="";
-        $mailContent.="For Approval Link Please Click http://localhost/appsign/approve/approvekeluar/".$token."\r\n";
-        $mailContent.="or Cancel Link Please Click http://localhost/appsign/approve/cancelkeluar/".$token."\r\n";
-        $this->email->message($mailContent);
-        // $this->email->message('Test API');  
-        // $this->load->view($this->dir_v.'posisi', $data);
-        // $mailContent    = $this->load->view($this->dir_v.'v_email', $data, TRUE);
-        // $this->email->Body($mailContent);
-        if($this->email->send()){
+        $mail->SetFrom("patar.sitakkang@gmail.com", "Tanda Tangan Digital IMIP");
+        $mail->AddReplyTo("patar.sitakkang@gmail.com", "PT. IMIP");
+        $mail->AddAddress($params_user['email_signer']);
+        $mail->Subject = "Approval Digital Signature";
+        $mail->WordWrap   = 80;
+        $data['token'] = $token;
+        $data['name_signer']=$params_user['name'];
+
+        $message = $this->load->view($this->dir_v . 'v_send', $data, TRUE);
+        $mail->MsgHTML($message);
+        $mail->AddAttachment($path_folder, $name = 'dokumen kantor',  $encoding = 'base64', $type = 'application/pdf');
+        $mail->IsHTML(true);
+        if($mail->Send()){ 
             return true;
-        }else{
+        }else{ 
             return false;
         }
     }
 
-    function sendEmail($token,$email_signer){
-         $mail    = $this->phpmailer_lib->load(); 
-        
+    function sendEmailIMIP($token,$email_signer,$path_folder){
+        $mail    = $this->phpmailer_lib->load(); 
 		$mail->isSMTP();
-        // $mail->SMTPDebug = 1;  
         $mail->Host       = 'mail.imip.co.id';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'patar@imip.co.id';
@@ -328,10 +219,11 @@ class Surat_keluar extends CI_Controller {
         $mail->setFrom('patar@imip.co.id', 'Tanda Tangal Digital PT. IMIP');
         $mail->addReplyTo('patar@imip.co.id', 'Tanda Tangal Digital PT. IMIP');
         $mail->addAddress($email_signer);
-        $mail->Subject = 'Approval Surat';
+        $mail->Subject = 'Approval Document';
         
         //kirim dokumen
         // $mail->AddAttachment($_SERVER['DOCUMENT_ROOT'].'/markdown/upload/imip.pdf', $name = 'dokumen kantor',  $encoding = 'base64', $type = 'application/pdf');
+        $mail->AddAttachment($path_folder, $name = 'dokumen kantor',  $encoding = 'base64', $type = 'application/pdf');
         
         $mail->isHTML(true);
 
@@ -345,9 +237,6 @@ class Surat_keluar extends CI_Controller {
         }else{
             return false;
         }
-
-        //cek info send phpmailer
-        // $mail->ErrorInfo;
     }
 
     function send_mail($id)
@@ -360,7 +249,7 @@ class Surat_keluar extends CI_Controller {
     function generate_token(){
         $digits = '';
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        for($i=0;$i<7; $i++){
+        for($i=0;$i<15; $i++){
             $x = mt_rand(0, strlen($chars) -1);
             $digits .= $chars[$x];
         }
@@ -376,7 +265,7 @@ class Surat_keluar extends CI_Controller {
             echo json_encode($notif);
         }else{
             $id_surat = $this->input->post('id_surat');
-            $query_surat = $this->db->query('SELECT status FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
+            $query_surat = $this->db->query('SELECT status, path_folder FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
             $data_surat = $query_surat->row();
             $status_surat=$data_surat->status;
             // if($status_surat!=2 || $status_surat!=3 || $status_surat!=4){
@@ -384,9 +273,10 @@ class Surat_keluar extends CI_Controller {
                 if($this->cek_empty_attach($id_surat)){
                     $disetujui = $this->l_surat_keluar->FilterArray($this->input->post('disetujui'));
                     $id_disetujui = (int)str_replace('"', '', $disetujui);
-                    $query = $this->db->query('SELECT id, email_user FROM t_signer WHERE id='. $id_disetujui .' LIMIT 1');
+                    $query = $this->db->query('SELECT id, email_user,name FROM t_signer WHERE id='. $id_disetujui .' LIMIT 1');
                     $data = $query->row();
                     $email_signer=$data->email_user;
+                    $name_signer=$data->name;
                     $token=$this->generate_token();
                     $update['signer'] = $data->id;
                     $update['disetujui'] = $disetujui;
@@ -395,12 +285,14 @@ class Surat_keluar extends CI_Controller {
                     $update['token'] = $token;
                     //token_time
                     $token_time = $this->l_surat_keluar->DateTimeNow();
-                    $exp_token_time=date('Y-m-d H:i:s', strtotime('+2 minutes', strtotime($token_time)));
+                    $exp_token_time=date('Y-m-d H:i:s', strtotime('+30 minutes', strtotime($token_time)));
                     $update['token_time'] = $token_time;
                     $update['token_time_exp'] = $exp_token_time;
-                    $send_mail_smtp = $this->sendEmail($token,$email_signer);
-
-                    if($send_mail_smtp){
+                    $path_folder=$data_surat->path_folder;
+                    $params_user=[];
+                    $params_user=['email_signer'=>$email_signer, 'name'=>$name_signer];
+                    $send_mail_smtp = $this->sendEmail($token,$params_user,$path_folder);
+                    if($send_mail_smtp==true){
                         $this->db->where('id_surat_keluar', $id_surat);
                         $this->db->update('app_surat_keluar', $update);
                         $notif['notif'] = 'Data surat berhasil di kirim !';
@@ -432,58 +324,58 @@ class Surat_keluar extends CI_Controller {
         $this->load->view($this->dir_v.'sign', $data);
     }
 
-    function act_sign_document()
-    {
-        if($this->input->post('disetujui') === '""'){
-            $notif['notif'] = 'Penanda tangan tidak boleh kosong !';
-            $notif['status'] = 1;
-            echo json_encode($notif);
-        }else{
-            $id_surat = $this->input->post('id_surat');
-            $query = $this->db->query('SELECT id_surat_keluar, document_id FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
-            $data = $query->row();
-            $doc_id=$data->document_id;
-            $options = [
-                'jsonfield' => json_encode(
-                    [
-                        'JSONFile' => [
-                            "userid"=> "adminimip@tandatanganku.com", 
-                            "document_id" => $doc_id, 
-                            "email_user" =>"adminimip@tandatanganku.com", 
-                            "view_only" => false
-                        ],
-                    ],
-                )
-            ];
-            $headers=array('Authorization: Bearer gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM');
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, "https://api.tandatanganku.com/gen/genSignPage.html");
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($curl, CURLOPT_VERBOSE, 1);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $options);
-            curl_setopt($curl, CURLOPT_HTTPHEADER,$headers);
-            $response = curl_exec($curl);
-            $response_text = json_decode($response);
-            if($response_text->JSONFile->result!='00'){
-                $notif['notif'] = 'Error : '. $response_text->JSONFile->notif;
-                $notif['status'] = 1;
-                echo json_encode($notif);
-            }else{
-                $update['link_document'] = $response_text->JSONFile->link;
-                $this->db->where('id_surat_keluar', $id_surat);
-                $this->db->update('app_surat_keluar', $update);
-                $notif['notif'] = 'Document Signing Succeed';
-                $notif['status'] = 2;
-                $notif['id'] = $id_surat;
-                $notif['url_api']=$response_text->JSONFile->link;
-                echo json_encode($notif); 
-            }
+    // function act_sign_document()
+    // {
+    //     if($this->input->post('disetujui') === '""'){
+    //         $notif['notif'] = 'Penanda tangan tidak boleh kosong !';
+    //         $notif['status'] = 1;
+    //         echo json_encode($notif);
+    //     }else{
+    //         $id_surat = $this->input->post('id_surat');
+    //         $query = $this->db->query('SELECT id_surat_keluar, document_id FROM app_surat_keluar WHERE id_surat_keluar='.$id_surat.' LIMIT 1');
+    //         $data = $query->row();
+    //         $doc_id=$data->document_id;
+    //         $options = [
+    //             'jsonfield' => json_encode(
+    //                 [
+    //                     'JSONFile' => [
+    //                         "userid"=> "adminimip@tandatanganku.com", 
+    //                         "document_id" => $doc_id, 
+    //                         "email_user" =>"adminimip@tandatanganku.com", 
+    //                         "view_only" => false
+    //                     ],
+    //                 ],
+    //             )
+    //         ];
+    //         $headers=array('Authorization: Bearer gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM');
+    //         $curl = curl_init();
+    //         curl_setopt($curl, CURLOPT_URL, "https://api.tandatanganku.com/gen/genSignPage.html");
+    //         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    //         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    //         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    //         curl_setopt($curl, CURLOPT_VERBOSE, 1);
+    //         curl_setopt($curl, CURLOPT_POST, true);
+    //         curl_setopt($curl, CURLOPT_POSTFIELDS, $options);
+    //         curl_setopt($curl, CURLOPT_HTTPHEADER,$headers);
+    //         $response = curl_exec($curl);
+    //         $response_text = json_decode($response);
+    //         if($response_text->JSONFile->result!='00'){
+    //             $notif['notif'] = 'Error : '. $response_text->JSONFile->notif;
+    //             $notif['status'] = 1;
+    //             echo json_encode($notif);
+    //         }else{
+    //             $update['link_document'] = $response_text->JSONFile->link;
+    //             $this->db->where('id_surat_keluar', $id_surat);
+    //             $this->db->update('app_surat_keluar', $update);
+    //             $notif['notif'] = 'Document Signing Succeed';
+    //             $notif['status'] = 2;
+    //             $notif['id'] = $id_surat;
+    //             $notif['url_api']=$response_text->JSONFile->link;
+    //             echo json_encode($notif); 
+    //         }
 
-        }
-    }
+    //     }
+    // }
 
 
     function cek_empty_attach($id)
@@ -499,67 +391,14 @@ class Surat_keluar extends CI_Controller {
 
     function get_disetujui($id)
     {
-        $query = $this->db->query('SELECT disetujui FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
+        $query = $this->db->query('SELECT signer FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
         $rows = $query->row();
-        if(empty($rows->disetujui)){
+        if(empty($rows->signer)){
             return NULL;
         }else{
-            return $rows->disetujui;
+            return $rows->signer;
         }
     }
-
-    // function posisi_sign($id)
-    // {
-    //     $data['id_surat'] = $id;
-    //     $this->load->view($this->dir_v.'posisi', $data);
-    // }
-
-    // function sign_pdf($id)
-    // {
-    //     $query = $this->db->query('SELECT * FROM app_surat_keluar WHERE id_surat_keluar='.$id.' LIMIT 1');
-    //     $rows = $query->row();
-    //     $data['id']=$id;
-    //     $data['css'] = array(
-    //         'src/css/style.css');
-    //     $data['js'] = array(
-    //         'lib/jquery/jquery-3.3.1.min.js',
-    //         'lib/bootstrap-4.1.3/dist/js/bootstrap.min.js',
-    //         'lib/pdfjs/pdf.js',
-    //         'lib/interact/interact.min.js',
-    //         'src/js/admin/app.js',
-    //         'src/js/admin/pdf.config.js',
-    //         'src/js/admin/signature.config.js');
-    //     $data['panel'] = '<i class="fa fa-inbox"></i> &nbsp;<b>PDF</b>';
-    //     $this->l_skin->config($this->dir_v.'pdf_signing', $data);
-    // }
-
-    // function act_sign_doc(){
-    //     $id_surat = $this->input->post("id");
-    //     $llx = $this->input->post("llx");
-    //     $urx = $this->input->post("urx");
-    //     $lly = $this->input->post("lly");
-    //     $ury = $this->input->post("ury");
-    //     $this->form_validation->set_rules('llx', 'llx Failed', 'trim|required|greater_than[0]');
-    //     $this->form_validation->set_rules('lly', 'lly Failed', 'trim|required|greater_than[0]');
-    //     $this->form_validation->set_rules('urx', 'urx Failed', 'trim|required|greater_than[0]');
-    //     $this->form_validation->set_rules('ury', 'ury Failed', 'trim|required|greater_than[0]');
-    //     if($this->form_validation->run() == FALSE){
-    //         $notif['notif'] = validation_errors();
-    //         $notif['status'] = 1;
-    //         echo json_encode($notif);
-    //     }else{
-    //          $data['status'] = 2;
-    //         $data['llx'] = $llx;
-    //         $data['lly'] = $lly;
-    //         $data['urx'] = $urx;
-    //         $data['ury'] = $ury;
-    //         $this->db->where('id_surat_keluar', $id_surat);
-    //         $this->db->update('app_surat_keluar', $data);
-    //         $notif['notif'] = 'Set Posisi Berhasil !';
-    //         $notif['status'] = 2;
-    //         echo json_encode($notif);
-    //     }  
-    // }
 
     function upload_vendor($id)
     {

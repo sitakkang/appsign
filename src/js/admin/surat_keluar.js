@@ -19,6 +19,10 @@ $(document).ready(function(){
 	var url_form_sign	= site_url+"admin/surat_keluar/sign_document/";
 	var url_view 		= site_url+"admin/surat_keluar/detail/";
 
+	function loadingShow() {
+        $('#loading').show();
+    }
+
 	var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
@@ -158,45 +162,85 @@ $(document).ready(function(){
 	});
 
 	// Delete Button
-	$(document).on('click','a.delete_act_btn',function(e){
+	$(document).on('click','.delete_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
 		var no_surat = $(this).attr('data-surat');
 		swal({
 			title: 'Anda yakin ?',
-			text: 'Data dengan nomor surat '+no_surat+' akan di hapus ?',
+			text: 'Data Surat '+no_surat+' akan di hapus ?',
 			type: 'question',
 			showCancelButton: true,
 			confirmButtonText: 'Ya, hapus !',
-			cancelButtonText: 'Tidak, batalkan !',
-			confirmButtonClass: 'btn btn-danger',
-			cancelButtonClass: 'btn btn-primary',
-			buttonsStyling: false
-		}).then(function () {
-			$.post(url_act_del,{
-				id_surat:id_surat
-			})
-			.done(function(result) {
-				var obj = jQuery.parseJSON(result);
-				if(obj.status == 1){
-					notifNo(obj.notif);
-				}
-				if(obj.status == 2){
-					notifYesAuto(obj.notif);
-					table.ajax.reload(null, false);
-				}
-			})
-			.fail(function(res) {
-				alert("Error");
-				console.log("Error", res.responseText);
-			});
-		},function(dismiss) {
-			if (dismiss === 'cancel') {
-				$("div#MyModal").modal('hide');
-				notifCancleAuto('Proses hapus di batalkan.');
+			cancelButtonText: 'Tidak, batalkan !'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					method:"POST",
+					url:url_act_del,
+					cache:false,
+					data: {
+						id_surat:id_surat
+					}
+				})
+				.done(function(result) {
+					var obj = jQuery.parseJSON(result);
+					if(obj.status == 1){
+		                notifNo(obj.notif);
+					}
+					if(obj.status == 2){
+		                $("div#MyModal").modal('hide');
+						notifYesAuto(obj.notif);
+						table.ajax.reload(null, false);
+					}
+				})
+				.fail(function(res){
+					alert('Error Response !');
+					console.log("responseText", res.responseText);
+				});
 			}
-		})
+		});
 	});
+
+	// $(document).on('click','a.delete_act_btn',function(e){
+	// 	e.preventDefault();
+	// 	var id_surat = $(this).attr('data-id');
+	// 	var no_surat = $(this).attr('data-surat');
+	// 	swal({
+	// 		title: 'Anda yakin ?',
+	// 		text: 'Data dengan nomor surat '+no_surat+' akan di hapus ?',
+	// 		type: 'question',
+	// 		showCancelButton: true,
+	// 		confirmButtonText: 'Ya, hapus !',
+	// 		cancelButtonText: 'Tidak, batalkan !',
+	// 		confirmButtonClass: 'btn btn-danger',
+	// 		cancelButtonClass: 'btn btn-primary',
+	// 		buttonsStyling: false
+	// 	}).then(function () {
+	// 		$.post(url_act_del,{
+	// 			id_surat:id_surat
+	// 		})
+	// 		.done(function(result) {
+	// 			var obj = jQuery.parseJSON(result);
+	// 			if(obj.status == 1){
+	// 				notifNo(obj.notif);
+	// 			}
+	// 			if(obj.status == 2){
+	// 				notifYesAuto(obj.notif);
+	// 				table.ajax.reload(null, false);
+	// 			}
+	// 		})
+	// 		.fail(function(res) {
+	// 			alert("Error");
+	// 			console.log("Error", res.responseText);
+	// 		});
+	// 	},function(dismiss) {
+	// 		if (dismiss === 'cancel') {
+	// 			$("div#MyModal").modal('hide');
+	// 			notifCancleAuto('Proses hapus di batalkan.');
+	// 		}
+	// 	})
+	// });
 
 	// Status Button
 	$(document).on('click','span.label.popup',function(e){
@@ -303,7 +347,7 @@ $(document).ready(function(){
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Surat</b>');
 			$('div.modal-dialog').addClass('modal-sm');
-			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_send_act_btn">Send</button>');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" data-loading-text="Loading..." id="save_send_act_btn">Send</button>');
 			$("div#MyModalContent").html(view);
 			$("div#MyModal").modal('show');
 		})
@@ -315,18 +359,31 @@ $(document).ready(function(){
 
 	// Sending mail
 	$(document).on('click','#save_send_act_btn',function(e){
+		$(this).html(
+        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`
+      	);
+		// $("#save_send_act_btn").button('loading');
 		e.preventDefault();
+		var id_surat=$("input[name*='id_surat']").val();
 		if($('select#disetujui :selected').length > 0){
 	        var selectedsend = [];
 	        $('select#disetujui :selected').each(function(i, selected){
 	            selectedsend[i] = $(selected).val();
 	        });
         }else{ selectedsend = ''; }
+        
+        // loadingshow();
+        // $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
 		$.post(url_act_send,{
-			id_surat:$("input[name*='id_surat']").val(),
+			id_surat:id_surat,
 			disetujui:JSON.stringify(selectedsend)
 		})
 		.done(function(result) {
+			// loadingHide();
+			span = $(this).find('span'),
+		    text = span.text();
+
+		    span.remove();
 			var obj = jQuery.parseJSON(result);
 			if(obj.status == 1){
                 notifNo(obj.notif);
@@ -338,6 +395,10 @@ $(document).ready(function(){
 			}
 		})
 		.fail(function(res) {
+			span = $(this).find('span'),
+		    text = span.text();
+
+		    span.remove();
 			alert("Error");
 			console.log("Error", res.responseText);
 		});
@@ -411,36 +472,36 @@ $(document).ready(function(){
 		});
 	});
 
-	$(document).on('click','#sign_document_act_btn',function(e){
-		e.preventDefault();
-		if($('select#disetujui :selected').length > 0){
-	        var selectedsend = [];
-	        $('select#disetujui :selected').each(function(i, selected){
-	            selectedsend[i] = $(selected).val();
-	        });
-        }else{ selectedsend = ''; }
-		$.post(url_act_sign,{
-			id_surat:$("input[name*='id_surat']").val(),
-			disetujui:JSON.stringify(selectedsend)
-		})
-		.done(function(result) {
-			var obj = jQuery.parseJSON(result);
-			if(obj.status == 1){
-                notifNo(obj.notif);
-			}
-			if(obj.status == 2){
-                $("div#MyModal").modal('hide');
-            	notifYesAuto(obj.notif);
-            	table.ajax.reload(null, false);
-            	// window.location.href = 'surat_masuk/proses/'+obj.id;
-            	window.location.href = obj.url_api;
-			}
-		})
-		.fail(function(res) {
-			alert("Error");
-			console.log("Error", res.responseText);
-		});
-	});
+	// $(document).on('click','#sign_document_act_btn',function(e){
+	// 	e.preventDefault();
+	// 	if($('select#disetujui :selected').length > 0){
+	//         var selectedsend = [];
+	//         $('select#disetujui :selected').each(function(i, selected){
+	//             selectedsend[i] = $(selected).val();
+	//         });
+ //        }else{ selectedsend = ''; }
+	// 	$.post(url_act_sign,{
+	// 		id_surat:$("input[name*='id_surat']").val(),
+	// 		disetujui:JSON.stringify(selectedsend)
+	// 	})
+	// 	.done(function(result) {
+	// 		var obj = jQuery.parseJSON(result);
+	// 		if(obj.status == 1){
+ //                notifNo(obj.notif);
+	// 		}
+	// 		if(obj.status == 2){
+ //                $("div#MyModal").modal('hide');
+ //            	notifYesAuto(obj.notif);
+ //            	table.ajax.reload(null, false);
+ //            	// window.location.href = 'surat_masuk/proses/'+obj.id;
+ //            	window.location.href = obj.url_api;
+	// 		}
+	// 	})
+	// 	.fail(function(res) {
+	// 		alert("Error");
+	// 		console.log("Error", res.responseText);
+	// 	});
+	// });
 
 	// sign document
 	$(document).on('click','a.btn.sign_act_btn',function(e){

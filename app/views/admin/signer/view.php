@@ -17,6 +17,7 @@
                                     <th>Email Digisign</th>
                                     <th>Kuser Production</th>
                                     <th>Kuser Sandbox</th>
+                                    <th>User</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

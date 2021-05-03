@@ -1,10 +1,22 @@
 <div class="form-group">
+    <label class="control-label">Signer </label>
+    <select class="form-control" name="signer">
+        <?=$this->m_surat_keluar->select_approval($data=NULL,$id=$this->session->userdata('sess_id'));?>
+    </select>
+</div>
+<div class="form-group">
     <label class="control-label">Nomor Surat </label>
     <input class="form-control" type="text" name="no_surat">
 </div>
 <div class="form-group">
     <label class="control-label">Perihal </label>
     <textarea class="form-control" name="perihal" rows="3"></textarea>
+</div>
+<div class="form-group">
+    <label class="control-label">Bentuk </label>
+    <select class="form-control" name="melalui">
+        <?=$this->m_surat_keluar->bentuk_surat($data=NULL);?>
+    </select>
 </div>
 <div class="form-group">
     <label class="control-label">Jenis Surat </label>
@@ -25,9 +37,9 @@
     <input class="form-control tanggal" type="text" name="tgl_kirim" readonly>
 </div>
 <div class="form-group">
-    <label class="control-label">Bentuk </label>
-    <select class="form-control" name="melalui">
-        <?=$this->m_surat_keluar->bentuk_surat($data=NULL);?>
+    <label class="control-label">Asal Surat </label>
+    <select class="form-control" name="asal_surat">
+        <?=$this->m_surat_keluar->asal_surat($data=NULL);?>
     </select>
 </div>
 <div class="form-group">

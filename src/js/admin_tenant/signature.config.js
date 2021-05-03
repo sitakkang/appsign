@@ -16,35 +16,45 @@ interact('.digital-signature')
       target.style.border = '2px dashed #ddd';
       target.classList.remove('digital-signature--remove')
 
+
       target.setAttribute('data-x', x);
       target.setAttribute('data-y', y);
       console.log('Coordinate X,Y(' + event.pageX + ', ' + event.pageY + ')')
     },
     onend: function (event) {
       var pageCurrent = $('#pageCurrent').text();
-      $("#llx").val(event.pageX);
-      $("#lly").val(event.pageY);
-      // var la = event.pageX-150;
-      // var llx_result = la-365;
+
+      // var la = event.pageX-65;
+      // var llx_result = la-385;//kurangi 1180 850 selisih perpage
       // var lb = event.pageY + 36.68;
-      // var llb = lb-320;
+      // var llb = lb-345;
       // var lly_result = 841-llb;
-      // var urx = llx_result+150;
-      // var ury = lly_result+36.68;
-      var la = event.pageX-65;
-      var llx_result = la-385;//kurangi 1180 850 selisih perpage
-      var lb = event.pageY + 36.68;
-      var llb = lb-355;
-      var lly_result = 841-llb;
-      var urx = llx_result+75;
-      var ury = lly_result+45;
-      // $("#pageNow").val(pageCurrent);
-      $("#llx_result").val(llx_result);
-      $("#lly_result").val(lly_result); 
-      $("#urx").val(urx);
-      $("#ury").val(ury);
+      // var urx = llx_result+75;
+      // var ury = lly_result+45;
+
+
+
+      
+      // $("#llx").val(event.pageX);
+      // $("#lly").val(event.pageY);
+      // var la = event.pageX-120;
+      // var llx_result = la-376;//kurangi 1180 850 selisih perpage
+      // var lb = event.pageY + 36.68;
+      // var llb = lb-338;
+      // var lly_result = 841-llb;
+      // var urx = llx_result+95;
+      // var ury = lly_result+45;
+      // $("#llx_result").val(llx_result);
+      // $("#lly_result").val(lly_result); 
+      // $("#urx").val(urx);
+      // $("#ury").val(ury);
 
       var target = event.target;
       target.classList.add('digital-signature--remove')
+      $('#unlock').removeClass('fa fa-lock fa-2x');
+      $('#unlock').addClass('fa fa-unlock-alt fa-2x');
+      $('#lock1').val('lock1');
+      $('#digitalSignature').attr('draggable','true');
+      $('#digitalSignature').attr('ondragstart','return true;');
     }
   });

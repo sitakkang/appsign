@@ -3,6 +3,13 @@
     <input class="form-control" type="text" id="name" value="<?=$id->name;?>">
 </div>
 <div class="form-group">
+    <label class="control-label">User </label><label style="color: red;">*</label>
+    <select class="form-control" id="user_id">
+        <option value="" disabled selected hidden>Pilih User</option>
+        <?=$this->m_signer->select_user($data=$id->user_id);?>
+    </select>
+</div>
+<div class="form-group">
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Email User </label><label style="color: red;">*</label>
@@ -23,6 +30,18 @@
         <div class="col-md-6">
             <label class="control-label">Kuser Sandbox</label><label style="color: red;">*</label>
             <input class="form-control" type="text" id="kuser_sandbox" value="<?=$id->kuser_sandbox;?>">
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">Token Production </label><label style="color: red;">*</label>
+            <input class="form-control" type="text" id="token_production" value="<?=$id->token_production;?>">
+        </div>
+        <div class="col-md-6">
+            <label class="control-label">Token Sandbox</label><label style="color: red;">*</label>
+            <input class="form-control" type="text" id="token_sandbox" value="<?=$id->token_sandbox;?>">
         </div>
     </div>
 </div>
