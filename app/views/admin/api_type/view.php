@@ -6,7 +6,7 @@
                     <?php if(!empty($panel)){echo $panel;}?>
                 </div>
                 <div class="card-body">
-                    <button id="add_btn" class="btn btn-default"><i class="fa fa-plus-circle"></i> Setup Api</button><hr>
+                    <button id="add_btn" class="btn btn-default"><i class="fa fa-plus-circle"></i> Set Api Type</button><hr>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tbl_arsip">
                             <thead>

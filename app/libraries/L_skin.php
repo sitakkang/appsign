@@ -22,7 +22,7 @@ class L_skin {
 			'meta_desc' 	=> 'IMIP Application',
 			'meta_key' 		=> 'PT Indonesia Morowali Industrial Park',
 			'head_title' 	=> 'PT Indonesia Morowali Industrial Park',
-			'head_subtitle' => 'A Human Resources Information System (HRIS) is a software or online solution that is used for data entry, data tracking and the data information requirements of an organizations human resources (HR) management, payroll and bookkeeping operations'
+			'head_subtitle' => 'Rekap Surat adalah perangkat lunak yang digunakan untuk menyimpan semua data surat baik yang ditanda tangani secara Digital maupun Manual.'
 		);
     	return $data[$key];
     }

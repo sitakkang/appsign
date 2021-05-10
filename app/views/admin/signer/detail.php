@@ -1,20 +1,32 @@
 <div class="form-group">
     <label class="control-label">Nama</label>
-    <div class="form-control"><?=$id->name;?></div>
+    <input type="text" class="form-control" value="<?=$id->name;?>" readonly>
 </div>
 <div class="form-group">
-    <label class="control-label">User</label>
-    <div class="form-control"><?php echo $this->m_signer->get_userdata($id->user_id);?></div>
+    <label class="control-label">User </label>
+            <input type="text" class="form-control" value="<?=$this->m_signer->get_userdata($id->user_id);?>" readonly>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">UserID Digisign Production</label>
+            <input type="text" class="form-control" value="<?=$id->digisign_user_id_production;?>" readonly>
+        </div>
+        <div class="col-md-6">
+            <label class="control-label">UserID Digisign Sandbox</label>
+            <input type="text" class="form-control" value="<?=$id->digisign_user_id_sandbox;?>" readonly>
+        </div>
+    </div>
 </div>
 <div class="form-group">
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Email User </label>
-            <div class="form-control"><?=$id->email_user;?></div>
+            <input type="text" class="form-control" value="<?=$id->email_user;?>" readonly>
         </div>
         <div class="col-md-6">
             <label class="control-label">Email Digisign</label>
-            <div class="form-control"><?=$id->email_digisign;?></div>
+            <input type="text" class="form-control" value="<?=$id->email_digisign;?>" readonly>
         </div>
     </div>
 </div>
@@ -22,11 +34,11 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Kuser Production </label>
-            <div class="form-control"><?=$id->kuser_production;?></div>
+            <input type="text" class="form-control" value="<?=$id->kuser_production;?>" readonly>
         </div>
         <div class="col-md-6">
             <label class="control-label">Kuser Sandbox</label>
-            <div class="form-control"><?=$id->kuser_sandbox;?></div>
+            <input type="text" class="form-control" value="<?=$id->kuser_sandbox;?>" readonly>
         </div>
     </div>
 </div>
@@ -34,11 +46,11 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Token Production </label>
-            <div class="form-control"><?=$id->token_production;?></div>
+            <input type="text" class="form-control" value="<?=$id->token_production;?>" readonly>
         </div>
         <div class="col-md-6">
             <label class="control-label">Token Sandbox</label>
-            <div class="form-control"><?=$id->token_sandbox;?></div>
+            <input type="text" class="form-control" value="<?=$id->token_sandbox;?>" readonly>
         </div>
     </div>
 </div>
@@ -46,11 +58,11 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">No. Telepon </label>
-            <input class="form-control" type="number" id="telepon" value="<?=$id->telepon;?>">
+            <input type="text" class="form-control" value="<?=$id->telepon;?>" readonly>
         </div>
         <div class="col-md-6">
             <label class="control-label">Jenis Kelamin </label>
-            <div class="form-control" id="jenis_kelamin"><?=$id->jenis_kelamin;?></div>
+            <input type="text" class="form-control" value="<?=$id->jenis_kelamin;?>" readonly>
         </div>
     </div>
 </div>
@@ -58,11 +70,11 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Tempat Lahir </label>
-            <div class="form-control"><?=$id->tempat_lahir;?></div>
+            <input type="text" class="form-control" value="<?=$id->tempat_lahir;?>" readonly>
         </div>
         <div class="col-md-6">
             <label class="control-label">Tanggal Lahir </label>
-            <div class="form-control"><?=$id->tgl_lahir;?></div>
+            <input type="text" class="form-control" value="<?=$id->tgl_lahir;?>" readonly>
         </div>
     </div>
 </div>
@@ -70,35 +82,35 @@
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Nomor KTP </label>
-            <div class="form-control"><?=$id->id_ktp;?></div>
+            <input type="text" class="form-control" value="<?=$id->id_ktp;?>" readonly>
         </div>
         <div class="col-md-6">
             <label class="control-label">Nomor NPWP </label>
-            <div class="form-control"><?=$id->id_npwp;?></div>
+            <input type="text" class="form-control" value="<?=$id->id_npwp;?>" readonly>
         </div>
     </div>
 </div>
 <div class="form-group">
     <label class="control-label">Alamat </label>
-    <div class="form-control"><?=$id->alamat;?></div>
+    <input type="text" class="form-control" value="<?=$id->alamat;?>" readonly>
 </div>
 <div class="form-group">
     <label class="control-label">Provinsi </label>
-    <div class="form-control"><?php echo $this->m_signer->get_provincy($id->provinci);?></div>
+    <input type="text" class="form-control" value="<?=$this->m_signer->get_provincy($id->provinci);?>" readonly>
 </div>
 <div class="form-group">
     <label class="control-label">Kota/Kabupaten </label>
-    <div class="form-control"><?php echo $this->m_signer->get_kota($id->kota);?></div>
+    <input type="text" class="form-control" value="<?=$this->m_signer->get_kota($id->kota);?>" readonly>
 </div>
 <div class="form-group">
     <label class="control-label">Kecamatan </label>
-    <div class="form-control"><?php echo $this->m_signer->get_kecamatan($id->kecamatan);?></div>
+    <input type="text" class="form-control" value="<?=$this->m_signer->get_kecamatan($id->kecamatan);?>" readonly>
 </div>
 <div class="form-group">
     <label class="control-label">Kelurahan </label>
-    <div class="form-control"><?php echo $this->m_signer->get_desa($id->desa);?></div>
+    <input type="text" class="form-control" value="<?=$this->m_signer->get_desa($id->desa);?>" readonly>
 </div>
 <div class="form-group">
     <label class="control-label">Kode Pos </label>
-    <div class="form-control"><?=$id->kode_pos;?></div>
+    <input type="text" class="form-control" value="<?=$id->kode_pos;?>" readonly>
 </div>

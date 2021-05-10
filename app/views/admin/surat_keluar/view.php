@@ -7,9 +7,7 @@
                     <?php if(!empty($panel)){echo $panel;}?>
                 </div>
                 <div class="card-body">
-                    <div id="agentListDia">
-                        <span id="loading"> Loading .... </span>
-                    </div>
+                    <button id="add_btn" class="btn btn-default"><i class="fa fa-plus-circle"></i> Surat Keluar</button><hr>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tbl_arsip">
                             <thead>
@@ -17,12 +15,10 @@
                                     <th>No</th>
                                     <th>Nomor Surat</th>
                                     <th>User</th>
-                                    <th>Tanggal Terima</th>
-                                    <th>Diusulkan</th>
-                                    <th>Jenis</th>
-                                    <th>Bentuk</th>
+                                    <th>Tgl Terima</th>
+                                    <th>Jenis Ttd</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th width="220">Action</th>
                                 </tr>
                             </thead>
                             <tbody>

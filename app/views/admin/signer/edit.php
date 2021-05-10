@@ -10,6 +10,18 @@
     </select>
 </div>
 <div class="form-group">
+     <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">UserID Digisign Production</label><label style="color: red;">*</label>
+            <input class="form-control" type="text" id="digisign_user_id_production" value="<?=$id->digisign_user_id_production;?>">
+        </div>
+        <div class="col-md-6">
+            <label class="control-label">UserID Digisign Sandbox</label><label style="color: red;">*</label>
+            <input class="form-control" type="text" id="digisign_user_id_sandbox" value="<?=$id->digisign_user_id_sandbox;?>">
+        </div>
+    </div>
+</div>
+<div class="form-group">
     <div class="row">
         <div class="col-md-6">
             <label class="control-label">Email User </label><label style="color: red;">*</label>

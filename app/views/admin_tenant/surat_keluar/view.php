@@ -6,18 +6,17 @@
                     <?php if(!empty($panel)){echo $panel;}?>
                 </div>
                 <div class="card-body">
-                    <button id="add_btn" class="btn btn-default"><i class="fa fa-plus"></i> Surat Keluar</button><hr>
+                    <button id="add_btn" class="btn btn-default"><i class="fa fa-plus-circle"></i> Surat Keluar</button><hr>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tbl_arsip">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nomor Surat</th>
-                                    <th>Tanggal Terima</th>
-                                    <th>Diusulkan</th>
-                                    <th>Jenis</th>
+                                    <th>Tgl Terima</th>
+                                    <th>Jenis Ttd</th>
+                                    <th>Tujuan</th>
                                     <th>Status</th>
-                                    <th>Bentuk</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

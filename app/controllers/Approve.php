@@ -11,9 +11,9 @@ class Approve extends CI_Controller {
     }
 
     public function index()
-	{
-		echo 'Hello Index';
-	}
+    {
+        echo 'Hello Index';
+    }
 
     function sendEmail($jenis_action,$params_user,$path_folder){
         
@@ -66,10 +66,10 @@ class Approve extends CI_Controller {
         $this->db->where('id_surat_keluar', $params['id_surat_keluar']);
         $this->db->update('app_surat_keluar', $update);
     }
-	public function approvekeluar($token)
-	{   
+    public function approvekeluar($token)
+    {   
         $approval='Approval Denied </br>';
-		$get_surat = $this->db->query("SELECT id_surat_keluar, status, path_folder, llx, lly, urx, ury, attach1, signer, token_time, token_time_exp, token, page,last_action, action_time, document_name FROM app_surat_keluar WHERE token='".$token."' LIMIT 1");
+        $get_surat = $this->db->query("SELECT id_surat_keluar, status, path_folder, llx, lly, urx, ury, attach1, signer, token_time, token_time_exp, token, page,last_action, action_time, document_name FROM app_surat_keluar WHERE token='".$token."' LIMIT 1");
         $rows = $get_surat->row();
         if(empty($rows->token)){
             $approval='Token is not Exist.';
@@ -87,7 +87,7 @@ class Approve extends CI_Controller {
                     $update['status'] = 6;
                     $this->db->where('id_surat_keluar', $rows->id_surat_keluar);
                     $this->db->update('app_surat_keluar', $update);
-                    $query_signer = $this->db->query('SELECT name FROM t_signer WHERE id='. $rows->signer .' LIMIT 1');
+                    $query_signer = $this->db->query('SELECT * FROM t_signer WHERE id='. $rows->signer .' LIMIT 1');
                     $data_signer = $query_signer->row();
                     $name_signer=$data_signer->name;
                     $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer];
@@ -107,17 +107,22 @@ class Approve extends CI_Controller {
                             $url_download_document=$id->url;
                         }
                     }
-                    $get_signer = $this->db->query("SELECT id, kuser_production, kuser_sandbox, email_user, email_digisign, name FROM t_signer WHERE id='".$rows->signer."' LIMIT 1");
+                    $get_signer = $this->db->query("SELECT * FROM t_signer WHERE id='".$rows->signer."' LIMIT 1");
                     $rows_signer = $get_signer->row();
+                    $token_api_all="";
+                    $user_id_digisign="";
                     if($type==1){
                         $kuser=$rows_signer->kuser_sandbox;
+                        $user_id_digisign=$rows_signer->digisign_user_id_sandbox;
+                        $token_api_all=$rows_signer->token_sandbox;
                     }else{
                         $kuser=$rows_signer->kuser_production;
+                        $user_id_digisign=$rows_signer->digisign_user_id_production;
+                        $token_api_all=$rows_signer->token_production;
                     }
                     $email_user=$rows_signer->email_user;
                     $email_dgsign=$rows_signer->email_digisign;
                     $name_signer=$rows_signer->name;
-                    // $doc_id = rand(0,9999).time();
                     $doc_id = $rows->document_name;
                     $real_t_file = $rows->path_folder;
                     $llx = $rows->llx;
@@ -129,7 +134,7 @@ class Approve extends CI_Controller {
                         'jsonfield' => json_encode(
                             [
                                 'JSONFile' => [
-                                    "userid"=> "adminimip@tandatanganku.com", 
+                                    "userid"=> $user_id_digisign, 
                                     "document_id" => $doc_id, 
                                     "payment" => "3", 
                                     "redirect" => true, 
@@ -160,7 +165,7 @@ class Approve extends CI_Controller {
                                 ),
                     ];
                     //send Document
-                    $headers=array('Authorization: Bearer gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM');
+                    $headers=array('Authorization: Bearer '.$token_api_all);
                     $curl = curl_init();
                     curl_setopt($curl, CURLOPT_URL, $url_send_document);
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -179,7 +184,7 @@ class Approve extends CI_Controller {
                                 'jsonfield' => json_encode(
                                     [
                                         'JSONFile' => [
-                                            "userid"=> "adminimip@tandatanganku.com", 
+                                            "userid"=> $email_dgsign, 
                                             "document_id" => $doc_id, 
                                         ],
                                     ],
@@ -226,14 +231,31 @@ class Approve extends CI_Controller {
                                     $params_user=['email_signer'=>$email_user,'user_name'=>$name_signer,'action_time'=>$action_time];
                                     $sendEmail=$this->sendEmail($jenis_action,$params_user,$real_t_file);
 
+                                }else{
+                                    $update['status'] = 7;
+                                    $update['document_id'] = $doc_id;
+                                    $this->db->where('id_surat_keluar', $rows->id_surat_keluar);
+                                    $this->db->update('app_surat_keluar', $update);
+                                    $message='Approval Digital Signature berhasil tapi donwload file gagal. Info : '.$response_text_download->JSONFile->notif;
+                                    $data=['name_signer'=>$name_signer,'message'=>$message];
+                                    $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
                                 }
+                            }else{
+                                $update['status'] = 7;
+                                $update['document_id'] = $doc_id;
+                                $this->db->where('id_surat_keluar', $rows->id_surat_keluar);
+                                $this->db->update('app_surat_keluar', $update);
+                                $message='Approval Digital Signature berhasil tapi donwload file gagal. Info : Bermasalah pada koneksi saat download file.';
+                                $data=['name_signer'=>$name_signer,'message'=>$message];
+                                $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
                             }
                         }else{
-                            $message='Approval Digital Signature gagal. Bermasalah pada saat melakukan download file dari Digisign. Silahkan hubungi admin untuk informasi lenih lanjut.';
+                            $message='Approval Digital Signature gagal. Info : '.$response_text->JSONFile->notif;
                             $data=['name_signer'=>$name_signer,'message'=>$message];
                             $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
                         } 
                     }else{
+
                         $message='Approval Digital Signature gagal. Bermasalah pada koneksi internet anda. Silahkan hubungi admin untuk informasi lenih lanjut.';
                         $data=['name_signer'=>$name_signer,'message'=>$message];
                         $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
@@ -258,70 +280,94 @@ class Approve extends CI_Controller {
                 $query_signer = $this->db->query('SELECT name FROM t_signer WHERE id='. $rows->signer .' LIMIT 1');
                 $data_signer = $query_signer->row();
                 $name_signer=$data_signer->name;
-                $message='Approval Digital Signature gagal. Document ini telah rejected sebelumnya pada '.$rows->action_time;
+                $message='Approval Digital Signature gagal. Document mengalami perubahan status.';
                 $data=['name_signer'=>$name_signer,'message'=>$message];
                 $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
             }  
         }
+        
         echo $approval;
-	}
+    }
 
-	public function cancelkeluar($token)
-	{
+    public function cancelkeluar($token)
+    {
         $get_surat = $this->db->query("SELECT * FROM app_surat_keluar WHERE token='".$token."' LIMIT 1");
         $rows = $get_surat->row();
-        $query_signer = $this->db->query('SELECT name,email_user FROM t_signer WHERE id='. $rows->signer .' LIMIT 1');
-        $data_signer = $query_signer->row();
-        $name_signer=$data_signer->name;
-        $status=$rows->status;
-        if($status!=5){
-            if($status==4){
-                $message='Digital signature rejected sudah dilakukan sebelumnya pada '.$rows->action_time;
-                $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer,'message'=>$message];
-                $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
-            // }elseif($status==6){
-            //     $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer];
-            //     $approval=$this->load->view($this->dir_v . 'v_infoexpired', $data, TRUE);
+        if(!empty($rows->signer)){
+            $query_signer = $this->db->query('SELECT name,email_user FROM t_signer WHERE id='. $rows->signer .' LIMIT 1');
+            $data_signer = $query_signer->row();
+            $name_signer=$data_signer->name;
+            $status=$rows->status;
+            if($status!=5){
+                if($status==4){
+                    $message='Digital signature rejected sudah dilakukan sebelumnya pada '.$rows->action_time;
+                    $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer,'message'=>$message];
+                    $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
+                }elseif($status==3){
+                    $jenis_action='reject';
+                    $params=[];
+                    $action_time=$this->l_surat_keluar->DateTimeNow();
+                    $params=['last_action'=>$jenis_action,'action_time'=>$action_time,'id_surat_keluar'=>$rows->id_surat_keluar];
+                    $this->updateAction($params);
+                    $update['status'] = 4;
+                    $this->db->where('token', $token);
+                    $this->db->update('app_surat_keluar', $update);
+                    $real_t_file='';
+                    $email_user=$data_signer->email_user;
+                    $params_user=['email_signer'=>$email_user,'user_name'=>$name_signer,'action_time'=>$action_time];
+                    $sendEmail=$this->sendEmail($jenis_action,$params_user,$real_t_file);
+                    $message='Your Digital signature has been Rejected.';
+                    $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer,'message'=>$message];
+                    $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);  
+                }elseif($status==6){
+                    $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer];
+                    $approval=$this->load->view($this->dir_v . 'v_infoexpired', $data, TRUE);
+                }else{
+                    $message='Digital Signature rejected gagal. Document mengalami perubahan status';
+                    $data=['name_signer'=>$name_signer,'message'=>$message];
+                    $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE); 
+                }
+                
             }else{
-                $jenis_action='reject';
-                $params=[];
-                $action_time=$this->l_surat_keluar->DateTimeNow();
-                $params=['last_action'=>$jenis_action,'action_time'=>$action_time,'id_surat_keluar'=>$rows->id_surat_keluar];
-                $this->updateAction($params);
-                $update['status'] = 4;
-                $this->db->where('token', $token);
-                $this->db->update('app_surat_keluar', $update);
-                $real_t_file='';
-                $email_user=$data_signer->email_user;
-                $params_user=['email_signer'=>$email_user,'user_name'=>$name_signer,'action_time'=>$action_time];
-                $sendEmail=$this->sendEmail($jenis_action,$params_user,$real_t_file);
-                $message='Your Digital signature has been Rejected.';
-                $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer,'message'=>$message];
-                $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);   
-            }
-            
+                $message='Digital Signature rejected gagal. Document ini sudah approved sebelumnya pada '.$rows->action_time;
+                $data=['name_signer'=>$name_signer,'message'=>$message];
+                $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
+            }    
         }else{
-            $message='Digital Signature rejected gagal. Document ini sudah approved sebelumnya pada '.$rows->action_time;
+            $name_signer='User';
+            $message='Digital Signature rejected gagal. Token tidak ditemukan';
             $data=['name_signer'=>$name_signer,'message'=>$message];
             $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
         }
-         echo $approval; 
+        echo $approval; 
         
-	}
+    }
 
     public function request_token($id_surat)
     {
+        $approval='';
         $get_surat = $this->db->query("SELECT * FROM app_surat_keluar WHERE id_surat_keluar='".$id_surat."' LIMIT 1");
         $rows = $get_surat->row();
         $query_signer = $this->db->query('SELECT name FROM t_signer WHERE id='. $rows->signer .' LIMIT 1');
         $data_signer = $query_signer->row();
         $name_signer=$data_signer->name;
-        $data=[];
-        $update['status'] = 2;
-        $this->db->where('id_surat_keluar', $id_surat);
-        $this->db->update('app_surat_keluar', $update);
-        $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer];
-        $approval=$this->load->view($this->dir_v . 'v_inforeqtoken', $data, TRUE);
+        if($rows->status==6){
+            $data=[];
+            $update['status'] = 2;
+            $this->db->where('id_surat_keluar', $id_surat);
+            $this->db->update('app_surat_keluar', $update);
+            $data=['id_surat'=>$rows->id_surat_keluar,'name_signer'=>$name_signer];
+            $approval=$this->load->view($this->dir_v . 'v_inforeqtoken', $data, TRUE); 
+        }elseif($rows->status==5){
+            $message='Request Token Digital Signature gagal. Document telah ditandatangani sebelumnya pada '.$rows->action_time;
+            $data=['name_signer'=>$name_signer,'message'=>$message];
+            $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
+        }else{
+            $message='Request Token Digital Signature gagal. Status document tidak memenuhi.';
+            $data=['name_signer'=>$name_signer,'message'=>$message];
+            $approval=$this->load->view($this->dir_v . 'v_infocancel', $data, TRUE);
+        }
+        
         echo $approval;
     }
 

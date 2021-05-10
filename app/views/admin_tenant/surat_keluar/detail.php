@@ -1,7 +1,18 @@
 <div class="form-group">
-    <label class="control-label">Signer </label>
-    <div class="form-control"><?php echo $this->m_surat_keluar->get_signer($id->signer);?></div>
-</div><div class="form-group">
+    <label class="control-label">Jenis Tanda tangan </label>
+    <div class="form-control"><?php echo $this->m_surat_keluar->label_jenis_ttd($id->jenis_ttd);?></div>
+</div>
+<?php
+if($id->jenis_ttd=='Digital'){
+?>
+    <div class="form-group">
+        <label class="control-label">Penanda tangan </label>
+        <div class="form-control"><?php echo $this->m_surat_keluar->get_signer($id->signer);?></div>
+    </div>
+<?php
+}
+?>
+<div class="form-group">
     <label class="control-label">Nomor Surat </label>
     <div class="form-control"><?php echo $id->no_surat;?></div>
 </div>
@@ -10,7 +21,7 @@
     <div class="form-control"><?php echo $id->perihal;?></div>
 </div>
 <div class="form-group">
-    <label class="control-label">Bentuk </label>
+    <label class="control-label">Type Surat </label>
     <div class="form-control"><?php echo $id->melalui;?></div>
 </div>
 <div class="form-group">

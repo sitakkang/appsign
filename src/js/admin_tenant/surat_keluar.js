@@ -11,8 +11,8 @@ $(document).ready(function(){
 	var url_act_attach	= site_url+"admin_tenant/surat_keluar/act_upload_attach";
 	// var url_form_send	= site_url+"admin/surat_keluar/send_mail/";
 	// var url_act_send	= site_url+"admin/surat_keluar/act_send_mail/";
-	// var url_status		= site_url+"admin/surat_keluar/view_status/";
-	// var url_act_status	= site_url+"admin/surat_keluar/act_status";
+	var url_status		= site_url+"admin_tenant/surat_keluar/view_status/";
+	var url_act_status	= site_url+"admin_tenant/surat_keluar/act_status";
 	// var url_form_vendor	= site_url+"admin/surat_keluar/upload_vendor/";
 	// var url_upload_vendor	= site_url+"admin/surat_keluar/upload_vendor_act_btn";
 	var url_act_sign	= site_url+"admin_tenant/surat_keluar/act_sign_document/";
@@ -22,8 +22,63 @@ $(document).ready(function(){
 	var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
-        "order": [["0", "desc"]]
+        "order": [["0", "asc"]]
     });
+
+    $(document).on('click','a.status_act_btn',function(e){
+		e.preventDefault();
+		var id_surat = $(this).attr('data-id');
+		$.get(url_status+id_surat)
+		.done(function(view) {
+			$('#MyModalTitle').html('<b>Status</b>');
+			$('div.modal-dialog').addClass('modal-sm');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" id="save_status_btn">Simpan</button>');
+			$("div#MyModalContent").html(view);
+			$("div#MyModal").modal('show');
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
+
+	$(document).on('click','button#save_status_btn',function(e){
+		e.preventDefault();
+		$.post(url_act_status,{
+			id_surat:$("input[name*='id_surat']").val(),
+			status:$("select[name*='status']").val()
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 1){
+				notifNo(obj.notif);
+			}
+			if(obj.status == 2){
+				$("div#MyModal").modal('hide');
+				notifYesAuto(obj.notif);
+				table.ajax.reload(null, false);
+			}
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
+
+
+    $(document).on('change','#jenis_ttd',function(e){
+		e.preventDefault();
+		var jenis_ttd = $("select[id*='jenis_ttd']").val();
+		var surat_signer = document.getElementById("surat_signer");
+		var surat_content = document.getElementById("surat_content");
+		if(jenis_ttd=="Digital"){
+			surat_signer.style.display="block";
+			surat_content.style.display="block";
+		}else if(jenis_ttd=="Manual"){
+			surat_signer.style.display="none";
+			surat_content.style.display="block";
+		}
+	});
 
     // View
 	$(document).on('click','a.view_act_btn',function(e){
@@ -74,6 +129,7 @@ $(document).ready(function(){
 	$(document).on('click','button#save_add_btn',function(e){
 		e.preventDefault();
 		$.post(url_act_add,{
+			jenis_ttd:$("select[name*='jenis_ttd_']").val(),
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
 			jenis:$("select[name*='jenis']").val(),
@@ -108,7 +164,7 @@ $(document).ready(function(){
 	$(document).on('click','a.upload_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
-		var melalui = $(this).attr('data-melalui');
+		var jenis_ttd = $(this).attr('data-jenis_ttd');
 		$.get(url_form_attach+id_surat)
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Upload Attachment</b>');
@@ -125,7 +181,7 @@ $(document).ready(function(){
 					});
 			        this.on("success", function() {
 			        	// table.ajax.reload(null, false);
-			        	if(melalui=='Softcopy'){
+			        	if(jenis_ttd=='Digital'){
 			        		window.location.href = 'sign_pdf/'+id_surat;
 			        	}else{
 			        		table.ajax.reload(null, false);
@@ -140,10 +196,10 @@ $(document).ready(function(){
 		});
 	});
 
-	$(document).on('click','a.posisi_act_btn',function(e){
-		var id_surat = $(this).attr('data-id');
-		window.location.href = 'sign_pdf/'+id_surat;
-	});
+	// $(document).on('click','a.posisi_act_btn',function(e){
+	// 	var id_surat = $(this).attr('data-id');
+	// 	window.location.href = 'sign_pdf/'+id_surat;
+	// });
 
 	// Edit Mail
 	$(document).on('click','a.edit_act_btn',function(e){

@@ -119,6 +119,8 @@ $(document).ready(function(){
 
 		var lastnum = table.data().count() + 1;
 		var name = $("input#name").val();
+		var digisign_user_id_production = $("input#digisign_user_id_production").val();
+		var digisign_user_id_sandbox = $("input#digisign_user_id_sandbox").val();
 		var email_user = $("input#email_user").val();
 		var email_digisign = $("input#email_digisign").val();
 		var kuser_production = $("input#kuser_production").val();
@@ -144,6 +146,8 @@ $(document).ready(function(){
 			cache:false,
 			data: {
 				name:name,
+				digisign_user_id_production:digisign_user_id_production,
+				digisign_user_id_sandbox:digisign_user_id_sandbox,
 				user_id:user_id,
 				token_sandbox:token_sandbox,
 	            token_production:token_production,
@@ -215,6 +219,8 @@ $(document).ready(function(){
 	$(document).on('click','#save_edit_btn',function(e){
 		e.preventDefault();
 		var name = $("input#name").val();
+		var digisign_user_id_production = $("input#digisign_user_id_production").val();
+		var digisign_user_id_sandbox = $("input#digisign_user_id_sandbox").val();
 		var token_production = $("input#token_production").val();
 		var token_sandbox = $("input#token_sandbox").val();
 		var user_id = $("select#user_id").val();
@@ -240,6 +246,8 @@ $(document).ready(function(){
 			data: {
 				id:$("input#id").val(),
 				name:name,
+				digisign_user_id_production:digisign_user_id_production,
+				digisign_user_id_sandbox:digisign_user_id_sandbox,
 	            email_user:email_user,
 	            user_id:user_id,
 				token_sandbox:token_sandbox,

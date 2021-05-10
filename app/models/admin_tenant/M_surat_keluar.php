@@ -73,18 +73,64 @@
 		}
 	}
 
+	function select_status_manual($data)
+	{
+		$opt_srt = array(
+			0=>'Mail Created',
+			1=>'Doc.Uploaded',
+			3=>'Waiting Approval',
+			4=>'Rejected Signature',
+			5=>'Document Signed'
+		);
+		echo '<option value="" disabled selected hidden>Pilih Status</option>';
+		foreach($opt_srt as $key => $val) {
+			if($data == $key){
+				echo '<option value="'.$key.'" selected>'.$val.'</option>';
+			}else{
+				echo '<option value="'.$key.'">'.$val.'</option>';
+			}
+			
+		}
+	}
+
+	function label_jenis_ttd($data){
+		switch ($data) {
+			case 'Digital':
+				return '<span class="badge badge-danger">Digital</span>';
+				break;
+			case 'Manual':
+				return '<span class="badge badge-warning">Manual</span>';
+				break;
+		default:
+				return '<span class="badge badge-dark">Undetected</span>';
+				break;	
+		}
+	}
+
 	function keluar_act_btn($id, $no_surat)
 	{
 		$return_data='';
-		$query = $this->db->query('SELECT approval_status, status, melalui FROM app_surat_keluar WHERE id_surat_keluar ='.$id.' LIMIT 1');
+		$query = $this->db->query('SELECT * FROM app_surat_keluar WHERE id_surat_keluar ='.$id.' LIMIT 1');
         $rows = $query->row();
-		$return_data.='<a href="" class="upload_act_btn" data-melalui="'.$rows->melalui.'" data-id="'.$id.'" title="Upload" style="color:#0F9647;"><button><i class="fas fa-upload"></i></button></a>
-		<a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="color:#0F9647;"><button><i class="fas fa-search"></i></button></a>
+        if($rows->status!=5){
+			$return_data.='<a href="" class="upload_act_btn" data-jenis_ttd="'.$rows->jenis_ttd.'" data-id="'.$id.'" title="Upload" style="color:#0F9647;"><button><i class="fas fa-upload"></i></button></a>
+			';
+		}
+		$return_data.='
+        <a href="" class="view_act_btn" data-id="'.$id.'" title="View Detail" style="color:#0F9647;"><button><i class="fas fa-search"></i></button></a>
+        ';
+		if($rows->status==0 || $rows->status==1){
+			$return_data.='
 		<a href="" class="edit_act_btn" data-id="'.$id.'" title="Edit" style="color:#0F9647;"><button><i class="fas fa-edit"></i></button></a>
 		<a href="" class="delete_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Hapus" style="color:#BD2130;"><button><i class="fas fa-trash"></i></button></a>';
-		if(($rows->status==1 || $rows->status==2 || $rows->status==4 || $rows->status== 5 || $rows->status== 6) && ($rows->melalui=="Softcopy")){
+		}
+		if(($rows->status==1 || $rows->status==2) && ($rows->jenis_ttd=="Digital")){
             $return_data.='
-            <a href="" class="posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="color:#0F9647;"><button><i class="fas fa-file-powerpoint"></button></i></a> ';
+            <a href="sign_pdf/'.$id.'" class="posisi_act_btn" data-id="'.$id.'" data-surat="'.$no_surat.'" title="Posisi" style="color:#0F9647;"><button><i class="fas fa-file-powerpoint"></button></i></a> ';
+        }
+        // if(($rows->jenis_ttd=="Manual" && $rows->status!=5) && ($rows->user==$user_id)){
+        if($rows->jenis_ttd=="Manual"){
+            $return_data.=' <a href="" class="status_act_btn" data-id="'.$id.'" title="Status" style="color:#0F9647;"><button><i class="fas fa-calendar-plus"></i></button></a>';
         }
 		
 		return $return_data;
@@ -155,6 +201,7 @@
     {
         $query = $this->db->query('SELECT id, name FROM t_signer where user_id='.$id.'');
 		if(empty($data)){
+			echo '<option value="" disabled selected hidden>Pilih Penanda tangan</option>';
 			foreach($query->result() as $id) {
 				echo '<option value="'.$id->id.'">'.$id->name.'</option>';
 			}
@@ -194,12 +241,30 @@
 		}
 	}
 
+	function select_jenisttd($data)
+	{
+		$opt_srt = array(
+			"Digital",
+			"Manual"
+		);
+		echo '<option value="" disabled selected hidden>Jenis Tandatangan</option>';
+		foreach($opt_srt as $val) {
+			if($data == $val){
+				echo '<option value="'.$val.'" selected>'.$val.'</option>';
+			}else{
+				echo '<option value="'.$val.'">'.$val.'</option>';
+			}
+			
+		}
+	}
+
 	function bentuk_surat($data)
 	{
 		$opt_srt = array(
 			"Softcopy",
 			"Hardcopy"
 		);
+		echo '<option value="" disabled selected hidden>Pilih Type Surat</option>';
 		foreach($opt_srt as $val) {
 			if($data == $val){
 				echo '<option value="'.$val.'" selected>'.$val.'</option>';

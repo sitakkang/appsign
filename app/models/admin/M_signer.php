@@ -73,7 +73,7 @@
 
     function select_user($data)
     {
-        $query = $this->db->query('SELECT id_user, fullname FROM conf_users where level=3');
+        $query = $this->db->query('SELECT id_user, fullname FROM conf_users');
         if(empty($data)){
             foreach($query->result() as $id) {
                 echo '<option value="'.$id->id_user.'">'.$id->fullname.'</option>';

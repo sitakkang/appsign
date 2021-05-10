@@ -15,7 +15,7 @@ $(document).ready(function(){
 	var url_act_status	= site_url+"admin/surat_keluar/act_status";
 	var url_form_vendor	= site_url+"admin/surat_keluar/upload_vendor/";
 	var url_upload_vendor	= site_url+"admin/surat_keluar/upload_vendor_act_btn";
-	var url_act_sign	= site_url+"admin/surat_keluar/act_sign_document/";
+	var url_act_sign	= site_url+"admin/surat_keluar/act_sign_doc/";
 	var url_form_sign	= site_url+"admin/surat_keluar/sign_document/";
 	var url_view 		= site_url+"admin/surat_keluar/detail/";
 
@@ -23,10 +23,24 @@ $(document).ready(function(){
         $('#loading').show();
     }
 
+    $(document).on('change','#jenis_ttd',function(e){
+		e.preventDefault();
+		var jenis_ttd = $("select[id*='jenis_ttd']").val();
+		var surat_signer = document.getElementById("surat_signer");
+		var surat_content = document.getElementById("surat_content");
+		if(jenis_ttd=="Digital"){
+			surat_signer.style.display="block";
+			surat_content.style.display="block";
+		}else if(jenis_ttd=="Manual"){
+			surat_signer.style.display="none";
+			surat_content.style.display="block";
+		}
+	});
+
 	var table = $('#tbl_arsip').DataTable({
         "ajax": url_ctrl+'table',
         "deferRender": true,
-        "order": [["0", "desc"]]
+        "order": [["0", "asc"]]
     });
 
 	$(document).on('click','button#add_btn',function(e){
@@ -54,9 +68,12 @@ $(document).ready(function(){
 	$(document).on('click','button#save_add_btn',function(e){
 		e.preventDefault();
 		$.post(url_act_add,{
+			jenis_ttd:$("select[name*='jenis_ttd_']").val(),
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
 			jenis:$("select[name*='jenis']").val(),
+			signer:$("select[name*='signer']").val(),
+			asal_surat:$("select[name*='asal_surat']").val(),
 			tujuan:$("textarea[name*='tujuan']").val(),
 			diusulkan:$("input[name*='diusulkan']").val(),
 			tgl_kirim:$("input[name*='tgl_kirim']").val(),
@@ -81,6 +98,7 @@ $(document).ready(function(){
 
 		});
 	});
+
 	// View
 	$(document).on('click','a.view_act_btn',function(e){
 		e.preventDefault();
@@ -134,6 +152,8 @@ $(document).ready(function(){
 		e.preventDefault();
 		$.post(url_act_edit,{
 			id_surat:$("input[name*='id_surat']").val(),
+			signer:$("select[name*='signer']").val(),
+			asal_surat:$("select[name*='asal_surat']").val(),
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
 			jenis:$("select[name*='jenis']").val(),
@@ -243,7 +263,7 @@ $(document).ready(function(){
 	// });
 
 	// Status Button
-	$(document).on('click','span.label.popup',function(e){
+	$(document).on('click','a.status_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
 		$.get(url_status+id_surat)
@@ -284,9 +304,10 @@ $(document).ready(function(){
 	});
 
 	// Upload attachment
-	$(document).on('click','a.btn.upload_act_btn',function(e){
+	$(document).on('click','a.upload_act_btn',function(e){
 		e.preventDefault();
 		var id_surat = $(this).attr('data-id');
+		var jenis_ttd = $(this).attr('data-jenis_ttd');
 		$.get(url_form_attach+id_surat)
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Upload Attachment</b>');
@@ -303,7 +324,11 @@ $(document).ready(function(){
 					});
 			        this.on("success", function() {
 			        	// table.ajax.reload(null, false);
-			        	window.location.href = 'sign_pdf/'+id_surat;
+			        	if(jenis_ttd=='Digital'){
+			        		window.location.href = 'sign_pdf/'+id_surat;
+			        	}else{
+			        		table.ajax.reload(null, false);
+			        	}
 			        });
 			    }
             });
@@ -373,7 +398,7 @@ $(document).ready(function(){
         }else{ selectedsend = ''; }
         
         // loadingshow();
-        // $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+        
 		$.post(url_act_send,{
 			id_surat:id_surat,
 			disetujui:JSON.stringify(selectedsend)
@@ -386,6 +411,7 @@ $(document).ready(function(){
 		    span.remove();
 			var obj = jQuery.parseJSON(result);
 			if(obj.status == 1){
+				$('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
                 notifNo(obj.notif);
 			}
 			if(obj.status == 2){
@@ -420,10 +446,11 @@ $(document).ready(function(){
     	$("div#MyModalFooter").empty();
 	});
 
-	$(document).on('click','a.btn.posisi_act_btn',function(e){
-		var id_surat = $(this).attr('data-id');
-		window.location.href = 'sign_pdf/'+id_surat;
-	});
+	// $(document).on('click','a.btn.posisi_act_btn',function(e){
+	// 	var id_surat = $(this).attr('data-id');
+	// 	alert(id_surat);
+	// 	// window.location.href = 'sign_pdf/'+id_surat;
+	// });
 
 	$(document).on('click','a.btn.upload_vendor_btn',function(e){
 		e.preventDefault();
@@ -472,36 +499,36 @@ $(document).ready(function(){
 		});
 	});
 
-	// $(document).on('click','#sign_document_act_btn',function(e){
-	// 	e.preventDefault();
-	// 	if($('select#disetujui :selected').length > 0){
-	//         var selectedsend = [];
-	//         $('select#disetujui :selected').each(function(i, selected){
-	//             selectedsend[i] = $(selected).val();
-	//         });
- //        }else{ selectedsend = ''; }
-	// 	$.post(url_act_sign,{
-	// 		id_surat:$("input[name*='id_surat']").val(),
-	// 		disetujui:JSON.stringify(selectedsend)
-	// 	})
-	// 	.done(function(result) {
-	// 		var obj = jQuery.parseJSON(result);
-	// 		if(obj.status == 1){
- //                notifNo(obj.notif);
-	// 		}
-	// 		if(obj.status == 2){
- //                $("div#MyModal").modal('hide');
- //            	notifYesAuto(obj.notif);
- //            	table.ajax.reload(null, false);
- //            	// window.location.href = 'surat_masuk/proses/'+obj.id;
- //            	window.location.href = obj.url_api;
-	// 		}
-	// 	})
-	// 	.fail(function(res) {
-	// 		alert("Error");
-	// 		console.log("Error", res.responseText);
-	// 	});
-	// });
+	$(document).on('click','#sign_document_act_btn',function(e){
+		e.preventDefault();
+		if($('select#disetujui :selected').length > 0){
+	        var selectedsend = [];
+	        $('select#disetujui :selected').each(function(i, selected){
+	            selectedsend[i] = $(selected).val();
+	        });
+        }else{ selectedsend = ''; }
+		$.post(url_act_sign,{
+			id_surat:$("input[name*='id_surat']").val(),
+			disetujui:JSON.stringify(selectedsend)
+		})
+		.done(function(result) {
+			var obj = jQuery.parseJSON(result);
+			if(obj.status == 1){
+                notifNo(obj.notif);
+			}
+			if(obj.status == 2){
+                $("div#MyModal").modal('hide');
+            	notifYesAuto(obj.notif);
+            	table.ajax.reload(null, false);
+            	// window.location.href = 'surat_masuk/proses/'+obj.id;
+            	window.location.href = obj.url_api;
+			}
+		})
+		.fail(function(res) {
+			alert("Error");
+			console.log("Error", res.responseText);
+		});
+	});
 
 	// sign document
 	$(document).on('click','a.btn.sign_act_btn',function(e){

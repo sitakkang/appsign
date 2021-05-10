@@ -11,7 +11,7 @@
 		<div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
 			<div class="card">
 				<div class="card-header">
-					<h5 class="card-title"><b>Repositories</b></h5>
+					<h5 class="card-title"><b>Config API</b></h5>
 				</div>
   				<div class="card-body is-no-padding">
 
