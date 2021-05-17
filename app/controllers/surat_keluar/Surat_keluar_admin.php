@@ -1,18 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Surat_keluar extends CI_Controller {
+class Surat_keluar_admin extends CI_Controller {
 
-    public $dir_v = 'admin/surat_keluar/';
-	public $dir_m = 'admin/';
-	public $dir_l = 'admin/';
+    public $dir_v = 'surat_keluar/surat_keluar_admin/';
+    public $dir_m = 'surat_keluar/';
+    public $dir_l = 'surat_keluar/';
 
     public function __construct(){
         parent::__construct();
         $this->m_auth->check_akses();
         // $this->m_auth->check_superadmin();
         $this->load->library(array('phpmailer_lib'));
-        $this->load->model($this->dir_m.'m_surat_keluar');
-        $this->load->library($this->dir_l.'l_surat_keluar');
+        $this->load->model($this->dir_m.'m_surat_keluar_admin');
+        $this->load->library($this->dir_l.'l_surat_keluar_admin');
     }
 
     function view_status($id)
@@ -65,10 +65,10 @@ class Surat_keluar extends CI_Controller {
             'lib/jquery/jquery-3.3.1.min.js',
             'lib/bootstrap-4.1.3/dist/js/bootstrap.min.js',
             'lib/interact/interact.min.js',
-            'src/js/admin/app.js',
+            'src/js/surat_keluar/app_admin.js',
             'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.228/pdf.min.js',
             'https://unpkg.com/ionicons@4.4.2/dist/ionicons.js',
-            'src/js/admin/signature.config.js');
+            'src/js/surat_keluar_admin/signature.config.js');
         $data['path_folder']=$path_folder;
         $data['panel'] = '<i class="fa fa-inbox"></i> &nbsp;<b>PDF</b>';
         $this->l_skin->config($this->dir_v.'pdf_signing', $data);
@@ -91,7 +91,7 @@ class Surat_keluar extends CI_Controller {
             'lib/ext/datepicker/datepicker.min.js',
             'lib/datatables/datatables.min.js',
             'lib/datatables/dataTables.bootstrap.min.js',
-            'src/js/admin/surat_keluar.js');
+            'src/js/surat_keluar/surat_keluar_admin.js');
         $data['panel'] = '<i class="fa fa-envelope-open-text"></i> &nbsp;<b>Surat Keluar</b>';
         $this->l_skin->main($this->dir_v.'view', $data);
     }
@@ -281,13 +281,13 @@ class Surat_keluar extends CI_Controller {
                 "DT_RowId" => $id->id_surat_keluar,
                 '0' => $i++,
                 '1' => $id->no_surat,
-                '2' => $this->m_surat_keluar->user_surat_keluar($id->user),
+                '2' => $this->m_surat_keluar_admin->user_surat_keluar($id->user),
                 '3' => $id->tgl_kirim,
                 // '4' => $id->diusulkan,
                 // '5' => $id->jenis,
-                '4' => $this->m_surat_keluar->label_jenis_ttd($id->jenis_ttd),
-                '5' => $this->m_surat_keluar->label_status_keluar($id->status, $id->id_surat_keluar),
-                '6' => $this->m_surat_keluar->attachment(array($id->attach1)).' '.$this->m_surat_keluar->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar->attachment_downloaded(array($id->file_downloaded)),
+                '4' => $this->m_surat_keluar_admin->label_jenis_ttd($id->jenis_ttd),
+                '5' => $this->m_surat_keluar_admin->label_status_keluar($id->status, $id->id_surat_keluar),
+                '6' => $this->m_surat_keluar_admin->attachment(array($id->attach1)).' '.$this->m_surat_keluar_admin->keluar_act_btn($id->id_surat_keluar, $id->no_surat).' '.$this->m_surat_keluar_admin->attachment_downloaded(array($id->file_downloaded)),
             );
         }
 
@@ -349,9 +349,9 @@ class Surat_keluar extends CI_Controller {
             $tempName = $_FILES['file']['name'];
             $tempExt = pathinfo($tempName, PATHINFO_EXTENSION);
             $document_name = pathinfo($tempName, PATHINFO_FILENAME);
-            $fileName = $this->l_surat_keluar->RandStr2(10).".".$tempExt;
-            $tahun = $this->l_surat_keluar->DateYear();
-            $bulan = $this->l_surat_keluar->DateMonth();
+            $fileName = $this->l_surat_keluar_admin->RandStr2(10).".".$tempExt;
+            $tahun = $this->l_surat_keluar_admin->DateYear();
+            $bulan = $this->l_surat_keluar_admin->DateMonth();
             $targetPath = './upload/keluar/'.$tahun.'/'.$bulan.'/';
             $targetFile = $targetPath.$fileName;
             if(!file_exists($targetPath)){mkdir($targetPath, 0777, true);}
@@ -466,7 +466,7 @@ class Surat_keluar extends CI_Controller {
 
     function sendEmailIMIP($token,$email_signer,$path_folder){
         $mail    = $this->phpmailer_lib->load(); 
-		$mail->isSMTP();
+        $mail->isSMTP();
         $mail->Host       = 'mail.imip.co.id';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'patar@imip.co.id';
@@ -496,7 +496,7 @@ class Surat_keluar extends CI_Controller {
         $data['token'] = $token;
 
         $message = $this->load->view($this->dir_v . 'v_send', $data, TRUE);
-		$mail->Body = $message;
+        $mail->Body = $message;
         
         if($mail->send()){
             return true;
@@ -538,7 +538,7 @@ class Surat_keluar extends CI_Controller {
             // if($status_surat!=2 || $status_surat!=3 || $status_surat!=4){
             if($status_surat!=5 || $status_surat!=0 || $status_surat!=1){
                 if($this->cek_empty_attach($id_surat)){
-                    $disetujui = $this->l_surat_keluar->FilterArray($this->input->post('disetujui'));
+                    $disetujui = $this->l_surat_keluar_admin->FilterArray($this->input->post('disetujui'));
                     $id_disetujui = (int)str_replace('"', '', $disetujui);
                     $query = $this->db->query('SELECT id, email_user,name FROM t_signer WHERE id='. $id_disetujui .' LIMIT 1');
                     $data = $query->row();
@@ -551,7 +551,7 @@ class Surat_keluar extends CI_Controller {
                     $update['approval_status'] = 1;
                     $update['token'] = $token;
                     //token_time
-                    $token_time = $this->l_surat_keluar->DateTimeNow();
+                    $token_time = $this->l_surat_keluar_admin->DateTimeNow();
                     $exp_token_time=date('Y-m-d H:i:s', strtotime('+30 minutes', strtotime($token_time)));
                     $update['token_time'] = $token_time;
                     $update['token_time_exp'] = $exp_token_time;

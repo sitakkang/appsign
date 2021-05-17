@@ -26,6 +26,7 @@
                                 <th>Name</th>
                                 <th>Link</th>
                                 <th>Sub</th>
+                                <th>Show Menu</th>
                                 <th>Status</th>
                             </tr>
                         </thead>

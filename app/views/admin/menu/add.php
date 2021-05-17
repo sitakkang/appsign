@@ -34,6 +34,13 @@
     <input class="form-control" type="text" id="link" value="#">
 </div>
 <div class="form-group">
+    <label class="control-label">Show Menu</label>
+    <select class="form-control" id="show_menu">
+        <option value="1">Show</option>
+        <option value="2">Hide</option>
+    </select>
+</div>
+<div class="form-group">
     <label class="control-label">Status</label>
     <select class="form-control" id="status">
         <option value="1">Aktif</option>

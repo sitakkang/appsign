@@ -11,65 +11,44 @@ class Dashboard extends CI_Controller {
 
 	function index()
 	{
-		// $data['head_title'] = '';
-		// $data['head_subtitle'] = '';
-		
 		$data['icon_data'] = array(
 			'Penanda Tangan'					=> array(
+													'link_checking'=>'admin/signer',
 													'link' => site_url().'admin/signer',
 													'icon' => 'img/signing_doc.png'
 												),
 			'Surat Keluar' 					=> array(
-													'link' => site_url().'admin/surat_keluar/index',
+													'link_checking'=>'surat_keluar/surat_keluar_admin',
+													'link' => site_url().'surat_keluar/surat_keluar_admin',
 													'icon' => 'img/icon_surat_keluar.png'
 												),
-			
-			// 'Performance Management'		=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'Benefits Administration'		=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'Workforce Management'			=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'Time And Attendance'			=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'Absence And Leave Management'	=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'Learning And Development'		=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'Talent Management'				=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									),
-			// 'HR Analytics'					=> array(
-			// 										'link' => '#',
-			// 										'icon' => 'img/noimage.png'
-			// 									)
+			'Surat Keluar' 					=> array(
+													'link_checking'=>'surat_keluar/surat_keluar',
+													'link' => site_url().'surat_keluar/surat_keluar',
+													'icon' => 'img/icon_surat_keluar.png'
+												),
 		);
-
-		$data['sidebar_data'] = array(
-			'API Type' 			=> array(
-											'link' => site_url().'admin/api_type',
-											'icon' => ''
-										),
-			'API URL'				=> array(
-											'link' => site_url().'admin/api_url',
-											'icon' => ''
-										),
-			
-		);
-
+		if($this->session->userdata('sess_level') == 1){
+			$data['sidebar_data'] = array(
+				'API Type' 			=> array(
+												'link' => site_url().'admin/api_type',
+												'icon' => ''
+											),
+				'API URL'				=> array(
+												'link' => site_url().'admin/api_url',
+												'icon' => ''
+											),
+				
+			);
+		}else{
+			$data['sidebar_data'] = array(
+				'Home' 			=> array(
+												'link' => site_url().'home',
+												'icon' => ''
+											)
+				
+			);
+		}
 		$this->l_skin->main('home/dashboard', $data);
 	}
 

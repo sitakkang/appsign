@@ -84,6 +84,7 @@ $(document).ready(function(){
 				akses:$("input#akses").val(),
 	            sub:$("select#sub").val(),
 	            link:$("input#link").val(),
+	            show_menu:$("select#show_menu").val(),
 	            status:$("select#status").val()
 			}
 		})
@@ -152,6 +153,7 @@ $(document).ready(function(){
 				akses:$("input#akses").val(),
 	            sub:$("select#sub").val(),
 	            link:$("input#link").val(),
+	            show_menu:$("select#show_menu").val(),
 	            status:$("select#status").val()
 			}
 		})

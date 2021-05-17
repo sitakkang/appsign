@@ -34,6 +34,13 @@
     <input class="form-control" type="text" id="link" value="<?=$id->link;?>">
 </div>
 <div class="form-group">
+    <label class="control-label">Show Menu</label>
+    <select class="form-control" id="show_menu">
+        <option value="1"<?php if($id->show_menu == 1){echo ' selected="selected"';};?>>Show</option>
+        <option value="2"<?php if($id->show_menu == 2){echo ' selected="selected"';};?>>Hide</option>
+    </select>
+</div>
+<div class="form-group">
     <label class="control-label">Status</label>
     <select class="form-control" id="status">
         <option value="1"<?php if($id->status == 1){echo ' selected="selected"';};?>>Aktif</option>

@@ -30,6 +30,32 @@ class L_skin {
 	function main($template, $data=NULL)
 	{
 		if(!$this->is_ajax()){
+			if(isset($data['icon_data'])){
+				$data['icon_data_new']=[];
+				$file_json_menu_main	= file_get_contents('src/json/main_menu.json');
+		        $file_json_menu_sub		= file_get_contents('src/json/sub_menu.json');
+		        $data_main_menu		= json_decode($file_json_menu_main,true);
+		        $data_sub_menu		= json_decode($file_json_menu_sub,true);
+				$LevelUser=$_SESSION['sess_level'];
+				if($data_main_menu OR $data_sub_menu){
+		        	foreach ($data_main_menu as $key => $val) {
+		        		if($data_main_menu[$key]['sub'] == 2){
+
+		        		}else{
+		        			$ceking_level = strrpos($data_main_menu[$key]['level'],$LevelUser);
+		        			if(!empty($ceking_level)){
+		        				foreach ($data['icon_data'] as $key_3 => $value_3) {
+		        					if($data_main_menu[$key]['link']==$value_3['link_checking']){
+		        						$data['icon_data_new'][$key_3]=$data['icon_data'][$key_3];
+		        					}
+								}
+		        			}
+		        		}
+		        	}
+		        }
+		        unset($data['icon_data']);
+		        $data['icon_data']=$data['icon_data_new'];
+		    }
 			$data['header'] = $this->skin->load->view('skin/header', $data, TRUE);
 			$data['sidebar'] = $this->skin->load->view('skin/sidebar', $data, TRUE);
 			$data['content'] = $this->skin->load->view($template, $data, TRUE);
@@ -158,7 +184,7 @@ class L_skin {
 
         if($data_main_menu OR $data_sub_menu){
 	        foreach ($data_main_menu as $key => $val) {
-	        	if($data_main_menu[$key]['sub'] == 2){
+	        	if($data_main_menu[$key]['sub'] == 2 && $data_main_menu[$key]['show_menu']==1){
 	        		echo '<li><a href="javascript:;" data-sidenav-dropdown-toggle><span class="sidenav-link-icon"><i class="fa '.$data_main_menu[$key]['icon'].'"></i></span><span class="sidenav-link-title">'.$data_main_menu[$key]['name'].'</span><span class="sidenav-dropdown-icon show" data-sidenav-dropdown-icon><i class="fa fa-angle-down"></i></span><span class="sidenav-dropdown-icon" data-sidenav-dropdown-icon><i class="fa fa-angle-up"></i></span></a>'."\n";
 	        		echo '<ul class="sidenav-dropdown" data-sidenav-dropdown>';
 	        		foreach ($data_sub_menu as $key2 => $val2)
@@ -175,7 +201,7 @@ class L_skin {
 	                echo '</ul></li>';
 	        	}else{
 	        		$ceking_level = strrpos($data_main_menu[$key]['level'],$LevelUser);
-	        		if(!empty($ceking_level)){
+	        		if(!empty($ceking_level) && $data_main_menu[$key]['status']==1 && $data_main_menu[$key]['show_menu']==1){
 	        			echo '<li><a href="'.site_url().$data_main_menu[$key]['link'].'"><span class="sidenav-link-icon"><i class="fa '.$data_main_menu[$key]['icon'].'"></i></span><span class="sidenav-link-title">'.$data_main_menu[$key]['name'].'</span></a></li>';
 	        		}
 	        		

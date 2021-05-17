@@ -44,6 +44,21 @@ class L_admin {
 		}
 	}
 
+	function show_menu($data)
+	{
+		switch ($data) {
+			case 1:
+				return 'Show';
+				break;
+			case 2:
+				return 'Hide';
+				break;
+			default:
+				return 'Undetected';
+				break;
+		}
+	}
+
 	function yes_or_no($data)
 	{
 		switch ($data) {

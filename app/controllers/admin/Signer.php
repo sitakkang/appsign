@@ -8,7 +8,8 @@ class Signer extends CI_Controller {
 
     public function __construct(){
         parent::__construct();
-        $this->m_auth->check_login();
+        $this->m_auth->check_superadmin();
+        $this->m_auth->check_akses();
         $this->load->model($this->dir_m.'m_signer');
         $this->load->library($this->dir_l.'l_signer');
     }

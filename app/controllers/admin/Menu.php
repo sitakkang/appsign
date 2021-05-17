@@ -50,7 +50,8 @@ class Menu extends CI_Controller {
 			    "3" => $id->name,
 			    "4" => $id->link,
 			    "5" => $this->l_admin->yes_or_no($id->sub),
-			    "6" => $this->l_admin->status_aktif($id->status)
+			    "6" => $this->l_admin->show_menu($id->show_menu),
+			    "7" => $this->l_admin->status_aktif($id->status)
 			);
          }
 
@@ -91,6 +92,9 @@ class Menu extends CI_Controller {
 	function act_add()
 	{
 		$this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[4]|is_unique[conf_menu.name]');
+		if(empty($this->input->post('show_menu'))){
+			$show_menu=1;
+		}
 		if ($this->form_validation->run() == FALSE){
 			$notif['notif'] = validation_errors();
 			$notif['status'] = 1;
@@ -106,6 +110,7 @@ class Menu extends CI_Controller {
 					'status' => $this->input->post('status'),
 					'akses' => $this->input->post('akses'),
                     'sub' => $this->input->post('sub'),
+                    'show_menu' => $this->input->post('show_menu'),
 					'level' => $result_level,
                     'position' => $this->input->post('position')
 				);
@@ -131,6 +136,7 @@ class Menu extends CI_Controller {
 					'akses' => $this->input->post('akses'),
                     'sub' => $this->input->post('sub'),
 					'level' => $result_level,
+					'show_menu' => $this->input->post('show_menu'),
                     'position' => $this->input->post('position')
 				);
 			$this->db->where('id_menu', $id);
@@ -154,6 +160,7 @@ class Menu extends CI_Controller {
 						'name' => $this->input->post('name'),
 						'link' => $this->input->post('link'),
 						'status' => $this->input->post('status'),
+						'show_menu' => $this->input->post('show_menu'),
 						'akses' => $this->input->post('akses'),
 	                    'sub' => $this->input->post('sub'),
 						'level' => $result_level,

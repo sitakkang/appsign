@@ -24,6 +24,11 @@
 <?=$header;?> 
 <?=$sidebar;?> 
 <?=$content;?> 
+<?php 
+	// echo "<pre>";
+	// print_r($content);
+	// echo "</pre>";
+?>
 <?=$modal;?> 
 <?=$footer;?> 
 

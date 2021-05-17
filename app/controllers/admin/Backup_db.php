@@ -73,6 +73,7 @@ class Backup_db extends CI_Controller {
 				'akse'		=> $val->akses,
 				'sub'		=> $val->sub,
 				'level'		=> $val->level,
+				'show_menu'		=> $val->show_menu,
 				'position'	=> $val->position
 			);
 		}
