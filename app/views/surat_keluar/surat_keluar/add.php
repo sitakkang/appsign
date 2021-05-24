@@ -1,18 +1,24 @@
-<div class="form-group">
+<!-- <div class="form-group">
     <label class="control-label">Jenis Tandatangan</label>
-    <select class="form-control" name="jenis_ttd_" id="jenis_ttd">
-        <?=$this->m_surat_keluar->select_jenisttd($data=NULL);?>
-    </select>
-</div>
-<div id="surat_signer" style="display: none;">
+    <select class="form-control" name="jenis_ttd_" id="jenis_ttd"> -->
+        <?php 
+            // echo $this->m_surat_keluar->select_jenisttd($data=NULL);
+        ?>
+    <!-- </select>
+</div> -->
+<!-- <div id="surat_signer" style="display: none;"> -->
+<!-- <div id="surat_signer">
     <div class="form-group">
         <label class="control-label">Penanda Tangan </label>
-        <select class="form-control" name="signer">
-            <?=$this->m_surat_keluar->select_approval($data=NULL,$id=$this->session->userdata('sess_id'));?>
-        </select>
+        <select class="form-control" name="signer"> -->
+            <?php 
+                // echo $this->m_surat_keluar->select_approval($data=NULL,$id=$this->session->userdata('sess_id'));
+            ?>
+        <!-- </select>
     </div>
-</div>
-<div id="surat_content" style="display: none;">
+</div> -->
+<!-- <div id="surat_content" style="display: none;"> -->
+<div id="surat_content">
     <div class="form-group">
         <label class="control-label">Nomor Surat </label>
         <input class="form-control" type="text" name="no_surat">

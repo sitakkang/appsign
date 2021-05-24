@@ -148,7 +148,8 @@ class Surat_keluar extends CI_Controller {
 
     function act_add()
     {
-        $jenis_ttd=$this->input->post('jenis_ttd');
+        // $jenis_ttd=$this->input->post('jenis_ttd');
+        $jenis_ttd="Manual";
         $user_id = $this->session->userdata('sess_id');
         $this->form_validation->set_rules('no_surat', 'No Surat', 'trim|required|min_length[3]');
         $this->form_validation->set_rules('perihal', 'Perihal', 'trim|required|min_length[3]');
@@ -157,12 +158,12 @@ class Surat_keluar extends CI_Controller {
         $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
         $this->form_validation->set_rules('melalui', 'Bentuk', 'trim|required');
         $this->form_validation->set_rules('asal_surat', 'Asal Surat', 'trim|required');
-        if($jenis_ttd=="Digital"){
-            $this->form_validation->set_rules('signer', 'Penanda Tangan', 'trim|required');
-            $signer=$this->input->post('signer');
-        }else{
-            $signer=NULL;
-        }
+        // if($jenis_ttd=="Digital"){
+        //     $this->form_validation->set_rules('signer', 'Penanda Tangan', 'trim|required');
+        //     $signer=$this->input->post('signer');
+        // }else{
+        //     $signer=NULL;
+        // }
         if($this->form_validation->run() == FALSE){
             $notif['notif'] = validation_errors();
             $notif['status'] = 1;
@@ -179,8 +180,8 @@ class Surat_keluar extends CI_Controller {
                 'melalui' => $this->input->post('melalui'),
                 'catatan' => $this->input->post('catatan'),
                 'asal_surat' => $this->input->post('asal_surat'),
-                'signer' => $this->input->post('signer'),
-                'jenis_ttd'=> $this->input->post('jenis_ttd'),
+                // 'signer' => $this->input->post('signer'),
+                'jenis_ttd'=> $jenis_ttd,
                 'flag' => 0
             );
             $this->db->insert('app_surat_keluar', $data);
@@ -198,7 +199,7 @@ class Surat_keluar extends CI_Controller {
         $this->form_validation->set_rules('tgl_kirim', 'Tanggal Kirim', 'trim|required');
         $this->form_validation->set_rules('melalui', 'Bentuk', 'trim|required');
         $this->form_validation->set_rules('asal_surat', 'Asal Surat', 'trim|required');
-        $this->form_validation->set_rules('signer', 'Signer', 'trim|required');
+        // $this->form_validation->set_rules('signer', 'Signer', 'trim|required');
         if($this->form_validation->run() == FALSE){
             $notif['notif'] = validation_errors();
             $notif['status'] = 1;
@@ -219,7 +220,7 @@ class Surat_keluar extends CI_Controller {
                     'tgl_kirim' => $this->input->post('tgl_kirim'),
                     'melalui' => $this->input->post('melalui'),
                     'catatan' => $this->input->post('catatan'),
-                    'signer' => $this->input->post('signer'),
+                    // 'signer' => $this->input->post('signer'),
                 );
                 $this->db->where('id_surat_keluar', $id_surat);
                 $this->db->update('app_surat_keluar', $data);

@@ -66,19 +66,19 @@ $(document).ready(function(){
 	});
 
 
-    $(document).on('change','#jenis_ttd',function(e){
-		e.preventDefault();
-		var jenis_ttd = $("select[id*='jenis_ttd']").val();
-		var surat_signer = document.getElementById("surat_signer");
-		var surat_content = document.getElementById("surat_content");
-		if(jenis_ttd=="Digital"){
-			surat_signer.style.display="block";
-			surat_content.style.display="block";
-		}else if(jenis_ttd=="Manual"){
-			surat_signer.style.display="none";
-			surat_content.style.display="block";
-		}
-	});
+ //    $(document).on('change','#jenis_ttd',function(e){
+	// 	e.preventDefault();
+	// 	var jenis_ttd = $("select[id*='jenis_ttd']").val();
+	// 	var surat_signer = document.getElementById("surat_signer");
+	// 	var surat_content = document.getElementById("surat_content");
+	// 	if(jenis_ttd=="Digital"){
+	// 		surat_signer.style.display="block";
+	// 		surat_content.style.display="block";
+	// 	}else if(jenis_ttd=="Manual"){
+	// 		surat_signer.style.display="none";
+	// 		surat_content.style.display="block";
+	// 	}
+	// });
 
     // View
 	$(document).on('click','a.view_act_btn',function(e){
@@ -129,11 +129,11 @@ $(document).ready(function(){
 	$(document).on('click','button#save_add_btn',function(e){
 		e.preventDefault();
 		$.post(url_act_add,{
-			jenis_ttd:$("select[name*='jenis_ttd_']").val(),
+			// jenis_ttd:$("select[name*='jenis_ttd_']").val(),
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
 			jenis:$("select[name*='jenis']").val(),
-			signer:$("select[name*='signer']").val(),
+			// signer:$("select[name*='signer']").val(),
 			asal_surat:$("select[name*='asal_surat']").val(),
 			tujuan:$("textarea[name*='tujuan']").val(),
 			diusulkan:$("input[name*='diusulkan']").val(),
@@ -229,7 +229,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		$.post(url_act_edit,{
 			id_surat:$("input[name*='id_surat']").val(),
-			signer:$("select[name*='signer']").val(),
+			// signer:$("select[name*='signer']").val(),
 			asal_surat:$("select[name*='asal_surat']").val(),
 			no_surat:$("input[name*='no_surat']").val(),
 			perihal:$("textarea[name*='perihal']").val(),
