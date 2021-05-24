@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2021 at 11:04 AM
+-- Generation Time: May 24, 2021 at 08:34 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -85,6 +85,18 @@ CREATE TABLE `app_surat_keluar` (
   `action_time` datetime DEFAULT NULL,
   `last_action` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `app_surat_keluar`
+--
+
+INSERT INTO `app_surat_keluar` (`id_surat_keluar`, `no_surat`, `jenis_ttd`, `user`, `perihal`, `jenis`, `tujuan`, `disetujui`, `signer`, `diusulkan`, `melalui`, `asal_surat`, `tgl_kirim`, `disposisi`, `catatan`, `status`, `flag`, `attach1`, `document_name`, `document_id`, `file_downloaded`, `link_document`, `approval_status`, `token`, `token_time`, `token_time_exp`, `link_user_approval`, `llx`, `lly`, `urx`, `ury`, `page`, `path_folder`, `path_folder_downloaded`, `action_time`, `last_action`) VALUES
+(148, '123', 'Digital', 3, 'Info', 'Digital', 'Patar', '\"11\"', 11, 'Patar', 'Softcopy', 'Email', '2021-05-10', '', '', 5, 0, '2021/05/00w9VY6HeJ.pdf', 'TWZX131A024A_3_req_1_BC_20rev2221', 'TWZX131A024A_3_req_1_BC_20rev2221', '2021/05/TWZX131A024A_3_req_1_BC_20rev2221.pdf', '', 1, '3YnHEJy0AeJsKBn', '2021-05-11 14:10:45', '2021-05-11 14:40:45', '', 72, 717.32, 167, 762.32, 1, 'E:\\www\\htdocs\\appsign\\upload\\keluar\\2021\\05\\00w9VY6HeJ.pdf', '2021/05/TWZX131A024A_3_req_1_BC_20rev2221.pdf', '2021-05-11 14:30:45', 'approve'),
+(149, '123121212', 'Manual', 1, 'Info', 'Manual', 'PT IMIP', NULL, NULL, 'Patar', 'Softcopy', 'Email', '2021-05-11', '', '', 0, 0, NULL, NULL, '', NULL, '', 0, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL),
+(152, '12345', 'Digital', 3, 'Info', 'Digital', 'PT IMIP', '\"11\"', 11, 'Patar', 'Softcopy', 'Email', '2021-05-17', '', '', 5, 0, '2021/05/mjagimYWn4.pdf', 'Flowchart 4.0.1(1)234', 'Flowchart 4.0.1(1)234', '2021/05/Flowchart 4.0.1(1)234.pdf', '', 1, 'LZsM8fMciUt5dyf', '2021-05-17 14:48:40', '2021-05-17 15:18:40', '', 441, 733.32, 536, 778.32, 2, 'E:\\www\\htdocs\\appsign\\upload\\keluar\\2021\\05\\mjagimYWn4.pdf', '2021/05/Flowchart 4.0.1(1)234.pdf', '2021-05-17 14:50:17', 'approve'),
+(153, '4324324234322121', 'Digital', 4, 'Info', 'Digital', 'PT IMIP', '\"33\"', 33, 'Patar', 'Softcopy', 'Email', '2021-05-17', '', '', 5, 0, '2021/05/7HAslvIFXq.pdf', 'TWZX131A024A_3_req_1_BC_20rev222111', 'TWZX131A024A_3_req_1_BC_20rev222111', '2021/05/TWZX131A024A_3_req_1_BC_20rev222111.pdf', '', 1, '9lcVtctflVq8xmX', '2021-05-17 15:55:37', '2021-05-17 16:25:37', '', 418, 712.32, 513, 757.32, 1, 'E:\\www\\htdocs\\appsign\\upload\\keluar\\2021\\05\\7HAslvIFXq.pdf', '2021/05/TWZX131A024A_3_req_1_BC_20rev222111.pdf', '2021-05-17 15:56:46', 'approve'),
+(154, '12311111', 'Manual', 3, 'Info', 'Manual', 'PT IMIP', NULL, 0, 'Patar', 'Softcopy', 'Email', '2021-05-24', '', '', 1, 0, '2021/05/P2dhcOa2Nq.pdf', 'How to calculate ly lx ry rx.revisi1', '', NULL, '', 0, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, 'E:\\www\\htdocs\\appsign\\upload\\keluar\\2021\\05\\P2dhcOa2Nq.pdf', NULL, NULL, NULL),
+(155, '432432423432111', 'Digital', 4, 'Info', 'Digital', 'PT IMIP', '\"33\"', 33, 'Patar', 'Softcopy', 'Email', '2021-05-24', '', '', 5, 0, '2021/05/rGUrxh09IE.pdf', 'Flowchart 4.0.1rev2', 'Flowchart 4.0.1rev2', '2021/05/Flowchart 4.0.1rev2.pdf', '', 1, 'oLrbDODORMLTNIU', '2021-05-24 10:32:01', '2021-05-24 11:02:01', '', 258, 667.32, 353, 712.32, 1, 'E:\\www\\htdocs\\appsign\\upload\\keluar\\2021\\05\\rGUrxh09IE.pdf', '2021/05/Flowchart 4.0.1rev2.pdf', '2021-05-24 10:33:33', 'approve');
 
 -- --------------------------------------------------------
 
@@ -220,7 +232,7 @@ CREATE TABLE `conf_level` (
 INSERT INTO `conf_level` (`id_level`, `name`) VALUES
 (1, 'Superadmin'),
 (2, 'Admin'),
-(3, 'Tenant');
+(3, 'User');
 
 -- --------------------------------------------------------
 
@@ -238,17 +250,21 @@ CREATE TABLE `conf_menu` (
   `akses` tinyint(1) NOT NULL,
   `sub` tinyint(1) NOT NULL,
   `level` text NOT NULL,
-  `position` int(2) NOT NULL
+  `position` int(2) NOT NULL,
+  `show_menu` int(3) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `conf_menu`
 --
 
-INSERT INTO `conf_menu` (`id_menu`, `icon`, `icon2`, `name`, `link`, `status`, `akses`, `sub`, `level`, `position`) VALUES
-(1, 'fa-desktop', '', 'Dashboard', 'home', 1, 1, 1, '\"1\",\"2\"', 1),
-(2, 'fa-cogs', '', 'Configuration', 'admin/gen_modul', 1, 1, 1, '\"1\",\"2\"', 2),
-(10, 'fa-inbox', NULL, 'Surat Keluar', 'admin_tenant/surat_keluar/index', 1, 1, 1, '\"3\"', 3);
+INSERT INTO `conf_menu` (`id_menu`, `icon`, `icon2`, `name`, `link`, `status`, `akses`, `sub`, `level`, `position`, `show_menu`) VALUES
+(1, 'fa-desktop', NULL, 'Dashboard', 'home', 1, 1, 1, '\"1\",\"2\",\"3\"', 1, 1),
+(2, 'fa-cogs', NULL, 'Configuration', 'admin/gen_modul', 1, 1, 1, '\"1\"', 2, 1),
+(11, 'fa-inbox', NULL, 'Surat Keluar User', 'surat_keluar/surat_keluar', 1, 1, 1, '\"3\"', 0, 2),
+(13, 'fa-inbox', NULL, 'Surat Keluar Admin', 'surat_keluar/surat_keluar_admin', 1, 1, 1, '\"2\"', 0, 2),
+(14, 'fa-signature', NULL, 'Penanda Tangan', 'admin/signer', 1, 1, 1, '\"1\"', 0, 2),
+(15, '', NULL, 'Show Bos', '#', 1, 1, 2, '\"1\"', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -267,6 +283,13 @@ CREATE TABLE `conf_submenu` (
   `level` text NOT NULL,
   `position` tinyint(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `conf_submenu`
+--
+
+INSERT INTO `conf_submenu` (`id_submenu`, `id_menu`, `icon`, `icon2`, `name`, `link`, `status`, `level`, `position`) VALUES
+(1, 15, 'fa-address-book', NULL, 'Bos1', '#', 1, '\"1\"', 0);
 
 -- --------------------------------------------------------
 
@@ -292,9 +315,10 @@ CREATE TABLE `conf_users` (
 --
 
 INSERT INTO `conf_users` (`id_user`, `fullname`, `avatar`, `username`, `password`, `salt`, `level`, `last_login`, `ip_address`, `status`) VALUES
-(1, 'Superadmin', 'img/avatar/6U6lk2At.jpg', 'admin', '89a0c6ee2ad740022ce185004dd64cca98c04b51', 'Wb8e.?s5', 1, '2021-05-10 11:16:01', '::1', 1),
+(1, 'Superadmin', 'img/avatar/6U6lk2At.jpg', 'admin', '89a0c6ee2ad740022ce185004dd64cca98c04b51', 'Wb8e.?s5', 1, '2021-05-24 11:53:50', '::1', 1),
 (2, 'Ardi', '', 'ardi', '00cc677ebf28c2788351082fe42ccc8982437a9c', '+qt_a0Wy', 1, '0000-00-00 00:00:00', '', 1),
-(3, 'PT AAA', '', 'user', 'eccedab0557f89d3f33e751ff2248609d477e9a7', 'j=qbGsPl', 3, '2021-05-10 11:10:20', '::1', 1);
+(3, 'User', '', 'user', 'eccedab0557f89d3f33e751ff2248609d477e9a7', 'j=qbGsPl', 3, '2021-05-24 13:31:18', '::1', 1),
+(4, 'Marina', '', 'marina', 'd655123214cb4efff56e6d3103f9a8143bb91a76', 'flkP7rpR', 2, '2021-05-24 10:30:15', '::1', 1);
 
 -- --------------------------------------------------------
 
@@ -90316,7 +90340,113 @@ INSERT INTO `temp_login` (`id_temp`, `id_user`, `tanggal`, `ip_address`, `nama_u
 (375, 3, '2021-05-10 10:26:28', '::1', 'PT AAA'),
 (376, 1, '2021-05-10 10:26:39', '::1', 'Superadmin'),
 (377, 3, '2021-05-10 11:10:20', '::1', 'PT AAA'),
-(378, 1, '2021-05-10 11:16:01', '::1', 'Superadmin');
+(378, 1, '2021-05-10 11:16:01', '::1', 'Superadmin'),
+(379, 1, '2021-05-10 16:43:19', '::1', 'Superadmin'),
+(380, 1, '2021-05-10 16:54:48', '::1', 'Superadmin'),
+(381, 1, '2021-05-10 21:03:15', '::1', 'Superadmin'),
+(382, 3, '2021-05-10 21:25:55', '::1', 'User'),
+(383, 1, '2021-05-10 22:05:22', '::1', 'Superadmin'),
+(384, 3, '2021-05-11 09:26:36', '::1', 'User'),
+(385, 1, '2021-05-11 10:16:07', '::1', 'Superadmin'),
+(386, 4, '2021-05-11 10:19:44', '::1', 'Marina'),
+(387, 1, '2021-05-11 10:36:51', '::1', 'Superadmin'),
+(388, 4, '2021-05-11 10:38:52', '::1', 'Marina'),
+(389, 1, '2021-05-11 10:43:14', '::1', 'Superadmin'),
+(390, 4, '2021-05-11 10:45:30', '::1', 'Marina'),
+(391, 3, '2021-05-11 10:47:18', '::1', 'User'),
+(392, 4, '2021-05-11 10:47:57', '::1', 'Marina'),
+(393, 1, '2021-05-11 10:48:07', '::1', 'Superadmin'),
+(394, 4, '2021-05-11 10:55:59', '::1', 'Marina'),
+(395, 1, '2021-05-11 11:05:49', '::1', 'Superadmin'),
+(396, 1, '2021-05-11 12:40:00', '::1', 'Superadmin'),
+(397, 1, '2021-05-11 12:41:14', '::1', 'Superadmin'),
+(398, 4, '2021-05-11 12:41:27', '::1', 'Marina'),
+(399, 1, '2021-05-11 12:41:51', '::1', 'Superadmin'),
+(400, 4, '2021-05-11 12:42:29', '::1', 'Marina'),
+(401, 1, '2021-05-11 13:13:50', '::1', 'Superadmin'),
+(402, 4, '2021-05-11 13:16:10', '::1', 'Marina'),
+(403, 1, '2021-05-11 13:23:19', '::1', 'Superadmin'),
+(404, 4, '2021-05-11 13:23:39', '::1', 'Marina'),
+(405, 3, '2021-05-11 14:31:19', '::1', 'User'),
+(406, 1, '2021-05-11 14:32:47', '::1', 'Superadmin'),
+(407, 4, '2021-05-11 14:33:36', '::1', 'Marina'),
+(408, 1, '2021-05-11 14:37:40', '::1', 'Superadmin'),
+(409, 1, '2021-05-11 14:38:42', '::1', 'Superadmin'),
+(410, 4, '2021-05-11 14:53:14', '::1', 'Marina'),
+(411, 1, '2021-05-11 14:53:44', '::1', 'Superadmin'),
+(412, 4, '2021-05-11 14:54:11', '::1', 'Marina'),
+(413, 1, '2021-05-11 14:54:21', '::1', 'Superadmin'),
+(414, 4, '2021-05-11 14:54:51', '::1', 'Marina'),
+(415, 1, '2021-05-11 14:55:08', '::1', 'Superadmin'),
+(416, 3, '2021-05-11 14:55:48', '::1', 'User'),
+(417, 1, '2021-05-11 14:56:03', '::1', 'Superadmin'),
+(418, 1, '2021-05-11 14:59:31', '::1', 'Superadmin'),
+(419, 4, '2021-05-11 14:59:43', '::1', 'Marina'),
+(420, 3, '2021-05-11 15:00:50', '::1', 'User'),
+(421, 1, '2021-05-11 15:03:49', '::1', 'Superadmin'),
+(422, 3, '2021-05-11 15:04:17', '::1', 'User'),
+(423, 4, '2021-05-11 15:04:48', '::1', 'Marina'),
+(424, 1, '2021-05-11 15:08:05', '::1', 'Superadmin'),
+(425, 4, '2021-05-11 15:08:52', '::1', 'Marina'),
+(426, 3, '2021-05-11 15:09:07', '::1', 'User'),
+(427, 1, '2021-05-11 15:14:14', '::1', 'Superadmin'),
+(428, 1, '2021-05-11 16:27:10', '::1', 'Superadmin'),
+(429, 3, '2021-05-11 16:28:28', '::1', 'User'),
+(430, 1, '2021-05-11 16:28:50', '::1', 'Superadmin'),
+(431, 3, '2021-05-11 16:29:23', '::1', 'User'),
+(432, 1, '2021-05-17 09:16:41', '::1', 'Superadmin'),
+(433, 4, '2021-05-17 09:18:42', '::1', 'Marina'),
+(434, 1, '2021-05-17 09:29:01', '::1', 'Superadmin'),
+(435, 4, '2021-05-17 09:29:28', '::1', 'Marina'),
+(436, 3, '2021-05-17 09:30:03', '::1', 'User'),
+(437, 1, '2021-05-17 09:30:18', '::1', 'Superadmin'),
+(438, 4, '2021-05-17 10:04:33', '::1', 'Marina'),
+(439, 1, '2021-05-17 10:17:18', '::1', 'Superadmin'),
+(440, 4, '2021-05-17 10:31:56', '::1', 'Marina'),
+(441, 1, '2021-05-17 10:32:51', '::1', 'Superadmin'),
+(442, 4, '2021-05-17 10:34:54', '::1', 'Marina'),
+(443, 1, '2021-05-17 10:39:50', '::1', 'Superadmin'),
+(444, 4, '2021-05-17 10:46:55', '::1', 'Marina'),
+(445, 1, '2021-05-17 10:49:09', '::1', 'Superadmin'),
+(446, 3, '2021-05-17 10:53:27', '::1', 'User'),
+(447, 1, '2021-05-17 10:54:16', '::1', 'Superadmin'),
+(448, 3, '2021-05-17 10:54:49', '::1', 'User'),
+(449, 1, '2021-05-17 10:57:56', '::1', 'Superadmin'),
+(450, 3, '2021-05-17 10:58:43', '::1', 'User'),
+(451, 1, '2021-05-17 10:59:20', '::1', 'Superadmin'),
+(452, 3, '2021-05-17 10:59:47', '::1', 'User'),
+(453, 1, '2021-05-17 11:05:44', '::1', 'Superadmin'),
+(454, 1, '2021-05-17 11:06:10', '::1', 'Superadmin'),
+(455, 1, '2021-05-17 11:14:07', '::1', 'Superadmin'),
+(456, 1, '2021-05-17 13:24:47', '::1', 'Superadmin'),
+(457, 3, '2021-05-17 13:25:07', '::1', 'User'),
+(458, 1, '2021-05-17 13:30:13', '::1', 'Superadmin'),
+(459, 1, '2021-05-17 13:43:02', '::1', 'Superadmin'),
+(460, 1, '2021-05-17 13:58:52', '::1', 'Superadmin'),
+(461, 3, '2021-05-17 13:59:33', '::1', 'User'),
+(462, 1, '2021-05-17 14:02:24', '::1', 'Superadmin'),
+(463, 1, '2021-05-17 14:32:23', '::1', 'Superadmin'),
+(464, 4, '2021-05-17 14:32:41', '::1', 'Marina'),
+(465, 3, '2021-05-17 14:33:31', '::1', 'User'),
+(466, 1, '2021-05-17 14:33:38', '::1', 'Superadmin'),
+(467, 4, '2021-05-17 14:34:58', '::1', 'Marina'),
+(468, 3, '2021-05-17 14:38:07', '::1', 'User'),
+(469, 1, '2021-05-17 14:47:19', '::1', 'Superadmin'),
+(470, 4, '2021-05-17 14:47:40', '::1', 'Marina'),
+(471, 1, '2021-05-17 14:52:42', '::1', 'Superadmin'),
+(472, 4, '2021-05-17 14:52:54', '::1', 'Marina'),
+(473, 3, '2021-05-17 14:56:17', '::1', 'User'),
+(474, 4, '2021-05-17 14:58:11', '::1', 'Marina'),
+(475, 1, '2021-05-17 15:00:08', '::1', 'Superadmin'),
+(476, 4, '2021-05-17 15:05:04', '::1', 'Marina'),
+(477, 1, '2021-05-20 09:42:17', '::1', 'Superadmin'),
+(478, 1, '2021-05-24 10:20:58', '::1', 'Superadmin'),
+(479, 3, '2021-05-24 10:28:09', '::1', 'User'),
+(480, 1, '2021-05-24 10:29:56', '::1', 'Superadmin'),
+(481, 4, '2021-05-24 10:30:15', '::1', 'Marina'),
+(482, 3, '2021-05-24 10:40:30', '::1', 'User'),
+(483, 1, '2021-05-24 11:53:50', '::1', 'Superadmin'),
+(484, 3, '2021-05-24 13:31:18', '::1', 'User');
 
 -- --------------------------------------------------------
 
@@ -90357,7 +90487,8 @@ CREATE TABLE `t_signer` (
 INSERT INTO `t_signer` (`id`, `user_id`, `digisign_user_id_sandbox`, `digisign_user_id_production`, `token_sandbox`, `token_production`, `name`, `kuser_production`, `kuser_sandbox`, `email_user`, `email_digisign`, `alamat`, `jenis_kelamin`, `provinci`, `kota`, `kecamatan`, `desa`, `kode_pos`, `tempat_lahir`, `tgl_lahir`, `id_ktp`, `id_npwp`, `telepon`) VALUES
 (11, 3, 'adminimip@tandatanganku.com', 'adminimip@tandatanganku.com', 'gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM', 'gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM', 'Patar', 'e6aWrPrHidjmjdA1', 'e6aWrPrHidjmjdA1', 'adminimip@tandatanganku.com', 'adminimip@tandatanganku.com', 'Parapat', 'Laki-laki', 12, 1209, 1209050, 1209050003, 21174, 'parapat', '2021-03-13', '6343265456546546', '57653467645645645', 812434234432),
 (29, 3, 'Putu.dhitya@imip.co.id', 'Putu.dhitya@imip.co.id', 'xxxxxx', 'TkoqaZ1d7PWVaGh9uqNGGObYkgipgIadHgDDh4ELry2EvTj1hITKNb6cqFzN4M', 'Michael', 'G87bX3L3j489T7iM', 'xxxxx', 'patar@imip.co.id', 'mikhael@imip.co.id', '', 'Laki-laki', 0, 1101, 1101010, 1101010001, 0, '', '0000-00-00', '', '', 0),
-(30, 1, 'putu.dhitya@imip.co.id', 'putu.dhitya@imip.co.id', 'xxx', 'T64gkpcADkgaCwtDORuKzrSzbcEJE8sf2S1zOr68Z34foBcb8w5tZW2SZCoSnE', 'MIKHAEL ITSS', '3cl9NmwxPDYZsn8c', 'xxx', 'patar@imip.co.id', 'mikhael.digisign.ITSS@imip.co.id', '', 'Laki-laki', 0, 1101, 1101010, 1101010001, 0, '', '0000-00-00', '', '', 0);
+(30, 1, 'putu.dhitya@imip.co.id', 'putu.dhitya@imip.co.id', 'xxx', 'T64gkpcADkgaCwtDORuKzrSzbcEJE8sf2S1zOr68Z34foBcb8w5tZW2SZCoSnE', 'MIKHAEL ITSS', '3cl9NmwxPDYZsn8c', 'xxx', 'patar@imip.co.id', 'mikhael.digisign.ITSS@imip.co.id', '', 'Laki-laki', 0, 1101, 1101010, 1101010001, 0, '', '0000-00-00', '', '', 0),
+(33, 4, 'adminimip@tandatanganku.com', 'adminimip@tandatanganku.com', 'gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM', 'gLgyVTNNZrEJPIiu1VUCOMpR16xdGa9aeuk5cVeN44vQOpi8VTkAZQwiqtz3EM', 'Admin Signature', 'e6aWrPrHidjmjdA1', 'e6aWrPrHidjmjdA1', 'adminimip@tandatanganku.com', 'adminimip@tandatanganku.com', '', 'Laki-laki', 0, 1101, 1101010, 1101010001, 0, '', '0000-00-00', '', '', 0);
 
 --
 -- Indexes for dumped tables
@@ -90468,7 +90599,7 @@ ALTER TABLE `api_activation`
 -- AUTO_INCREMENT for table `app_surat_keluar`
 --
 ALTER TABLE `app_surat_keluar`
-  MODIFY `id_surat_keluar` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+  MODIFY `id_surat_keluar` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `app_surat_masuk`
@@ -90486,25 +90617,25 @@ ALTER TABLE `app_surat_masuk2`
 -- AUTO_INCREMENT for table `conf_level`
 --
 ALTER TABLE `conf_level`
-  MODIFY `id_level` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_level` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `conf_menu`
 --
 ALTER TABLE `conf_menu`
-  MODIFY `id_menu` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_menu` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `conf_submenu`
 --
 ALTER TABLE `conf_submenu`
-  MODIFY `id_submenu` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_submenu` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `conf_users`
 --
 ALTER TABLE `conf_users`
-  MODIFY `id_user` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_api_action`
@@ -90516,13 +90647,13 @@ ALTER TABLE `tbl_api_action`
 -- AUTO_INCREMENT for table `temp_login`
 --
 ALTER TABLE `temp_login`
-  MODIFY `id_temp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=379;
+  MODIFY `id_temp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=485;
 
 --
 -- AUTO_INCREMENT for table `t_signer`
 --
 ALTER TABLE `t_signer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
