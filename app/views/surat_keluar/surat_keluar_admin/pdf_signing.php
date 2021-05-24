@@ -47,7 +47,7 @@
                                         <button id="lock1" class="btn btn-warning lock active" style="" value="lock1">
                                           <span id="unlock" class="fa fa-unlock-alt fa-2x" aria-hidden="true" title="Lock Signature"></span>
                                         </button>
-                                        <img src="../src/img/signature.png" class="img-fluid signature-item">
+                                        <img src="../../../img/signature/signature.png" class="img-fluid signature-item">
                                       </div>
                                       <div id="pdf-meta">
                                       </div>

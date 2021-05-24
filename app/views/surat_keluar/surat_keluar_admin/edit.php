@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label">Signer </label>
     <select class="form-control" name="signer">
-        <?=$this->m_surat_keluar->select_approval($data=$id->signer,$this->session->userdata('sess_id'));?>
+        <?=$this->m_surat_keluar_admin->select_approval($data=$id->signer,$this->session->userdata('sess_id'));?>
     </select>
 </div>
 <div class="form-group">
@@ -15,7 +15,7 @@
 <div class="form-group">
     <label class="control-label">Jenis Surat </label>
     <select class="form-control" name="jenis">
-        <?=$this->m_surat_keluar->jenis_surat($id->jenis);?>
+        <?=$this->m_surat_keluar_admin->jenis_surat($id->jenis);?>
     </select>
 </div>
 <div class="form-group">
@@ -33,13 +33,13 @@
 <div class="form-group">
     <label class="control-label">Bentuk </label>
     <select class="form-control" name="melalui">
-        <?=$this->m_surat_keluar->bentuk_surat($id->melalui);?>
+        <?=$this->m_surat_keluar_admin->bentuk_surat($id->melalui);?>
     </select>
 </div>
 <div class="form-group">
     <label class="control-label">Asal Surat </label>
     <select class="form-control" name="asal_surat">
-        <?=$this->m_surat_keluar->asal_surat($data=$id->asal_surat);?>
+        <?=$this->m_surat_keluar_admin->asal_surat($data=$id->asal_surat);?>
     </select>
 </div>
 <div class="form-group">

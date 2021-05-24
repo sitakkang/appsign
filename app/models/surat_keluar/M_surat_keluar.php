@@ -116,10 +116,10 @@
             $return_data.='
             <a href="sign_pdf/'.$id.'" class="posisi_act_btn" data-id="'.$id.'" title="Posisi" style="color:#0F9647;"><button><i class="fas fa-file-powerpoint"></button></i></a> ';
         }
-        if($rows->status==2 || $rows->status==6 || $rows->status==4){
-        	$return_data.='<a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><button><i class="fas fa-paper-plane"></i></button></a>';
+        // if($rows->status==2 || $rows->status==6 || $rows->status==4){
+        // 	$return_data.='<a href="" class="send_act_btn" data-id="'.$id.'" title="Kirim" style="color:#0F9647;"><button><i class="fas fa-paper-plane"></i></button></a>';
             
-        }
+        // }
         
         if(($rows->jenis_ttd=="Manual") && ($rows->user==$user_id)){
             $return_data.=' <a href="" class="status_act_btn" data-id="'.$id.'" title="Status" style="color:#0F9647;"><button><i class="fas fa-calendar-plus"></i></button></a>';

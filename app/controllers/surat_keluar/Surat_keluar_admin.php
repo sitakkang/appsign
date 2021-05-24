@@ -68,7 +68,7 @@ class Surat_keluar_admin extends CI_Controller {
             'src/js/surat_keluar/app_admin.js',
             'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.228/pdf.min.js',
             'https://unpkg.com/ionicons@4.4.2/dist/ionicons.js',
-            'src/js/surat_keluar_admin/signature.config.js');
+            'src/js/surat_keluar/signature.config.js');
         $data['path_folder']=$path_folder;
         $data['panel'] = '<i class="fa fa-inbox"></i> &nbsp;<b>PDF</b>';
         $this->l_skin->config($this->dir_v.'pdf_signing', $data);
@@ -148,7 +148,7 @@ class Surat_keluar_admin extends CI_Controller {
             $minutes = ($diff->format('%a') * 1440) + // total days converted to minutes
                        ($diff->format('%h') * 60) +  
                         $diff->format('%i');      
-            if($minutes>=30){
+            if($minutes>=1440){
                 $update['status'] = 6;
                 $this->db->where('id_surat_keluar', $id);
                 $this->db->update('app_surat_keluar', $update);

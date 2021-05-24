@@ -17,12 +17,12 @@ class Dashboard extends CI_Controller {
 													'link' => site_url().'admin/signer',
 													'icon' => 'img/signing_doc.png'
 												),
-			'Surat Keluar' 					=> array(
+			'Surat Keluar Admin' 					=> array(
 													'link_checking'=>'surat_keluar/surat_keluar_admin',
 													'link' => site_url().'surat_keluar/surat_keluar_admin',
 													'icon' => 'img/icon_surat_keluar.png'
 												),
-			'Surat Keluar' 					=> array(
+			'Surat Keluar User' 					=> array(
 													'link_checking'=>'surat_keluar/surat_keluar',
 													'link' => site_url().'surat_keluar/surat_keluar',
 													'icon' => 'img/icon_surat_keluar.png'

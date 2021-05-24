@@ -325,7 +325,7 @@ $(document).ready(function(){
 			        this.on("success", function() {
 			        	// table.ajax.reload(null, false);
 			        	if(jenis_ttd=='Digital'){
-			        		window.location.href = 'sign_pdf/'+id_surat;
+			        		window.location.href = 'surat_keluar_admin/sign_pdf/'+id_surat;
 			        	}else{
 			        		table.ajax.reload(null, false);
 			        	}
@@ -387,7 +387,6 @@ $(document).ready(function(){
 		$(this).html(
         `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`
       	);
-		// $("#save_send_act_btn").button('loading');
 		e.preventDefault();
 		var id_surat=$("input[name*='id_surat']").val();
 		if($('select#disetujui :selected').length > 0){

@@ -8823,7 +8823,7 @@ body {
 }
 .document-container .digital-signature--remove::before {
   /*content: "\f023";*/
-  content: url('http://localhost/appsign/admin_tenant/surat_keluar/src/img/unlock.png');
+  /*content: url('http://localhost/appsign/admin_tenant/surat_keluar/src/img/unlock.png');*/
   /*background:url();*/
   position: absolute;
   top: -18px;

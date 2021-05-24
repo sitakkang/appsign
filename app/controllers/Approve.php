@@ -83,7 +83,7 @@ class Approve extends CI_Controller {
                 $minutes = ($diff->format('%a') * 1440) + // total days converted to minutes
                            ($diff->format('%h') * 60) +  
                             $diff->format('%i');          
-                if($minutes>=30){
+                if($minutes>=1440){
                     $update['status'] = 6;
                     $this->db->where('id_surat_keluar', $rows->id_surat_keluar);
                     $this->db->update('app_surat_keluar', $update);

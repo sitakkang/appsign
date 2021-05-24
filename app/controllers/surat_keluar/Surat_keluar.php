@@ -81,7 +81,7 @@ class Surat_keluar extends CI_Controller {
             $minutes = ($diff->format('%a') * 1440) + // total days converted to minutes
                        ($diff->format('%h') * 60) +  
                         $diff->format('%i');      
-            if($minutes>=30){
+            if($minutes>=1440){
                 $update['status'] = 6;
                 $this->db->where('id_surat_keluar', $id);
                 $this->db->update('app_surat_keluar', $update);
@@ -339,7 +339,7 @@ class Surat_keluar extends CI_Controller {
             'lib/jquery/jquery-3.3.1.min.js',
             'lib/bootstrap-4.1.3/dist/js/bootstrap.min.js',
             'lib/interact/interact.min.js',
-            'src/js/admin_tenant/app.js',
+            'src/js/surat_keluar/app.js',
             'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.228/pdf.min.js',
             'https://unpkg.com/ionicons@4.4.2/dist/ionicons.js',
             'src/js/surat_keluar/signature.config.js');
