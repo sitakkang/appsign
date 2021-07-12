@@ -48,7 +48,6 @@ $(document).ready(function(){
 		$.get(url_add)
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Rekap Surat</b>');
-			//$('div.modal-dialog').addClass('modal-sm');
 			$("div#MyModalFooter").html('<button type="submit" class="btn btn-default center-block" id="save_add_btn">Simpan</button>');
 			$("div#MyModalContent").html(view);
 			$("div#MyModal").modal('show');
@@ -282,7 +281,6 @@ $(document).ready(function(){
 						formData.append("id_surat", id_surat);
 					});
 			        this.on("success", function() {
-			        	// table.ajax.reload(null, false);
 			        	if(jenis_ttd=='Digital'){
 			        		window.location.href = 'surat_keluar_admin/sign_pdf/'+id_surat;
 			        	}else{
@@ -331,7 +329,7 @@ $(document).ready(function(){
 		.done(function(view) {
 			$('#MyModalTitle').html('<b>Surat</b>');
 			$('div.modal-dialog').addClass('modal-sm');
-			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary center-block" data-loading-text="Loading..." id="save_send_act_btn">Send</button>');
+			$("div#MyModalFooter").html('<button type="submit" class="btn btn-primary" id="save_send_act_btn">Send</button>');
 			$("div#MyModalContent").html(view);
 			$("div#MyModal").modal('show');
 		})
@@ -343,10 +341,8 @@ $(document).ready(function(){
 
 	// Sending mail
 	$(document).on('click','#save_send_act_btn',function(e){
-		$(this).html(
-        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`
-      	);
 		e.preventDefault();
+		loadingShow()
 		var id_surat=$("input[name*='id_surat']").val();
 		if($('select#disetujui :selected').length > 0){
 	        var selectedsend = [];
@@ -354,22 +350,14 @@ $(document).ready(function(){
 	            selectedsend[i] = $(selected).val();
 	        });
         }else{ selectedsend = ''; }
-        
-        // loadingshow();
-        
 		$.post(url_act_send,{
 			id_surat:id_surat,
 			disetujui:JSON.stringify(selectedsend)
 		})
 		.done(function(result) {
-			// loadingHide();
-			span = $(this).find('span'),
-		    text = span.text();
-
-		    span.remove();
+			loadingHide();
 			var obj = jQuery.parseJSON(result);
 			if(obj.status == 1){
-				$('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
                 notifNo(obj.notif);
 			}
 			if(obj.status == 2){
@@ -379,10 +367,7 @@ $(document).ready(function(){
 			}
 		})
 		.fail(function(res) {
-			span = $(this).find('span'),
-		    text = span.text();
-
-		    span.remove();
+			loadingHide()
 			alert("Error");
 			console.log("Error", res.responseText);
 		});
