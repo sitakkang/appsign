@@ -157,8 +157,6 @@ $(document).ready(function(){
 				temp[3] = level;
 				temp[5] = status;
 				table.row('tr.actived').data(temp).invalidate();
-                //reload tanpa pindah pagination
-                //table.ajax.reload(null, false);
 			}
 		})
 		.fail(function(res){

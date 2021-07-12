@@ -221,47 +221,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-	// $(document).on('click','a.delete_act_btn',function(e){
-	// 	e.preventDefault();
-	// 	var id_surat = $(this).attr('data-id');
-	// 	var no_surat = $(this).attr('data-surat');
-	// 	swal({
-	// 		title: 'Anda yakin ?',
-	// 		text: 'Data dengan nomor surat '+no_surat+' akan di hapus ?',
-	// 		type: 'question',
-	// 		showCancelButton: true,
-	// 		confirmButtonText: 'Ya, hapus !',
-	// 		cancelButtonText: 'Tidak, batalkan !',
-	// 		confirmButtonClass: 'btn btn-danger',
-	// 		cancelButtonClass: 'btn btn-primary',
-	// 		buttonsStyling: false
-	// 	}).then(function () {
-	// 		$.post(url_act_del,{
-	// 			id_surat:id_surat
-	// 		})
-	// 		.done(function(result) {
-	// 			var obj = jQuery.parseJSON(result);
-	// 			if(obj.status == 1){
-	// 				notifNo(obj.notif);
-	// 			}
-	// 			if(obj.status == 2){
-	// 				notifYesAuto(obj.notif);
-	// 				table.ajax.reload(null, false);
-	// 			}
-	// 		})
-	// 		.fail(function(res) {
-	// 			alert("Error");
-	// 			console.log("Error", res.responseText);
-	// 		});
-	// 	},function(dismiss) {
-	// 		if (dismiss === 'cancel') {
-	// 			$("div#MyModal").modal('hide');
-	// 			notifCancleAuto('Proses hapus di batalkan.');
-	// 		}
-	// 	})
-	// });
-
 	// Status Button
 	$(document).on('click','a.status_act_btn',function(e){
 		e.preventDefault();
@@ -445,11 +404,6 @@ $(document).ready(function(){
     	$("div#MyModalFooter").empty();
 	});
 
-	// $(document).on('click','a.btn.posisi_act_btn',function(e){
-	// 	var id_surat = $(this).attr('data-id');
-	// 	alert(id_surat);
-	// 	// window.location.href = 'sign_pdf/'+id_surat;
-	// });
 
 	$(document).on('click','a.btn.upload_vendor_btn',function(e){
 		e.preventDefault();
@@ -519,7 +473,6 @@ $(document).ready(function(){
                 $("div#MyModal").modal('hide');
             	notifYesAuto(obj.notif);
             	table.ajax.reload(null, false);
-            	// window.location.href = 'surat_masuk/proses/'+obj.id;
             	window.location.href = obj.url_api;
 			}
 		})

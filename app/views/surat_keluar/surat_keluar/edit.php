@@ -1,11 +1,4 @@
-<!-- <div class="form-group">
-    <label class="control-label">Signer </label>
-    <select class="form-control" name="signer"> -->
-        <?php
-            // echo $this->m_surat_keluar->select_approval($data=$id->signer,$this->session->userdata('sess_id'));
-        ?>
-    <!-- </select>
-</div> -->
+
 <div class="form-group">
     <label class="control-label">Nomor Surat </label>
     <input class="form-control" type="text" name="no_surat" value="<?=$id->no_surat;?>">

@@ -23,32 +23,6 @@ interact('.digital-signature')
     },
     onend: function (event) {
       var pageCurrent = $('#pageCurrent').text();
-
-      // var la = event.pageX-65;
-      // var llx_result = la-385;//kurangi 1180 850 selisih perpage
-      // var lb = event.pageY + 36.68;
-      // var llb = lb-345;
-      // var lly_result = 841-llb;
-      // var urx = llx_result+75;
-      // var ury = lly_result+45;
-
-
-
-      
-      // $("#llx").val(event.pageX);
-      // $("#lly").val(event.pageY);
-      // var la = event.pageX-120;
-      // var llx_result = la-376;//kurangi 1180 850 selisih perpage
-      // var lb = event.pageY + 36.68;
-      // var llb = lb-338;
-      // var lly_result = 841-llb;
-      // var urx = llx_result+95;
-      // var ury = lly_result+45;
-      // $("#llx_result").val(llx_result);
-      // $("#lly_result").val(lly_result); 
-      // $("#urx").val(urx);
-      // $("#ury").val(ury);
-
       var target = event.target;
       target.classList.add('digital-signature--remove')
       $('#unlock').removeClass('fa fa-lock fa-2x');

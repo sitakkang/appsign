@@ -120,48 +120,6 @@ $(document).ready(function(){
 
         });
     });
-
-    // $(document).on('click','a.delete_act_btn',function(e){
-    //     e.preventDefault();
-    //     var id = $(this).attr('data-id');
-    //     var api_key = $(this).attr('data-key_');
-    //     var type = $(this).attr('data-type');
-    //     swal({
-    //         title: 'Anda yakin ?',
-    //         text: 'Data API URL '+api_key+' akan di hapus ?',
-    //         type: 'question',
-    //         showCancelButton: true,
-    //         confirmButtonText: 'Ya, hapus !',
-    //         cancelButtonText: 'Tidak, batalkan !',
-    //         confirmButtonClass: 'btn btn-danger',
-    //         cancelButtonClass: 'btn btn-primary',
-    //         buttonsStyling: false
-    //     }).then(function () {
-    //         $.post(url_act_del,{
-    //             id:id,api_key:api_key,type:type
-    //         })
-    //         .done(function(result) {
-    //             var obj = jQuery.parseJSON(result);
-    //             if(obj.status == 1){
-    //                 notifNo(obj.notif);
-    //             }
-    //             if(obj.status == 2){
-    //                 notifYesAuto(obj.notif);
-    //                 table.ajax.reload(null, false);
-    //             }
-    //         })
-    //         .fail(function(res) {
-    //             alert("Error");
-    //             console.log("Error", res.responseText);
-    //         });
-    //     },function(dismiss) {
-    //         if (dismiss === 'cancel') {
-    //             $("div#MyModal").modal('hide');
-    //             notifCancleAuto('Proses hapus di batalkan.');
-    //         }
-    //     })
-    // });
-    // Delete Button
     // Delete Button
     $(document).on('click','.delete_act_btn',function(e){
         e.preventDefault();
@@ -197,7 +155,6 @@ $(document).ready(function(){
                         $("div#MyModal").modal('hide');
                         notifYesAuto(obj.notif);
                         table.ajax.reload(null, false);
-                        // table.ajax.url(url_ctrl+'table/'+$('select#cat_menu').val()).load();
                     }
                 })
                 .fail(function(res){
